@@ -3,5 +3,10 @@
 
     <string name="app_name">anke</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="energy_saving_data">节能数据</string>
+    <string name="real_time_data">实时状态</string>
+    <string name="system_set">系统设置</string>
+    <string name="quit">退出</string>
 
 </resources>

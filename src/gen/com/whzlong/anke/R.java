@@ -1069,6 +1069,7 @@ containing a value of this type.
         public static final int abc_textfield_searchview_right_holo_dark=0x7f020055;
         public static final int abc_textfield_searchview_right_holo_light=0x7f020056;
         public static final int ic_launcher=0x7f020057;
+        public static final int loading9=0x7f020058;
     }
     public static final class id {
         public static final int action_bar=0x7f05001c;
@@ -1085,6 +1086,10 @@ containing a value of this type.
         public static final int activity_chooser_view_content=0x7f050025;
         public static final int always=0x7f05000b;
         public static final int beginning=0x7f050011;
+        public static final int btnEnergySavingData=0x7f05003d;
+        public static final int btnQuit=0x7f050040;
+        public static final int btnRealTimeData=0x7f05003e;
+        public static final int btnSystemSet=0x7f05003f;
         public static final int checkbox=0x7f05002d;
         public static final int collapseActionView=0x7f05000d;
         public static final int default_activity_button=0x7f050028;
@@ -1100,6 +1105,7 @@ containing a value of this type.
         public static final int icon=0x7f05002a;
         public static final int ifRoom=0x7f05000a;
         public static final int image=0x7f050027;
+        public static final int imageView1=0x7f05003c;
         public static final int listMode=0x7f050001;
         public static final int list_item=0x7f050029;
         public static final int middle=0x7f050012;
@@ -1183,7 +1189,8 @@ containing a value of this type.
         public static final int abc_search_view=0x7f030016;
         public static final int abc_simple_decor=0x7f030017;
         public static final int activity_load=0x7f030018;
-        public static final int support_simple_spinner_dropdown_item=0x7f030019;
+        public static final int activity_main=0x7f030019;
+        public static final int support_simple_spinner_dropdown_item=0x7f03001a;
     }
     public static final class string {
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
@@ -1227,7 +1234,12 @@ containing a value of this type.
          */
         public static final int abc_shareactionprovider_share_with_application=0x7f0a000b;
         public static final int app_name=0x7f0a000d;
+        public static final int energy_saving_data=0x7f0a0010;
         public static final int hello_world=0x7f0a000e;
+        public static final int quit=0x7f0a0013;
+        public static final int real_time_data=0x7f0a0011;
+        public static final int system_set=0x7f0a0012;
+        public static final int title_activity_main=0x7f0a000f;
     }
     public static final class style {
         /** 

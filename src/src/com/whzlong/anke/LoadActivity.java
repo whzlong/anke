@@ -1,9 +1,8 @@
 package com.whzlong.anke;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 public class LoadActivity extends Activity {
 
@@ -11,5 +10,10 @@ public class LoadActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_load);
+		
+		Intent intent = new Intent();
+		intent.setClass(LoadActivity.this, MainActivity.class);
+		startActivity(intent);
+		LoadActivity.this.finish();
 	}
 }
