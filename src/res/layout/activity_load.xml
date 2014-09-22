@@ -10,8 +10,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="117dp"
-        android:layout_marginTop="112dp"
-        android:src="@drawable/abc_ic_cab_done_holo_light" />
+        android:layout_marginLeft="116dp"
+        android:layout_marginTop="67dp"
+        android:src="@drawable/abc_list_longpressed_holo" />
 
 </RelativeLayout>
