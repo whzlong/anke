@@ -14,21 +14,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/energy_saving_data" />
+        
         <Button
             android:id="@+id/btnRealTimeData"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/real_time_data" />
+        
         <Button
             android:id="@+id/btnSystemSet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/system_set" />        
+            android:text="@string/system_set" />
+
         <Button
             android:id="@+id/btnQuit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/quit" />
+        
     </LinearLayout>
 
 </RelativeLayout>
