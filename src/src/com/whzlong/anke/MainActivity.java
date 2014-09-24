@@ -17,6 +17,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		
 		btnQuit = (Button)findViewById(R.id.btnQuit);
+		btnQuit.setTextSize(20);
 		btnQuit.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
