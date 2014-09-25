@@ -3,13 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="${relativePackage}.${activityClass}" >
-<RelativeLayout
+	<RelativeLayout
         android:id="@+id/relativeLayout5"
         android:layout_width="fill_parent"
         android:layout_height="100dp" >
-
-
     </RelativeLayout>
+    
     <RelativeLayout
         android:id="@+id/relativeLayout1"
         android:layout_width="fill_parent"
@@ -18,8 +17,10 @@
 
         <Button
             android:id="@+id/btnEnergySavingData"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"            
+            android:gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
             android:text="@string/energy_saving_data" />
 
     </RelativeLayout>

@@ -7,10 +7,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	private Button btnQuit = null;
-			
+//	private Context context = this.getApplicationContext();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -18,15 +19,16 @@ public class MainActivity extends Activity {
 		
 		btnQuit = (Button)findViewById(R.id.btnQuit);
 		btnQuit.setTextSize(20);
-		btnQuit.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				ActivityManager am = (ActivityManager)getSystemService (Context.ACTIVITY_SERVICE); 
-				am.killBackgroundProcesses(getPackageName());
-			}
-		});
+//		btnQuit.setOnClickListener(listener);
+//		btnQuit.setOnClickListener(new View.OnClickListener() {			
+//			@Override
+//			public void onClick(View arg0) {
+//				// TODO Auto-generated method stub
+////				ActivityManager am = (ActivityManager)getSystemService (Context.ACTIVITY_SERVICE); 
+////				am.killBackgroundProcesses(getPackageName());
+//				Toast.makeText(context, "quit", Toast.LENGTH_LONG).show();
+//			}
+//		});
 	}
 	
 //	private OnClickListener listener = new OnClickListener() {
@@ -39,9 +41,10 @@ public class MainActivity extends Activity {
 //			case R.id.btnSystemSet:
 //				break;
 //			case R.id.btnQuit:
-//				ActivityManager am = (ActivityManager)getSystemService (Context.ACTIVITY_SERVICE); 
-//				am.killBackgroundProcesses(getPackageName());
-//				System.exit(0);
+////				ActivityManager am = (ActivityManager)getSystemService (Context.ACTIVITY_SERVICE); 
+////				am.killBackgroundProcesses(getPackageName());
+////				System.exit(0);
+//				Toast.makeText(context, "quit", Toast.LENGTH_LONG).show();
 //				break;
 //			default:
 //				break;
