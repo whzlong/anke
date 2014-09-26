@@ -33,9 +33,12 @@
 
         <Button
             android:id="@+id/btnRealTimeData"
-            android:layout_width="fill_parent"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
-            android:text="@string/real_time_data" />
+            android:text="@string/real_time_data" 
+            android:gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            />
     </RelativeLayout>
 
     <RelativeLayout
@@ -46,9 +49,12 @@
 
         <Button
             android:id="@+id/btnSystemSet"
-            android:layout_width="fill_parent"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
-            android:text="@string/system_set" />
+            android:text="@string/system_set" 
+            android:gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            />
     </RelativeLayout>
 
     <RelativeLayout
@@ -59,9 +65,12 @@
 
         <Button
             android:id="@+id/btnQuit"
-            android:layout_width="fill_parent"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
-            android:text="@string/quit" />
+            android:text="@string/quit" 
+            android:gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            />
     </RelativeLayout>
 
 </RelativeLayout>
