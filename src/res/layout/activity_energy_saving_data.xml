@@ -9,16 +9,17 @@
         android:layout_width="fill_parent"
         android:layout_height="55dp"
         android:background="#333333" >
+
         <Button
             android:id="@+id/btnBack"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true" 
+            android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:background="#333333"
-            android:text="@string/back" 
-            android:textColor="#ffffff" 
-            android:textSize="15sp"/>
+            android:text="@string/back"
+            android:textColor="#ffffff"
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/tvTitleEnergySavingData"
@@ -28,9 +29,43 @@
             android:text="@string/energy_saving_data"
             android:textColor="#ffffff"
             android:textSize="20sp" />
+    </RelativeLayout>
 
+    <!--
+    <ScrollView
+        android:id="@+id/swList"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/navigationBar"
+        android:layout_marginLeft="76dp"
+        android:layout_marginTop="114dp" >
 
+        <TableLayout
+            android:id="@+id/tlEnergySavingData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="45dp"
+            android:layout_marginTop="40dp" >
+        </TableLayout>
+    </ScrollView>
+    -->
 
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/navigationBar"
+        android:layout_marginLeft="76dp"
+        android:layout_marginTop="198dp" >
+
+        <ListView
+            android:id="@+id/lstEnergySavingData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true">
+        </ListView>
     </RelativeLayout>
 
 </RelativeLayout>
