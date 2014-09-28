@@ -24,8 +24,7 @@ public class MainActivity extends Activity {
 		btnEnergySavingData = (Button)findViewById(R.id.btnEnergySavingData);
 		btnEnergySavingData.setTextSize(20);
 		
-		btnEnergySavingData.setOnClickListener(new Button.OnClickListener() {
-			
+		btnEnergySavingData.setOnClickListener(new Button.OnClickListener() {			
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
@@ -59,15 +58,16 @@ public class MainActivity extends Activity {
 		btnQuit.setTextSize(20);
 		
 //		btnQuit.setOnClickListener(listener);
-//		btnQuit.setOnClickListener(new View.OnClickListener() {			
-//			@Override
-//			public void onClick(View arg0) {
-//				// TODO Auto-generated method stub
-////				ActivityManager am = (ActivityManager)getSystemService (Context.ACTIVITY_SERVICE); 
-////				am.killBackgroundProcesses(getPackageName());
+		btnQuit.setOnClickListener(new View.OnClickListener() {			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+//				ActivityManager am = (ActivityManager)getSystemService (Context.ACTIVITY_SERVICE); 
+//				am.killBackgroundProcesses(getPackageName());
 //				Toast.makeText(context, "quit", Toast.LENGTH_LONG).show();
-//			}
-//		});
+				MainActivity.this.finish();
+			}
+		});
 	}
 	
 //	private OnClickListener listener = new OnClickListener() {
