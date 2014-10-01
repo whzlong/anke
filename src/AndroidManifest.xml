@@ -10,7 +10,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
-    <uses-permission android:name="android.permission.INTERNET" /> 
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -37,6 +37,14 @@
         <activity
             android:name=".EnergySavingDataActivity"
             android:label="@string/title_activity_energy_saving_data" >
+        </activity>
+        <activity
+            android:name=".RealTimeDataActivity"
+            android:label="@string/title_activity_real_time_data" >
+        </activity>
+        <activity
+            android:name=".WarningInfoActivity"
+            android:label="@string/title_activity_warning_info" >
         </activity>
     </application>
 

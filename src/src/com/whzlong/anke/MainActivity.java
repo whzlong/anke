@@ -14,6 +14,7 @@ public class MainActivity extends Activity {
 	private Button btnQuit = null;
 	private Button btnEnergySavingData = null;
 	private Button btnRealTimeData = null;
+	private Button btnWarningInfo = null;
 	private Button btnSystemSet = null;
 	
 	@Override
@@ -35,10 +36,38 @@ public class MainActivity extends Activity {
 			}
 		});
 		
-		
+		//实时状态查询
 		btnRealTimeData = (Button)findViewById(R.id.btnRealTimeData);
 		btnRealTimeData.setTextSize(20);
 		
+		btnRealTimeData.setOnClickListener(new Button.OnClickListener() {			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent();
+				intent.setClass(MainActivity.this, RealTimeDataActivity.class);
+				startActivity(intent);
+				MainActivity.this.finish();
+			}
+		});
+		
+		//警告信息查询
+		btnWarningInfo = (Button)findViewById(R.id.btnWarningInfo);
+		btnWarningInfo.setTextSize(20);
+		
+		btnWarningInfo.setOnClickListener(new Button.OnClickListener() {			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent();
+				intent.setClass(MainActivity.this, WarningInfoActivity.class);
+				startActivity(intent);
+				MainActivity.this.finish();
+			}
+		});
+		
+		
+		//系统设置
 		btnSystemSet = (Button)findViewById(R.id.btnSystemSet);
 		btnSystemSet.setTextSize(20);
 		

@@ -48,6 +48,22 @@
         android:layout_below="@+id/relativeLayout2" >
 
         <Button
+            android:id="@+id/btnWarningInfo"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:text="@string/warning_info" 
+            android:gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            />
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/relativeLayout4"
+        android:layout_width="fill_parent"
+        android:layout_height="80dp"
+        android:layout_below="@+id/relativeLayout3" >
+
+        <Button
             android:id="@+id/btnSystemSet"
             android:layout_width="160dp"
             android:layout_height="wrap_content"
@@ -58,10 +74,10 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/relativeLayout4"
+        android:id="@+id/relativeLayout6"
         android:layout_width="fill_parent"
         android:layout_height="80dp"
-        android:layout_below="@+id/relativeLayout3" >
+        android:layout_below="@+id/relativeLayout4" >
 
         <Button
             android:id="@+id/btnQuit"

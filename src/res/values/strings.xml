@@ -4,6 +4,7 @@
     <string name="app_name">烘烤运维手机应用</string>
     <string name="title_activity_main">主菜单</string>
     <string name="energy_saving_data">节能数据</string>
+    <string name="warning_info">警告信息</string>
     <string name="factory">炼钢厂</string>
     <string name="choose">选择</string>
     <string name="selectDatetime">查询时间</string>
@@ -14,7 +15,9 @@
     <string name="quit">退出</string>
     <string name="back">返回</string>
     <string name="title_activity_system_set">系统设置</string>
+    <string name="title_activity_energy_saving_data">节能数据</string>
+    <string name="title_activity_real_time_data">实时状态</string>
+    <string name="title_activity_warning_info">警告信息</string>
     <string name="action_settings">设置</string>
-    <string name="title_activity_energy_saving_data">EnergySavingDataActivity</string>    
 
 </resources>
