@@ -32,6 +32,7 @@ public class LoadActivity extends Activity {
 			}, LOAD_TIME);
 		}else{
 			Toast.makeText(context, "网络连接不可用", Toast.LENGTH_LONG).show();
+			LoadActivity.this.finish();
 		}
 		
 	}

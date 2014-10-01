@@ -5,7 +5,9 @@
     <string name="title_activity_main">主菜单</string>
     <string name="energy_saving_data">节能数据</string>
     <string name="factory">炼钢厂</string>
+    <string name="choose">选择</string>
     <string name="selectDatetime">查询时间</string>
+    <string name="intervalMark">~</string>
     <string name="select">查询</string>
     <string name="real_time_data">实时状态</string>
     <string name="system_set">系统设置</string>

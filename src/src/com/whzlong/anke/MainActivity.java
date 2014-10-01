@@ -83,7 +83,7 @@ public class MainActivity extends Activity {
 ////				ActivityManager am = (ActivityManager)getSystemService (Context.ACTIVITY_SERVICE); 
 ////				am.killBackgroundProcesses(getPackageName());
 ////				System.exit(0);
-//				Toast.makeText(context, "quit", Toast.LENGTH_LONG).show();
+//				Toast.makeText(this.getClass(), "quit", Toast.LENGTH_LONG).show();
 //				break;
 //			default:
 //				break;

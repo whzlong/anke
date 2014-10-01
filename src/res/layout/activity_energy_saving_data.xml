@@ -34,7 +34,7 @@
     <RelativeLayout
         android:id="@+id/selectConditionLayout"
         android:layout_width="fill_parent"
-        android:layout_height="120dp"
+        android:layout_height="140dp"
         android:layout_below="@+id/navigationBarLayout"
         android:background="#F5FFFA" >
 
@@ -60,14 +60,29 @@
                     android:id="@+id/etFactory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_span="3"
                     android:ems="10"
                     android:textSize="15sp" >
 
                     <requestFocus />
                 </EditText>
+                
+                <TextView
+                    android:id="@+id/tvFactoryName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_span="3"
+                    android:textSize="15sp" />
+                
+                <Button
+                    android:id="@+id/btnChoose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/choose" >
+                </Button>
             </TableRow>
 
-            <TableRow
+           <TableRow
                 android:id="@+id/tableRow2"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" >
@@ -78,13 +93,31 @@
                     android:layout_height="wrap_content"
                     android:text="@string/selectDatetime"
                     android:textSize="15sp" />
-
+                
                 <EditText
                     android:id="@+id/etDatatimeFrom"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:textSize="15sp" >
+                    android:ems="6"
+                    android:maxLength="10"
+                    android:inputType="date" 
+                    android:textSize="15sp">
+                </EditText>
+                <TextView
+                    android:id="@+id/tvInterval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/intervalMark"
+                    android:textSize="15sp" />
+                                
+                <EditText
+                    android:id="@+id/etDatatimeTo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="6"
+                    android:maxLength="10"
+                    android:inputType="date" 
+                    android:textSize="15sp">
                 </EditText>
             </TableRow>
 
@@ -96,8 +129,8 @@
                 <Button
                     android:id="@+id/btnSelect"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" 
-                    android:text="@string/select">
+                    android:layout_height="wrap_content"
+                    android:text="@string/select" >
                 </Button>
             </TableRow>
         </TableLayout>
@@ -109,6 +142,16 @@
         android:layout_height="fill_parent"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/selectConditionLayout" >
+
+        <ProgressBar
+            android:id="@+id/pbDataLoad"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="106dp"
+            android:layout_marginTop="147dp" />
 
         <HorizontalScrollView
             android:id="@+id/horizontalScrollView1"

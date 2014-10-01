@@ -104,8 +104,8 @@ public class TableAdapter extends BaseAdapter {
 	 * @author hellogv
 	 */
 	public static class TableCell {
-		static public final int STRING = 0;
-		static public final int IMAGE = 1;
+		public static  final int STRING = 0;
+		public static  final int IMAGE = 1;
 		public Object value;
 		public int width;
 		public int height;
