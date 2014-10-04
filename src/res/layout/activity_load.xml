@@ -2,16 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#00f7ff"
     tools:context="${relativePackage}.${activityClass}" >
-
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="116dp"
-        android:layout_marginTop="67dp"
-        android:src="@drawable/abc_list_longpressed_holo" />
 
 </RelativeLayout>

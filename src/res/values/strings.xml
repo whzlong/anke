@@ -19,5 +19,6 @@
     <string name="title_activity_real_time_data">实时状态</string>
     <string name="title_activity_warning_info">警告信息</string>
     <string name="action_settings">设置</string>
+    <drawable name="light_gray">#818779</drawable>
 
 </resources>

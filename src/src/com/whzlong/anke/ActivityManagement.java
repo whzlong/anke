@@ -7,7 +7,7 @@ import android.app.Activity;
 import android.app.Application;
 
 /**
- * 管理所有的Activity
+ * 绠＄悊鎵�鏈夌殑Activity
  * @author whz
  *
  */

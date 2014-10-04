@@ -4,8 +4,14 @@ import android.app.Activity;
 
 import android.content.Intent;
 import android.database.CursorJoiner.Result;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import java.util.ArrayList;
@@ -22,6 +28,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +37,7 @@ public class EnergySavingDataActivity extends Activity {
 
 	private final int FP = ViewGroup.LayoutParams.FILL_PARENT;
 	private Button btnBack = null;
+	private Button btnChoose = null;
 	private Button btnSelect;
 	private ListView lv;
 	private ProgressBar pbDataLoad;
@@ -37,48 +45,49 @@ public class EnergySavingDataActivity extends Activity {
 	private TextView tvFactory;
 	private EditText etDatatimeFrom;
 	private EditText etDatatimeTo;
-	private String[] columns = new String[]{"position", "lastDataPerWeek", "hourEnergyConsumption", "fractionalEnergySaving", "operatingRate"};
+	private RelativeLayout loadingLayout;
+	private RelativeLayout dataListLayout;
+	protected static final int STOP = 0x10000;
+	private String[] titlesArray = new String[] { "烘烤位", "每周最后一条数据", "小时能耗",
+			"节能率", "作业率" };
+	private String[] columns = new String[] { "position", "lastDataPerWeek",
+			"hourEnergyConsumption", "fractionalEnergySaving", "operatingRate" };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_energy_saving_data);
 		
-		//隐藏进度条
-		pbDataLoad = (ProgressBar)findViewById(R.id.pbDataLoad);
-		pbDataLoad.setMax(100);
-		pbDataLoad.setProgress(0);
-		pbDataLoad.setVisibility(View.GONE);
+		//按钮事件管理
+		ButtonListener bl = new ButtonListener();
 		
-		//查询处理
-		btnSelect = (Button)findViewById(R.id.btnSelect);
-		btnSelect.setOnClickListener(new Button.OnClickListener(){
-			@Override
-			public void onClick(View v){
-				pbDataLoad.setVisibility(View.VISIBLE);
-				
-				etDatatimeFrom = (EditText)findViewById(R.id.etDatatimeFrom);
-				etDatatimeTo = (EditText)findViewById(R.id.etDatatimeTo);
-				
-				String[] titlesArray = new String[]{"烘烤位", "每周最后一条数据", "小时能耗", "节能率", "作业率"};
-				setTableInfo(titlesArray, getListData(factoryCode, etDatatimeFrom.getText().toString(), etDatatimeTo.getText().toString()));
-			}
-		});
-		
+		// 隐藏进度条
+		pbDataLoad = (ProgressBar) findViewById(R.id.pbDataLoad);
+		pbDataLoad.setIndeterminate(false);
+
+		//选择钢厂按钮
+		btnChoose = (Button) findViewById(R.id.btnChoose);
+		btnChoose.setClickable(false);
+
+		//加载布局
+		loadingLayout = (RelativeLayout) findViewById(R.id.loadingLayout);
+		loadingLayout.setVisibility(View.GONE);
+
+		//一览数据布局
+		dataListLayout = (RelativeLayout) findViewById(R.id.dataListLayout);
+		dataListLayout.setVisibility(View.GONE);
+
+		// 查询处理
+		btnSelect = (Button) findViewById(R.id.btnSelect);
+		btnSelect.setOnClickListener(bl);
+
+		//返回
 		btnBack = (Button) findViewById(R.id.btnBack);
-		btnBack.setOnClickListener(new Button.OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent();
-				intent.setClass(EnergySavingDataActivity.this,
-						MainActivity.class);
-				startActivity(intent);
-				EnergySavingDataActivity.this.finish();
-			}
-		});		
+		btnBack.setOnClickListener(bl);
+		btnBack.setOnTouchListener(bl);
 	}
 
+	
 	class ItemClickEvent implements AdapterView.OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
@@ -87,22 +96,23 @@ public class EnergySavingDataActivity extends Activity {
 					"选中第" + String.valueOf(arg2) + "行", 500).show();
 		}
 	}
-	
+
 	/**
 	 * 通过Web Service请求数据
 	 * 
 	 * @param factory
-	 * 		  钢厂代码
+	 *            钢厂代码
 	 * @param dateTimeFrom
-	 * 		  查询开始时间
+	 *            查询开始时间
 	 * @param dateTimeTo
-	 * 		  查询结束时间
+	 *            查询结束时间
 	 * @return
 	 */
-	private JSONArray getListData(String factory, String dateTimeFrom, String dateTimeTo){
+	private JSONArray getListData(String factory, String dateTimeFrom,
+			String dateTimeTo) {
 		JSONArray jsonArray = new JSONArray();
 		JSONObject rowData = null;
-		
+
 		try {
 			rowData = new JSONObject();
 			rowData.put(columns[0], "1#");
@@ -111,14 +121,14 @@ public class EnergySavingDataActivity extends Activity {
 			rowData.put(columns[3], "30.10%");
 			rowData.put(columns[4], "92.24%");
 			jsonArray.put(rowData);
-			
+
 			rowData = new JSONObject();
 			rowData.put(columns[0], "1#");
 			rowData.put(columns[1], "2014/08/10 08:20");
 			rowData.put(columns[2], "248.32");
 			rowData.put(columns[3], "28.10%");
 			rowData.put(columns[4], "90.01%");
-			jsonArray.put(rowData);		
+			jsonArray.put(rowData);
 
 			rowData = new JSONObject();
 			rowData.put(columns[0], "1#");
@@ -126,88 +136,195 @@ public class EnergySavingDataActivity extends Activity {
 			rowData.put(columns[2], "242.41");
 			rowData.put(columns[3], "31.40%");
 			rowData.put(columns[4], "88.01%");
-			jsonArray.put(rowData);	
-			
+			jsonArray.put(rowData);
+
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return jsonArray;
 	}
-	
+
 	/**
 	 * 显示表格数据
 	 * 
 	 * @param titlesArray
-	 * 		表头
+	 *            表头
 	 * @param jsonArray
-	 * 		数据
+	 *            数据
 	 */
-	private void setTableInfo(String[] titlesArray, JSONArray jsonArray){
+	private void setTableInfo(String[] titlesArray, String[][] dataArray) {
 		lv = (ListView) this.findViewById(R.id.lstEnergySavingData);
 		ArrayList<TableRow> table = new ArrayList<TableRow>();
 		int columnLength = titlesArray.length;
 		TableCell[] titles = new TableCell[columnLength];
-		
-		int width = this.getWindowManager().getDefaultDisplay().getWidth()/titles.length;
-		
+
+		int width = this.getWindowManager().getDefaultDisplay().getWidth()
+				/ titles.length;
+
 		// 定义标题
 		for (int i = 0; i < titles.length; i++) {
 			titles[i] = new TableCell(titlesArray[i], width + 25 * i,
 					LayoutParams.FILL_PARENT, TableCell.STRING);
 		}
 		table.add(new TableRow(titles));
-		
+
 		// 每行的数据
 		TableCell[] cells = null;
-		
-		try {
-			
-			for(int i = 0; i < jsonArray.length(); i++){
-				cells = new TableCell[columnLength];
-				
-				JSONObject jsonObject = (JSONObject)jsonArray.getJSONObject(i);
-				
-				for(int j = 0; j < columns.length; j++){
-					cells[j] = new TableCell(jsonObject.getString(columns[j]),
-							width + 25 * j, LayoutParams.FILL_PARENT, TableCell.STRING);
-				}
-				
-				
-//				Iterator<?> it = jsonObject.keys();
-//				String key = "";
-//				int columnIndex = 0;
-//				while(it.hasNext()){
-//					key = it.next().toString();
-//					cells[columnIndex] = new TableCell(jsonObject.getString(key),
-//							width + 25 * columnIndex, LayoutParams.FILL_PARENT, TableCell.STRING);
-//					columnIndex++;
-//				}
-				
-				table.add(new TableRow(cells));
+
+		for (int i = 0; i < dataArray.length; i++) {
+			cells = new TableCell[columnLength];
+
+			for (int j = 0; j < columns.length; j++) {
+				cells[j] = new TableCell(dataArray[i][j], width + 25 * j,
+						LayoutParams.FILL_PARENT, TableCell.STRING);
 			}
 
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			table.add(new TableRow(cells));
 		}
-		
-//		for (int i = 0; i < cells.length - 1; i++) {
-//			cells[i] = new TableCell("No." + String.valueOf(i),
-//					titles[i].width, LayoutParams.FILL_PARENT, TableCell.STRING);
-//		}
-		
-//		cells[cells.length - 1] = new TableCell(R.drawable.abc_ic_go,
-//				titles[cells.length - 1].width, LayoutParams.WRAP_CONTENT,
-//				TableCell.IMAGE);
-		
-		// 把表格的行添加到表格
-//		for (int i = 0; i < 12; i++)
-//			table.add(new TableRow(cells));
-		
+
 		TableAdapter tableAdapter = new TableAdapter(this, table);
 		lv.setAdapter(tableAdapter);
 		lv.setOnItemClickListener(new ItemClickEvent());
+	}
+
+	// 定义一个Handler,更新一览数据
+	private Handler mHandler = new Handler() {
+		public void handleMessage(Message msg) {
+			if (msg.what == STOP) {
+				loadingLayout.setVisibility(View.GONE);
+				Bundle bundle = msg.getData();
+
+				String[] array1 = bundle.getStringArray(columns[0]);
+				String[] array2 = bundle.getStringArray(columns[1]);
+				String[] array3 = bundle.getStringArray(columns[2]);
+				String[] array4 = bundle.getStringArray(columns[3]);
+				String[] array5 = bundle.getStringArray(columns[4]);
+
+				int rowCnt = array1.length;
+				int colCnt = columns.length;
+
+				String[][] dataArray = new String[rowCnt][colCnt];
+
+				for (int i = 0; i < rowCnt; i++) {
+					dataArray[i][0] = array1[i];
+					dataArray[i][1] = array2[i];
+					dataArray[i][2] = array3[i];
+					dataArray[i][3] = array4[i];
+					dataArray[i][4] = array5[i];
+				}
+
+				setTableInfo(titlesArray, dataArray);
+				btnSelect.setClickable(true);
+				loadingLayout.setVisibility(View.GONE);
+				dataListLayout.setVisibility(View.VISIBLE);
+
+				Thread.currentThread().interrupt();
+			}
+
+		}
+	};
+	
+	/**
+	 * 处理各种按钮事件
+	 * @author whzlong
+	 *
+	 */
+	class ButtonListener implements OnClickListener, OnTouchListener {
+		public void onClick(View v) {
+			switch (v.getId()) {
+				case R.id.btnBack:
+					//返回按钮
+					Intent intent = new Intent();
+					intent.setClass(EnergySavingDataActivity.this,
+							MainActivity.class);
+					startActivity(intent);
+					EnergySavingDataActivity.this.finish();
+					break;
+				case R.id.btnChoose:
+					//选择钢厂按钮
+					break;
+				case R.id.btnSelect:
+					//查询处理按钮
+					loadingLayout.setVisibility(View.VISIBLE);
+					dataListLayout.setVisibility(View.GONE);
+					btnSelect.setClickable(false);
+
+					etDatatimeFrom = (EditText) findViewById(R.id.etDatatimeFrom);
+					etDatatimeTo = (EditText) findViewById(R.id.etDatatimeTo);
+					
+					new Thread(new ObtainDataThread()).start();
+					break;
+				
+				default:
+					break;
+			}
+
+		}
+
+		
+		public boolean onTouch(View v, MotionEvent event) {
+			if (v.getId() == R.id.btnBack) {
+				// Drawable originalColor = btnBack.getBackground();  abc_list_pressed_holo_light
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					btnBack.setBackgroundResource(R.drawable.light_gray);
+				}
+
+			}
+
+			return false;
+		}
+	}
+	
+	/**
+	 * 获取一览数据的线程
+	 * @author whzlong
+	 *
+	 */
+	public class ObtainDataThread implements Runnable{
+		@Override
+		public void run(){
+			JSONArray returnData = getListData(factoryCode,
+					etDatatimeFrom.getText().toString(),
+					etDatatimeTo.getText().toString());
+			Message msg = new Message();
+			msg.what = STOP;
+			Bundle bundle = new Bundle();
+
+			try {
+				int length = returnData.length();
+				String[] array1 = new String[length];
+				String[] array2 = new String[length];
+				String[] array3 = new String[length];
+				String[] array4 = new String[length];
+				String[] array5 = new String[length];
+
+				for (int i = 0; i < returnData.length(); i++) {
+					JSONObject jsonObj = returnData
+							.getJSONObject(i);
+
+					array1[i] = jsonObj.getString(columns[0]);
+					array2[i] = jsonObj.getString(columns[1]);
+					array3[i] = jsonObj.getString(columns[2]);
+					array4[i] = jsonObj.getString(columns[3]);
+					array5[i] = jsonObj.getString(columns[4]);
+				}
+
+				bundle.putStringArray(columns[0], array1);
+				bundle.putStringArray(columns[1], array2);
+				bundle.putStringArray(columns[2], array3);
+				bundle.putStringArray(columns[3], array4);
+				bundle.putStringArray(columns[4], array5);
+
+				msg.setData(bundle);
+
+				mHandler.sendMessage(msg);
+
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 }
