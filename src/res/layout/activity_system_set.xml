@@ -21,8 +21,8 @@
             android:textColor="#ffffff"
             android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/tvTitleEnergySavingData"
+          <TextView
+            android:id="@+id/tvTitleSystemSet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -36,20 +36,8 @@
         android:id="@+id/contentLayout"
         android:layout_width="fill_parent"
         android:layout_height="55dp"
-        android:background="#333333" >
-    
+        android:layout_below="@+id/navigationBarLayout">
         
-        <EditText
-        android:id="@+id/editText1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="72dp"
-        android:layout_marginTop="157dp"
-        android:ems="10" >
-
-        <requestFocus />
-    </EditText>
    </RelativeLayout>
 
     
