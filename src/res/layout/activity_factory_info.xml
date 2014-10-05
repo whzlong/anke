@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.whzlong.anke.SystemSetActivity" >
+    tools:context="${relativePackage}.${activityClass}" >
 
     <RelativeLayout
         android:id="@+id/navigationBarLayout"
@@ -22,36 +22,48 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/tvTitleEnergySavingData"
+            android:id="@+id/tvTitleFactoryInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/system_set"
+            android:text="@string/title_activity_factory_info"
             android:textColor="#ffffff"
             android:textSize="22sp" />
     </RelativeLayout>
 
-
     <RelativeLayout
-        android:id="@+id/contentLayout"
+        android:id="@+id/loadingLayout"
         android:layout_width="fill_parent"
         android:layout_height="55dp"
-        android:background="#333333" >
-    
-        
-        <EditText
-        android:id="@+id/editText1"
-        android:layout_width="wrap_content"
+        android:layout_below="@+id/navigationBarLayout" >
+
+        <ProgressBar
+            android:id="@+id/pbDataLoad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="visible" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/dataListLayout"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="72dp"
-        android:layout_marginTop="157dp"
-        android:ems="10" >
+        android:layout_below="@+id/loadingLayout" >
 
-        <requestFocus />
-    </EditText>
-   </RelativeLayout>
+        <ScrollView
+            android:id="@+id/scrollView1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true" >
 
-    
+            <RadioGroup
+                android:id="@+id/rgFactoryInfo"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
+    </RelativeLayout>
 
 </RelativeLayout>

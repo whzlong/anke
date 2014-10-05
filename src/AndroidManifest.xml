@@ -46,6 +46,10 @@
             android:name=".WarningInfoActivity"
             android:label="@string/title_activity_warning_info" >
         </activity>
+        <activity
+            android:name=".FactoryInfoActivity"
+            android:label="@string/title_activity_factory_info" >
+        </activity>
     </application>
 
 </manifest>

@@ -1,7 +1,11 @@
 package com.whzlong.anke;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.CursorJoiner.Result;
 import android.graphics.drawable.Drawable;
@@ -36,39 +40,47 @@ public class EnergySavingDataActivity extends Activity {
 	private final int WC = ViewGroup.LayoutParams.WRAP_CONTENT;
 
 	private final int FP = ViewGroup.LayoutParams.FILL_PARENT;
+	private EditText etFactoryName;
 	private Button btnBack = null;
-	private Button btnChoose = null;
 	private Button btnSelect;
 	private ListView lv;
-	private ProgressBar pbDataLoad;
-	private String factoryCode;
-	private TextView tvFactory;
+	private String factoryCode = "";
 	private EditText etDatatimeFrom;
 	private EditText etDatatimeTo;
 	private RelativeLayout loadingLayout;
 	private RelativeLayout dataListLayout;
 	protected static final int STOP = 0x10000;
+	protected static final int ERROR = 0x20000;
+	protected Context context = null;
 	private String[] titlesArray = new String[] { "烘烤位", "每周最后一条数据", "小时能耗",
 			"节能率", "作业率" };
 	private String[] columns = new String[] { "position", "lastDataPerWeek",
 			"hourEnergyConsumption", "fractionalEnergySaving", "operatingRate" };
+	private ProgressDialog pd;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_energy_saving_data);
 		
+		context = this.getApplicationContext();
+		
 		//按钮事件管理
 		ButtonListener bl = new ButtonListener();
 		
-		// 隐藏进度条
-		pbDataLoad = (ProgressBar) findViewById(R.id.pbDataLoad);
-		pbDataLoad.setIndeterminate(false);
+		//设置为只读
+		etFactoryName = (EditText)findViewById(R.id.etFactoryName);	
+		etFactoryName.setCursorVisible(false);      
+		etFactoryName.setFocusable(false);         
+		etFactoryName.setFocusableInTouchMode(false);
+		etFactoryName.setOnClickListener(bl);
 
-		//选择钢厂按钮
-		btnChoose = (Button) findViewById(R.id.btnChoose);
-		btnChoose.setClickable(false);
-
+		Intent intent = this.getIntent();
+		
+		factoryCode = intent.getStringExtra("factoryCode");
+		String factoryName = intent.getStringExtra("factoryName");
+		etFactoryName.setText(factoryName);
+		
 		//加载布局
 		loadingLayout = (RelativeLayout) findViewById(R.id.loadingLayout);
 		loadingLayout.setVisibility(View.GONE);
@@ -77,7 +89,7 @@ public class EnergySavingDataActivity extends Activity {
 		dataListLayout = (RelativeLayout) findViewById(R.id.dataListLayout);
 		dataListLayout.setVisibility(View.GONE);
 
-		// 查询处理
+		//查询处理
 		btnSelect = (Button) findViewById(R.id.btnSelect);
 		btnSelect.setOnClickListener(bl);
 
@@ -88,14 +100,14 @@ public class EnergySavingDataActivity extends Activity {
 	}
 
 	
-	class ItemClickEvent implements AdapterView.OnItemClickListener {
-		@Override
-		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-				long arg3) {
-			Toast.makeText(EnergySavingDataActivity.this,
-					"选中第" + String.valueOf(arg2) + "行", 500).show();
-		}
-	}
+//	class ItemClickEvent implements AdapterView.OnItemClickListener {
+//		@Override
+//		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+//				long arg3) {
+//			Toast.makeText(EnergySavingDataActivity.this,
+//					"选中第" + String.valueOf(arg2) + "行", 500).show();
+//		}
+//	}
 
 	/**
 	 * 通过Web Service请求数据
@@ -186,7 +198,7 @@ public class EnergySavingDataActivity extends Activity {
 
 		TableAdapter tableAdapter = new TableAdapter(this, table);
 		lv.setAdapter(tableAdapter);
-		lv.setOnItemClickListener(new ItemClickEvent());
+//		lv.setOnItemClickListener(new ItemClickEvent());
 	}
 
 	// 定义一个Handler,更新一览数据
@@ -216,34 +228,44 @@ public class EnergySavingDataActivity extends Activity {
 				}
 
 				setTableInfo(titlesArray, dataArray);
-				btnSelect.setClickable(true);
-				loadingLayout.setVisibility(View.GONE);
 				dataListLayout.setVisibility(View.VISIBLE);
-
 				Thread.currentThread().interrupt();
+			}else{
+				Toast.makeText(context, "无法获取数据，请检查网络连接", Toast.LENGTH_LONG).show();
 			}
-
+			
+			btnSelect.setClickable(true);
+			loadingLayout.setVisibility(View.GONE);
 		}
 	};
 	
 	/**
 	 * 处理各种按钮事件
-	 * @author whzlong
 	 *
 	 */
 	class ButtonListener implements OnClickListener, OnTouchListener {
+		/**
+		 * 单击事件
+		 */
 		public void onClick(View v) {
+			Intent intent = null;
+					
 			switch (v.getId()) {
 				case R.id.btnBack:
 					//返回按钮
-					Intent intent = new Intent();
+				    intent = new Intent();
 					intent.setClass(EnergySavingDataActivity.this,
 							MainActivity.class);
 					startActivity(intent);
 					EnergySavingDataActivity.this.finish();
 					break;
-				case R.id.btnChoose:
-					//选择钢厂按钮
+				case R.id.etFactoryName:
+					intent = new Intent();
+					intent.setClass(EnergySavingDataActivity.this, FactoryInfoActivity.class);
+					intent.putExtra("previousActivityFlag", 1);
+					intent.putExtra("factoryCode", factoryCode);
+					startActivity(intent);
+					EnergySavingDataActivity.this.finish();
 					break;
 				case R.id.btnSelect:
 					//查询处理按钮
@@ -263,7 +285,9 @@ public class EnergySavingDataActivity extends Activity {
 
 		}
 
-		
+		/**
+		 * 触摸事件
+		 */
 		public boolean onTouch(View v, MotionEvent event) {
 			if (v.getId() == R.id.btnBack) {
 				// Drawable originalColor = btnBack.getBackground();  abc_list_pressed_holo_light
@@ -279,7 +303,6 @@ public class EnergySavingDataActivity extends Activity {
 	
 	/**
 	 * 获取一览数据的线程
-	 * @author whzlong
 	 *
 	 */
 	public class ObtainDataThread implements Runnable{
@@ -300,7 +323,7 @@ public class EnergySavingDataActivity extends Activity {
 				String[] array4 = new String[length];
 				String[] array5 = new String[length];
 
-				for (int i = 0; i < returnData.length(); i++) {
+				for (int i = 0; i < length; i++) {
 					JSONObject jsonObj = returnData
 							.getJSONObject(i);
 
@@ -324,7 +347,9 @@ public class EnergySavingDataActivity extends Activity {
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				msg.what = ERROR;
 			}
 		}
 	}
+	
 }

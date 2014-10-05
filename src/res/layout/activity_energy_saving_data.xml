@@ -19,7 +19,7 @@
             android:background="#333333"
             android:text="@string/back"
             android:textColor="#ffffff"
-            android:textSize="15sp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/tvTitleEnergySavingData"
@@ -28,15 +28,14 @@
             android:layout_centerInParent="true"
             android:text="@string/energy_saving_data"
             android:textColor="#ffffff"
-            android:textSize="20sp" />
+            android:textSize="22sp" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/selectConditionLayout"
         android:layout_width="fill_parent"
         android:layout_height="140dp"
-        android:layout_below="@+id/navigationBarLayout"
-        android:background="#F5FFFA" >
+        android:layout_below="@+id/navigationBarLayout">
 
         <TableLayout
             android:layout_width="fill_parent"
@@ -57,29 +56,15 @@
                     android:textSize="15sp" />
 
                 <EditText
-                    android:id="@+id/etFactory"
+                    android:id="@+id/etFactoryName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_span="3"
-                    android:ems="10"
-                    android:textSize="15sp" >
-
-                    <requestFocus />
+                    android:hint="@string/promptInfoFactory"
+                    android:ems="15" >
                 </EditText>
 
-                <TextView
-                    android:id="@+id/tvFactoryName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_span="3"
-                    android:textSize="15sp" />
 
-                <Button
-                    android:id="@+id/btnChoose"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/choose" >
-                </Button>
             </TableRow>
 
             <TableRow
@@ -140,41 +125,35 @@
     <RelativeLayout
         android:id="@+id/loadingLayout"
         android:layout_width="fill_parent"
-        android:layout_height="55dp"
-        android:background="#F5FFFA" 
+        android:layout_height="fill_parent"
         android:layout_below="@+id/selectConditionLayout">
-        
-       <ProgressBar
+
+        <ProgressBar
             android:id="@+id/pbDataLoad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:visibility="visible" />
-       
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/dataListLayout"
         android:layout_width="fill_parent"
-        android:layout_height="100dp"
+        android:layout_height="fill_parent"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/loadingLayout" >
-
 
         <HorizontalScrollView
             android:id="@+id/horizontalScrollView1"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:background="#F5FFFA" >
+            android:layout_height="fill_parent">
 
             <ListView
                 android:id="@+id/lstEnergySavingData"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#F5FFFA" >
+                android:layout_height="wrap_content" >
             </ListView>
         </HorizontalScrollView>
     </RelativeLayout>
-    
-
 
 </RelativeLayout>
