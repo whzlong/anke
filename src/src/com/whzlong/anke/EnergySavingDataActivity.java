@@ -41,7 +41,7 @@ public class EnergySavingDataActivity extends Activity {
 
 	private final int FP = ViewGroup.LayoutParams.FILL_PARENT;
 	private EditText etFactoryName;
-	private Button btnBack = null;
+	private Button btnBack;
 	private Button btnSelect;
 	private ListView lv;
 	private String factoryCode = "";
