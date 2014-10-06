@@ -21,7 +21,7 @@
             android:textColor="#ffffff"
             android:textSize="20sp" />
 
-          <TextView
+        <TextView
             android:id="@+id/tvTitleSystemSet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,15 +31,119 @@
             android:textSize="22sp" />
     </RelativeLayout>
 
-
-    <RelativeLayout
-        android:id="@+id/contentLayout"
+    <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="55dp"
-        android:layout_below="@+id/navigationBarLayout">
-        
-   </RelativeLayout>
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/navigationBarLayout" >
 
-    
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/rlWarningFactory"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:clickable="true"
+                android:gravity="center_vertical" >
+
+                <TextView
+                    android:id="@+id/tvWarningFactory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="@string/waringFactory"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tvWarningFactoryInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+            
+            <View android:layout_height="1px" android:background="#333333" android:layout_width="fill_parent"></View>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:gravity="center_vertical" >
+
+                <TextView
+                    android:id="@+id/tvWaringTimeArea"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="@string/waringTimeArea"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tvWaringTimeAreaInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+            <View android:layout_height="1px" android:background="#333333" android:layout_width="fill_parent"></View>
+            
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:gravity="center_vertical" >
+
+                <TextView
+                    android:id="@+id/tvPollingInterval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="@string/pollingInterval"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tvPollingIntervalInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+            <View android:layout_height="1px" android:background="#333333" android:layout_width="fill_parent"></View>
+            
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:gravity="center_vertical" >
+
+                <TextView
+                    android:id="@+id/tvServer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="@string/serverInfo"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tvServerInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+            
+            <View android:layout_height="1px" android:background="#333333" android:layout_width="fill_parent"></View>
+            
+        </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>
