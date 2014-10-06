@@ -56,7 +56,6 @@ public class EnergySavingDataActivity extends Activity {
 			"节能率", "作业率" };
 	private String[] columns = new String[] { "position", "lastDataPerWeek",
 			"hourEnergyConsumption", "fractionalEnergySaving", "operatingRate" };
-	private ProgressDialog pd;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
