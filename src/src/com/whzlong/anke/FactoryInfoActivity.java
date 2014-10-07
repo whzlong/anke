@@ -40,7 +40,7 @@ public class FactoryInfoActivity extends Activity {
 
 	private String[] columns = new String[] { "code", "name" };
 	private String[] factoryCodeArr;
-	private String selectedFactoryCode = "";
+	private String selectedFactoryCode ;
 	private String selectedFactoryName = "";
 	private HashMap<String, String> factoryInfo;
 	private String[] factoryNameArr;
