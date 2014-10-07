@@ -50,6 +50,18 @@
             android:name=".FactoryInfoActivity"
             android:label="@string/title_activity_factory_info" >
         </activity>
+        <activity
+            android:name=".MultiFactoryInfoActivity"
+            android:label="@string/title_activity_multi_factory_info" >
+        </activity>
+        <activity
+            android:name=".WarningIntervalActivity"
+            android:label="@string/title_activity_warning_interval" >
+        </activity>
+        <activity
+            android:name=".ServerInfoActivity"
+            android:label="@string/title_activity_server_info" >
+        </activity>
     </application>
 
 </manifest>

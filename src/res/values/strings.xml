@@ -19,9 +19,18 @@
     <string name="title_activity_real_time_data">实时状态</string>
     <string name="title_activity_warning_info">警告信息</string>
     <string name="action_settings">设置</string>
+
     <drawable name="light_gray">#708090</drawable>
+
     <string name="title_activity_factory_info">选择钢厂</string>
     <string name="promptInfoFactory">请点击选择钢厂</string>
     <string name="warningDatetime">报警时间</string>
+    <string name="waringFactory">报警炼钢厂</string>
+    <string name="waringTimeArea">报警时间段</string>
+    <string name="pollingInterval">轮询时间间隔</string>
+    <string name="serverInfo">服务器信息</string>
+    <string name="title_activity_multi_factory_info">报警炼钢厂</string>
+    <string name="title_activity_warning_interval">报警时间段</string>
+    <string name="title_activity_server_info">服务器信息</string>
 
 </resources>
