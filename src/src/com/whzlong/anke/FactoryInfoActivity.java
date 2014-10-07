@@ -1,14 +1,10 @@
 package com.whzlong.anke;
 
 import java.util.HashMap;
-import java.util.Map;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.whzlong.anke.EnergySavingDataActivity.ButtonListener;
-import com.whzlong.anke.EnergySavingDataActivity.ObtainDataThread;
 
 import android.app.Activity;
 import android.content.Context;
@@ -21,8 +17,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -37,8 +31,6 @@ public class FactoryInfoActivity extends Activity {
 	protected static final int STOP = 0x10000;
 	protected static final int ERROR = 0x20000;
 	protected Context context = null;
-
-	private String[] columns = new String[] { "code", "name" };
 	private String[] factoryCodeArr;
 	private String selectedFactoryCode ;
 	private String selectedFactoryName = "";

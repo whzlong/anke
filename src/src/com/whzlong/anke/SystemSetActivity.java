@@ -26,7 +26,8 @@ public class SystemSetActivity extends Activity {
 		rlLayout.setOnClickListener(bl);
 				
 		btnBack = (Button) findViewById(R.id.btnBack);
-		btnBack.setOnClickListener(bl);		
+		btnBack.setOnClickListener(bl);
+		btnBack.setOnTouchListener(bl);
 	}
 
 	
@@ -51,7 +52,12 @@ public class SystemSetActivity extends Activity {
 					SystemSetActivity.this.finish();
 					break;
 				case R.id.rlWarningFactory:
-					
+					//返回按钮
+				    intent = new Intent();
+					intent.setClass(SystemSetActivity.this,
+							MultiFactoryInfoActivity.class);
+					startActivity(intent);
+					SystemSetActivity.this.finish();
 					break;
 				case R.id.btnSelect:
 					//查询处理按钮
