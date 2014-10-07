@@ -11,6 +11,7 @@
     <string name="intervalMark">~</string>
     <string name="select">查询</string>
     <string name="real_time_data">实时状态</string>
+    <string name="select_factory_name">炼钢厂选择</string>
     <string name="system_set">系统设置</string>
     <string name="quit">退出</string>
     <string name="back">&lt;&#x0020;返回</string>
@@ -18,6 +19,7 @@
     <string name="title_activity_energy_saving_data">节能数据</string>
     <string name="title_activity_real_time_data">实时状态</string>
     <string name="title_activity_warning_info">警告信息</string>
+    <string name="title_activity_factory_name_info">选择炼钢厂</string>
     <string name="action_settings">设置</string>
 
     <drawable name="light_gray">#708090</drawable>
