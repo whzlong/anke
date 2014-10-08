@@ -9,15 +9,30 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class SystemSetActivity extends Activity {
 	private Button btnBack;
 	private RelativeLayout rlLayout;
+	private TextView mWaringTimeAreaInfo;
+	private TextView mPollingIntervalInfo;
+	private TextView mServerInfo;
+	
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_system_set);
+		
+		mWaringTimeAreaInfo = (TextView)findViewById(R.id.tvWaringTimeAreaInfo);
+		mWaringTimeAreaInfo.setText("09:00 ~ 18:00");
+		
+		mPollingIntervalInfo = (TextView)findViewById(R.id.tvPollingIntervalInfo);
+		mPollingIntervalInfo.setText("10分钟");
+		
+		mServerInfo = (TextView)findViewById(R.id.tvServerInfo);
+		mServerInfo.setText("20.200.10.200:8080");
 		
 		//按钮事件管理
 		ButtonListener bl = new ButtonListener();
