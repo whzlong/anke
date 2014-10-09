@@ -5,12 +5,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.whzlong.anke.CheckboxListAdapter.ViewHolder;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,55 +31,61 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MultiFactoryInfoActivity extends Activity {
 	private Button btnBack;
+	private Button btnSave;
 	private RelativeLayout loadingLayout;
 	private RelativeLayout dataListLayout;
 	private ListView lvCheckbox;
 	private Context context;
+	protected static final int STOP = 0x10000;
+	protected static final int ERROR = 0x20000;
+	private String[] columns = new String[] { "factoryCode", "factoryName"};
+	private Map<String, String> factoryInfoMap = new HashMap<String, String>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_multi_factory_info);
 		context = this.getApplicationContext();
-		
-		addFactoryInfoView();
 
 		// 按钮事件管理
 		ButtonListener bl = new ButtonListener();
 
 		// 加载布局
 		loadingLayout = (RelativeLayout) findViewById(R.id.loadingLayout);
-		loadingLayout.setVisibility(View.GONE);
+		loadingLayout.setVisibility(View.VISIBLE);
+		
+		dataListLayout = (RelativeLayout) findViewById(R.id.dataListLayout);
+		dataListLayout.setVisibility(View.GONE);
 
+		//保存
+		btnSave = (Button)findViewById(R.id.btnSave);
+		btnSave.setOnClickListener(bl);
+		
 		// 返回按钮
 		btnBack = (Button) findViewById(R.id.btnBack);
 		btnBack.setOnClickListener(bl);
 		btnBack.setOnTouchListener(bl);
-
+		
+		new Thread(new ObtainDataThread()).start();
 	}
 
-	private void addFactoryInfoView() {
+	/**
+	 * 显示钢厂信息
+	 * @param lsMap
+	 */
+	private void addFactoryInfoView(List<Map<String, String>> lsMap) {
+		CheckboxListAdapter cblistAdapter = new CheckboxListAdapter(this, lsMap);
+
 		lvCheckbox = (ListView) findViewById(R.id.lvDataList);
-
-		List<Map<String, String>> ls = new ArrayList<Map<String, String>>();
-
-		for (int i = 0; i < 15; i++) {
-			Map<String, String> map = new HashMap<String, String>();
-			map.put("factoryName", "中国宝钢第" + (i + 1) + "厂");
-			ls.add(map);
-		}
-
-		CheckboxListAdapter cblistAdapter = new CheckboxListAdapter(this, ls);
-
 		lvCheckbox.setAdapter(cblistAdapter);
 		lvCheckbox.setItemsCanFocus(false);
 		lvCheckbox.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
-		lvCheckbox
-				.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		lvCheckbox.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
@@ -83,71 +95,37 @@ public class MultiFactoryInfoActivity extends Activity {
 						CheckboxListAdapter.isSelected.put(position,
 								vHollder.checkBox.isChecked());
 					}
-
 				});
-		
-		// lvCheckbox.setOnItemClickListener(new OnItemClickListener(){
-		// @Override
-		// public void onItemClick(AdapterView<?> parent, View view,
-		// int position, long id) {
-		// ViewHolder vHollder = (ViewHolder) view.getTag();
-		// //在每次获取点击的item时将对于的checkbox状态改变，同时修改map的值。
-		// vHollder.checkBox.toggle();
-		// CheckboxListAdapter.isSelected.put(position,
-		// vHollder.checkBox.isChecked());
-		// }
-		// });
-		//
-
 	}
 
-	// /**
-	// * 显示炼钢厂信息
-	// */
-	// private void addFactoryInfoView(){
-	// ScrollView sv = (ScrollView)findViewById(R.id.svFactoryInfoList);
-	// LinearLayout mainLayout = new LinearLayout(this);
-	//
-	// mainLayout.setOrientation(LinearLayout.VERTICAL);
-	//
-	// LinearLayout.LayoutParams rowLayoutParams =
-	// new
-	// LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-	//
-	// RelativeLayout rowLayout = null;
-	// RelativeLayout.LayoutParams colLayoutParams = null;
-	//
-	// TextView tv = null;
-	// CheckBox cb = null;
-	// for(int i = 0; i < 20; i++){
-	// rowLayout = new RelativeLayout(this);
-	//
-	// // tv = new TextView(this);
-	// // tv.setId(100000);
-	// // tv.setText("上海宝钢" + String.valueOf(i));
-	// // colLayoutParams =
-	// // new
-	// RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-	// // colLayoutParams.addRule(RelativeLayout.CENTER_VERTICAL);
-	// // tv.setLayoutParams(colLayoutParams);
-	//
-	// cb = new CheckBox(this);
-	// cb.setChecked(true);
-	// cb.setText("上海宝钢" + String.valueOf(i));
-	// colLayoutParams =
-	// new
-	// RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-	// colLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-	// cb.setLayoutParams(colLayoutParams);
-	//
-	// // rowLayout.addView(tv);
-	//
-	// rowLayout.addView(cb);
-	// mainLayout.addView(rowLayout, rowLayoutParams);
-	// }
-	//
-	// sv.addView(mainLayout);
-	// }
+
+	
+	/**
+	 * 
+	 * @return
+	 */
+	private JSONArray getDataFromServer(){
+		JSONArray jsonArray = new JSONArray();
+		JSONObject rowData = null;
+
+		try {
+			
+			for(int i = 0; i < 20; i++){
+				rowData = new JSONObject();
+				rowData.put(columns[0], String.valueOf(i));
+				rowData.put(columns[1], "中国宝钢第" + (i + 1) + "厂");
+				jsonArray.put(rowData);
+			}
+
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return jsonArray;
+	}
+
 
 	/**
 	 * 处理各种按钮事件
@@ -159,15 +137,28 @@ public class MultiFactoryInfoActivity extends Activity {
 		 */
 		public void onClick(View v) {
 			Intent intent = null;
-
-			if (R.id.btnBack == v.getId()) {
-				// 返回按钮
-				intent = new Intent();
-				intent.setClass(MultiFactoryInfoActivity.this,
-						SystemSetActivity.class);
-				startActivity(intent);
-				MultiFactoryInfoActivity.this.finish();
+			
+			switch(v.getId()){
+				case R.id.btnBack:
+					// 返回按钮
+					intent = new Intent();
+					intent.setClass(MultiFactoryInfoActivity.this,
+							SystemSetActivity.class);
+					startActivity(intent);
+					MultiFactoryInfoActivity.this.finish();
+					break;
+				case R.id.btnSave:
+					// 保存按钮
+					intent = new Intent();
+					intent.setClass(MultiFactoryInfoActivity.this,
+							SystemSetActivity.class);
+					startActivity(intent);
+					MultiFactoryInfoActivity.this.finish();
+					break;
+				default:
+					break;
 			}
+			
 		}
 
 		/**
@@ -184,6 +175,84 @@ public class MultiFactoryInfoActivity extends Activity {
 			}
 
 			return false;
+		}
+	}
+	
+	// 定义一个Handler,更新一览数据
+		private Handler mHandler = new Handler() {
+			public void handleMessage(Message msg) {
+				if (msg.what == STOP) {
+					loadingLayout.setVisibility(View.GONE);
+					Bundle bundle = msg.getData();
+
+					String[] array1 = bundle.getStringArray(columns[0]);
+					String[] array2 = bundle.getStringArray(columns[1]);
+
+					int rowCnt = array1.length;
+					int colCnt = columns.length;
+
+					Map<String, String> map = new HashMap<String, String>();
+					List<Map<String, String>> lsMapFactoryNm = new ArrayList<Map<String, String>>();
+					
+					for (int i = 0; i < rowCnt; i++) {
+						factoryInfoMap.put(array2[i], array1[i]);
+						map = new HashMap<String, String>();
+						
+						map.put(columns[1], array2[i]);
+						lsMapFactoryNm.add(map);
+					}
+
+					addFactoryInfoView(lsMapFactoryNm);
+					
+					loadingLayout.setVisibility(View.GONE);
+					dataListLayout.setVisibility(View.VISIBLE);
+					Thread.currentThread().interrupt();
+				}else{
+					Toast.makeText(context, "无法获取数据，请检查网络连接", Toast.LENGTH_LONG).show();
+				}
+				
+				loadingLayout.setVisibility(View.GONE);
+			}
+		};
+		
+	/**
+	 * 获取一览数据的线程
+	 *
+	 */
+	public class ObtainDataThread implements Runnable{
+		@Override
+		public void run(){
+			JSONArray returnData = getDataFromServer();
+			
+			Message msg = new Message();
+			msg.what = STOP;
+			Bundle bundle = new Bundle();
+
+			try {
+				int length = returnData.length();
+				String[] array1 = new String[length];
+				String[] array2 = new String[length];
+
+				for (int i = 0; i < length; i++) {
+					JSONObject jsonObj = returnData
+							.getJSONObject(i);
+
+					array1[i] = jsonObj.getString(columns[0]);
+					array2[i] = jsonObj.getString(columns[1]);
+				}
+
+				bundle.putStringArray(columns[0], array1);
+				bundle.putStringArray(columns[1], array2);
+
+				msg.setData(bundle);
+
+				mHandler.sendMessage(msg);
+
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				msg.what = ERROR;
+			}
 		}
 	}
 }

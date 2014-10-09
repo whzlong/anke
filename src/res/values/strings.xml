@@ -34,5 +34,6 @@
     <string name="title_activity_multi_factory_info">报警炼钢厂</string>
     <string name="title_activity_warning_interval">报警时间段</string>
     <string name="title_activity_server_info">服务器信息</string>
+    <string name="save">保存</string>
 
 </resources>

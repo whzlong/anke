@@ -30,6 +30,16 @@
             android:text="@string/title_activity_multi_factory_info"
             android:textColor="#ffffff"
             android:textSize="22sp" />
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="60dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="#3be33b"
+            android:text="@string/save"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
     </RelativeLayout>
     
     <RelativeLayout
