@@ -35,11 +35,13 @@ public class RealTimeDataActivity extends Activity implements OnClickListener {
 	private Button btnBack = null;
 	private Button btnSelect = null;
 	private ListView lv;
-	
-	private EditText mFactoryName=null;
+
+	private EditText mFactoryName = null;
 
 	private RelativeLayout loadingLayout;
 	private RelativeLayout dataListLayout;
+
+	public static final int IS_REATIM_DATA_ACTIVITY = 2;
 
 	private String factoryCode; // 炼钢厂代码
 	private String[] columns = new String[] { "position", "packageFactory",
@@ -113,10 +115,22 @@ public class RealTimeDataActivity extends Activity implements OnClickListener {
 		btnSelect = (Button) findViewById(R.id.btnSelect);
 		btnSelect.setOnClickListener(this);
 
+		// 选择钢铁厂,设置为只读
+		mFactoryName = (EditText) findViewById(R.id.etFactoryName);
+		mFactoryName.setCursorVisible(false);
+		mFactoryName.setFocusable(false);
+		mFactoryName.setFocusableInTouchMode(false);
+		mFactoryName.setOnClickListener(this);
+
+		Intent intent = this.getIntent();
+		factoryCode = intent.getStringExtra("factoryCode");
+		String factoryName = intent.getStringExtra("factoryName");
+		mFactoryName.setText(factoryName);
+
 		// 加载布局
 		loadingLayout = (RelativeLayout) findViewById(R.id.loadingLayout);
 		loadingLayout.setVisibility(View.GONE);
-		
+
 		// 一览数据布局
 		dataListLayout = (RelativeLayout) findViewById(R.id.dataListLayout);
 		dataListLayout.setVisibility(View.GONE);
@@ -124,10 +138,7 @@ public class RealTimeDataActivity extends Activity implements OnClickListener {
 		// 返回
 		btnBack = (Button) findViewById(R.id.btnBack);
 		btnBack.setOnClickListener(this);
-		
-		//选择钢铁厂
-		mFactoryName=(EditText) findViewById(R.id.etFactoryName);
-		mFactoryName.setOnClickListener(this);
+
 	}
 
 	/**
@@ -197,10 +208,14 @@ public class RealTimeDataActivity extends Activity implements OnClickListener {
 			RealTimeDataActivity.this.finish();
 			break;
 		case R.id.etFactoryName: // 选择炼钢厂
-			Intent selectFactory = new Intent();
-			selectFactory.setClass(RealTimeDataActivity.this, SelectSteelMillActivity.class);
-			startActivity(selectFactory);
+			intent = new Intent();
+			intent.setClass(RealTimeDataActivity.this,
+					FactoryInfoActivity.class);
+			intent.putExtra("previousActivityFlag", IS_REATIM_DATA_ACTIVITY);
+			intent.putExtra("factoryCode", factoryCode);
+			startActivity(intent);
 			RealTimeDataActivity.this.finish();
+
 			break;
 		case R.id.btnSelect: // 查询处理
 			// 查询处理按钮

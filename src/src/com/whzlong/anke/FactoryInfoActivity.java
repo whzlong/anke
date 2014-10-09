@@ -80,8 +80,20 @@ public class FactoryInfoActivity extends Activity {
 
 					//返回按钮
 					Intent intent = new Intent();
-					intent.setClass(FactoryInfoActivity.this,
-							EnergySavingDataActivity.class);
+					switch (previousActivityFlag) {
+					case 1:   //节能数据界面
+						intent.setClass(FactoryInfoActivity.this,
+								EnergySavingDataActivity.class);
+						break;
+					case RealTimeDataActivity.IS_REATIM_DATA_ACTIVITY:  //实时状态查询呢
+						intent.setClass(FactoryInfoActivity.this,
+								RealTimeDataActivity.class);
+						
+						break;
+
+					default:
+						break;
+					}
 					intent.putExtra("factoryCode", factoryCode);
 					intent.putExtra("factoryName", checkedRb.getText());
 					startActivity(intent);
@@ -112,8 +124,21 @@ public class FactoryInfoActivity extends Activity {
 				case R.id.btnBack:
 					//返回按钮
 					Intent intent = new Intent();
-					intent.setClass(FactoryInfoActivity.this,
-							EnergySavingDataActivity.class);
+					switch (previousActivityFlag) {
+					case 1:   //节能数据界面
+						intent.setClass(FactoryInfoActivity.this,
+								EnergySavingDataActivity.class);
+						break;
+					case RealTimeDataActivity.IS_REATIM_DATA_ACTIVITY:  //实时状态查询呢
+						intent.setClass(FactoryInfoActivity.this,
+								RealTimeDataActivity.class);
+						
+						break;
+
+					default:
+						break;
+					}
+
 					intent.putExtra("factoryCode", selectedFactoryCode);
 					intent.putExtra("factoryName", selectedFactoryName);
 					startActivity(intent);
