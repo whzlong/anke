@@ -21,9 +21,7 @@
     <string name="title_activity_warning_info">警告信息</string>
     <string name="title_activity_factory_name_info">选择炼钢厂</string>
     <string name="action_settings">设置</string>
-
     <drawable name="light_gray">#708090</drawable>
-
     <string name="title_activity_factory_info">选择钢厂</string>
     <string name="promptInfoFactory">请点击选择钢厂</string>
     <string name="warningDatetime">报警时间</string>

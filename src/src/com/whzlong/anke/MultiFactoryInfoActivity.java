@@ -14,6 +14,8 @@ import com.whzlong.anke.CheckboxListAdapter.ViewHolder;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -44,6 +46,8 @@ public class MultiFactoryInfoActivity extends Activity {
 	protected static final int ERROR = 0x20000;
 	private String[] columns = new String[] { "factoryCode", "factoryName"};
 	private Map<String, String> factoryInfoMap = new HashMap<String, String>();
+	private List<String> lsSelectedFactoryCode = new ArrayList<String>();
+	private SharedPreferences  preference;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +55,8 @@ public class MultiFactoryInfoActivity extends Activity {
 		setContentView(R.layout.activity_multi_factory_info);
 		context = this.getApplicationContext();
 
+		preference = MultiFactoryInfoActivity.this.getSharedPreferences("perference", MODE_PRIVATE);  
+		
 		// 按钮事件管理
 		ButtonListener bl = new ButtonListener();
 
@@ -78,6 +84,11 @@ public class MultiFactoryInfoActivity extends Activity {
 	 * @param lsMap
 	 */
 	private void addFactoryInfoView(List<Map<String, String>> lsMap) {
+		String defaultCheckedFactory = preference.getString("selectedWarningFactoryCode", "");
+		String[] defaultCheckedFactoryArray = defaultCheckedFactory.split("&");
+		
+		
+		
 		CheckboxListAdapter cblistAdapter = new CheckboxListAdapter(this, lsMap);
 
 		lvCheckbox = (ListView) findViewById(R.id.lvDataList);
@@ -92,6 +103,14 @@ public class MultiFactoryInfoActivity extends Activity {
 						ViewHolder vHollder = (ViewHolder) view.getTag();
 						// 在每次获取点击的item时将对于的checkbox状态改变，同时修改map的值。
 						vHollder.checkBox.toggle();
+						//钢厂代码
+						String code = factoryInfoMap.get(vHollder.checkBox.getText());
+						if(vHollder.checkBox.isChecked()){
+							lsSelectedFactoryCode.add(code);
+						}else{
+							lsSelectedFactoryCode.remove(code);
+						}
+						
 						CheckboxListAdapter.isSelected.put(position,
 								vHollder.checkBox.isChecked());
 					}
@@ -148,7 +167,25 @@ public class MultiFactoryInfoActivity extends Activity {
 					MultiFactoryInfoActivity.this.finish();
 					break;
 				case R.id.btnSave:
+					String selectedFactoryCode = "";
+					
 					// 保存按钮
+					StringBuffer sb = new StringBuffer();
+					
+					for(String code : lsSelectedFactoryCode){
+						sb.append("&" + code);
+					}
+					
+					if(lsSelectedFactoryCode.size() != 0){
+						selectedFactoryCode = sb.toString().substring(1);
+					}
+					
+					
+					Editor editor = preference.edit();
+					
+					editor.putString("selectedWarningFactoryCode", selectedFactoryCode);
+					editor.commit();
+					
 					intent = new Intent();
 					intent.setClass(MultiFactoryInfoActivity.this,
 							SystemSetActivity.class);
@@ -189,7 +226,6 @@ public class MultiFactoryInfoActivity extends Activity {
 					String[] array2 = bundle.getStringArray(columns[1]);
 
 					int rowCnt = array1.length;
-					int colCnt = columns.length;
 
 					Map<String, String> map = new HashMap<String, String>();
 					List<Map<String, String>> lsMapFactoryNm = new ArrayList<Map<String, String>>();
