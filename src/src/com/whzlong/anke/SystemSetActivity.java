@@ -2,6 +2,8 @@ package com.whzlong.anke;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,16 +16,40 @@ import android.widget.TextView;
 public class SystemSetActivity extends Activity {
 	private Button btnBack;
 	private RelativeLayout rlLayout;
+	private TextView mWarningFactoryInfo;
 	private TextView mWaringTimeAreaInfo;
 	private TextView mPollingIntervalInfo;
 	private TextView mServerInfo;
-	
+	private static final String SELECTED_WARNING_FACTORY_NAME = "selectedWarningFactoryName";
+	private static final int WARNING_FACTORY_LENGTH = 15;
+	private SharedPreferences preference;
 	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_system_set);
+		//初始化各种视图组件
+		InitViews();
+	}
+
+	/**
+	 * 初始化各种视图组件
+	 */
+	private void InitViews() {
+		preference = SystemSetActivity.this.getSharedPreferences(
+				"perference", MODE_PRIVATE);
+	
+		String defaultCheckedFactory = preference.getString(
+				SELECTED_WARNING_FACTORY_NAME, "");
+		
+		String displayFactoryName = defaultCheckedFactory;
+		if(defaultCheckedFactory.length() > WARNING_FACTORY_LENGTH){
+			displayFactoryName = defaultCheckedFactory.substring(0,WARNING_FACTORY_LENGTH) + "...";
+		}
+		
+		mWarningFactoryInfo = (TextView)findViewById(R.id.tvWarningFactoryInfo);
+		mWarningFactoryInfo.setText(displayFactoryName);
 		
 		mWaringTimeAreaInfo = (TextView)findViewById(R.id.tvWaringTimeAreaInfo);
 		mWaringTimeAreaInfo.setText("09:00 ~ 18:00");
@@ -44,7 +70,6 @@ public class SystemSetActivity extends Activity {
 		btnBack.setOnClickListener(bl);
 		btnBack.setOnTouchListener(bl);
 	}
-
 	
 	/**
 	 * 处理各种按钮事件
@@ -67,7 +92,7 @@ public class SystemSetActivity extends Activity {
 					SystemSetActivity.this.finish();
 					break;
 				case R.id.rlWarningFactory:
-					//返回按钮
+					//选择需要提示警告的工厂
 				    intent = new Intent();
 					intent.setClass(SystemSetActivity.this,
 							MultiFactoryInfoActivity.class);

@@ -15,15 +15,23 @@ public class CheckboxListAdapter extends BaseAdapter {
 	private LayoutInflater inflater = null;
 	private ViewHolder viewHolder = null;
 	private List<Map<String, String>> mData;
-	public static Map<Integer, Boolean> isSelected;    
+	public static Map<Integer, Boolean> isSelected;
+	private static final String CHECKBOX_TEXT_KEY = "factoryName";
 	
-	public CheckboxListAdapter(Context context, List<Map<String, String>> content){
+	public CheckboxListAdapter(Context context, List<Map<String, String>> content, List<String> lsCheckedData){
 		inflater = LayoutInflater.from(context);
 		mData = content;
 		
-		isSelected = new HashMap<Integer, Boolean>();    
-        for (int i = 0; i < mData.size(); i++) {    
-            isSelected.put(i, false);    
+		isSelected = new HashMap<Integer, Boolean>();
+		
+        for (int i = 0; i < mData.size(); i++) {
+        	if(lsCheckedData != null && lsCheckedData.contains(mData.get(i).get(CHECKBOX_TEXT_KEY))){
+        		//设置默认值
+        		isSelected.put(i, true);   
+        	}else{
+        		isSelected.put(i, false);
+        	}
+            
         }    
 	}
 	
@@ -58,7 +66,7 @@ public class CheckboxListAdapter extends BaseAdapter {
 		}
 		
 		viewHolder.checkBox.setChecked(isSelected.get(position));
-		viewHolder.checkBox.setText(mData.get(position).get("factoryName").toString());
+		viewHolder.checkBox.setText(mData.get(position).get(CHECKBOX_TEXT_KEY).toString());
 		
 		
 		return view;
