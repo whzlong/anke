@@ -155,38 +155,50 @@ public class RealTimeDataActivity extends Activity implements OnClickListener {
 		try {
 			rowData = new JSONObject();
 			rowData.put(columns[0], "1#");
-			rowData.put(columns[1], "2014/08/08 08:20");
-			rowData.put(columns[2], "240.33");
-			rowData.put(columns[3], "30.10%");
-			rowData.put(columns[4], "92.24%");
-			rowData.put(columns[5], "92.24%");
-			rowData.put(columns[6], "92.24%");
-			rowData.put(columns[7], "92.24%");
-			rowData.put(columns[8], "92.24%");
+			rowData.put(columns[1], "80");
+			rowData.put(columns[2], "大修");
+			rowData.put(columns[3], "938");
+			rowData.put(columns[4], "900");
+			rowData.put(columns[5], "60");
+			rowData.put(columns[6], "164");
+			rowData.put(columns[7], "206");
+			rowData.put(columns[8], "无");
 			jsonArray.put(rowData);
 
 			rowData = new JSONObject();
 			rowData.put(columns[0], "1#");
-			rowData.put(columns[1], "2014/08/10 08:20");
-			rowData.put(columns[2], "248.32");
-			rowData.put(columns[3], "28.10%");
-			rowData.put(columns[4], "90.01%");
-			rowData.put(columns[5], "92.24%");
-			rowData.put(columns[6], "92.24%");
-			rowData.put(columns[7], "92.24%");
-			rowData.put(columns[8], "92.24%");
+			rowData.put(columns[1], "11");
+			rowData.put(columns[2], "预备");
+			rowData.put(columns[3], "877");
+			rowData.put(columns[4], "800");
+			rowData.put(columns[5], "70");
+			rowData.put(columns[6], "227");
+			rowData.put(columns[7], "320");
+			rowData.put(columns[8], "无");
 			jsonArray.put(rowData);
 
 			rowData = new JSONObject();
 			rowData.put(columns[0], "1#");
-			rowData.put(columns[1], "2014/08/15 08:20");
-			rowData.put(columns[2], "242.41");
-			rowData.put(columns[3], "31.40%");
-			rowData.put(columns[4], "88.01%");
-			rowData.put(columns[5], "92.24%");
-			rowData.put(columns[6], "92.24%");
-			rowData.put(columns[7], "92.24%");
-			rowData.put(columns[8], "92.24%");
+			rowData.put(columns[1], "0");
+			rowData.put(columns[2], "永久层");
+			rowData.put(columns[3], "5");
+			rowData.put(columns[4], "5");
+			rowData.put(columns[5], "50");
+			rowData.put(columns[6], "0");
+			rowData.put(columns[7], "0");
+			rowData.put(columns[8], "无");
+			jsonArray.put(rowData);
+			
+			rowData = new JSONObject();
+			rowData.put(columns[0], "1#");
+			rowData.put(columns[1], "76");
+			rowData.put(columns[2], "预备");
+			rowData.put(columns[3], "917");
+			rowData.put(columns[4], "910");
+			rowData.put(columns[5], "20");
+			rowData.put(columns[6], "186");
+			rowData.put(columns[7], "214");
+			rowData.put(columns[8], "无");
 			jsonArray.put(rowData);
 
 		} catch (JSONException e) {
@@ -200,34 +212,37 @@ public class RealTimeDataActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
+		Intent intent = null;
+		
 		switch (v.getId()) {
-		case R.id.btnBack: // 返回
-			Intent intent = new Intent();
-			intent.setClass(RealTimeDataActivity.this, MainActivity.class);
-			startActivity(intent);
-			RealTimeDataActivity.this.finish();
-			break;
-		case R.id.etFactoryName: // 选择炼钢厂
-			intent = new Intent();
-			intent.setClass(RealTimeDataActivity.this,
-					FactoryInfoActivity.class);
-			intent.putExtra("previousActivityFlag", IS_REATIM_DATA_ACTIVITY);
-			intent.putExtra("factoryCode", factoryCode);
-			startActivity(intent);
-			RealTimeDataActivity.this.finish();
-
-			break;
-		case R.id.btnSelect: // 查询处理
-			// 查询处理按钮
-			loadingLayout.setVisibility(View.VISIBLE);
-			dataListLayout.setVisibility(View.GONE);
-			btnSelect.setClickable(false);
-
-			new Thread(new ObtainDataThread()).start();
-			break;
-
-		default:
-			break;
+			case R.id.btnBack: // 返回
+				intent = new Intent();
+				intent.setClass(RealTimeDataActivity.this, MainActivity.class);
+				startActivity(intent);
+				RealTimeDataActivity.this.finish();
+				
+				break;
+			case R.id.etFactoryName: // 选择炼钢厂
+				intent = new Intent();
+				intent.setClass(RealTimeDataActivity.this,
+						FactoryInfoActivity.class);
+				intent.putExtra("previousActivityFlag", IS_REATIM_DATA_ACTIVITY);
+				intent.putExtra("factoryCode", factoryCode);
+				startActivity(intent);
+				RealTimeDataActivity.this.finish();
+	
+				break;
+			case R.id.btnSelect: // 查询处理
+				// 查询处理按钮
+				loadingLayout.setVisibility(View.VISIBLE);
+				dataListLayout.setVisibility(View.GONE);
+				btnSelect.setClickable(false);
+	
+				new Thread(new ObtainDataThread()).start();
+				break;
+	
+			default:
+				break;
 		}
 	}
 

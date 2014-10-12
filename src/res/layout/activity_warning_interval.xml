@@ -31,4 +31,13 @@
             android:textSize="22sp" />
     </RelativeLayout>
 
+    <DatePicker
+        android:id="@+id/datePicker1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/navigationBarLayout"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="44dp" />
+
 </RelativeLayout>

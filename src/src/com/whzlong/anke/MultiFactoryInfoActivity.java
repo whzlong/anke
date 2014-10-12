@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.whzlong.anke.CheckboxListAdapter.ViewHolder;
+import com.whzlong.anke.AppConstants;
 
 import android.app.Activity;
 import android.content.Context;
@@ -23,16 +24,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class MultiFactoryInfoActivity extends Activity {
@@ -42,15 +37,11 @@ public class MultiFactoryInfoActivity extends Activity {
 	private RelativeLayout dataListLayout;
 	private ListView lvCheckbox;
 	private Context context;
-	protected static final int STOP = 0x10000;
-	protected static final int ERROR = 0x20000;
-	private static final String SELECTED_WARNING_FACTORY_KEY = "selectedWarningFactoryCode";
-	private static final String SELECTED_WARNING_FACTORY_NAME = "selectedWarningFactoryName";
-	private String[] columns = new String[] { "factoryCode", "factoryName" };
 	private Map<String, String> mpGetCodeByName = new HashMap<String, String>();
 	private Map<String, String> mpGetNameByCode = new HashMap<String, String>();
 	private List<String> lsSelectedFactoryCode = new ArrayList<String>();
 	private SharedPreferences preference;
+	private  String[] columns = new String[] { "factoryCode", "factoryName" };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +89,7 @@ public class MultiFactoryInfoActivity extends Activity {
 		preference = MultiFactoryInfoActivity.this.getSharedPreferences(
 				"perference", MODE_PRIVATE);
 		String defaultCheckedFactory = preference.getString(
-				SELECTED_WARNING_FACTORY_KEY, "");
+				AppConstants.SELECTED_WARNING_FACTORY_KEY, "");
 		
 		List<String> lsCheckedData = null;
 		
@@ -210,8 +201,8 @@ public class MultiFactoryInfoActivity extends Activity {
 
 				Editor editor = preference.edit();
 
-				editor.putString(SELECTED_WARNING_FACTORY_KEY, selectedFactoryCode);
-				editor.putString(SELECTED_WARNING_FACTORY_NAME, selectedFactoryName);
+				editor.putString(AppConstants.SELECTED_WARNING_FACTORY_KEY, selectedFactoryCode);
+				editor.putString(AppConstants.SELECTED_WARNING_FACTORY_NAME, selectedFactoryName);
 				
 				editor.commit();
 
@@ -247,7 +238,7 @@ public class MultiFactoryInfoActivity extends Activity {
 	// 定义一个Handler,更新一览数据
 	private Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
-			if (msg.what == STOP) {
+			if (msg.what == AppConstants.STOP) {
 				loadingLayout.setVisibility(View.GONE);
 				Bundle bundle = msg.getData();
 
@@ -293,7 +284,7 @@ public class MultiFactoryInfoActivity extends Activity {
 			JSONArray returnData = getDataFromServer();
 
 			Message msg = new Message();
-			msg.what = STOP;
+			msg.what = AppConstants.STOP;
 			Bundle bundle = new Bundle();
 
 			try {
@@ -318,7 +309,7 @@ public class MultiFactoryInfoActivity extends Activity {
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				msg.what = ERROR;
+				msg.what = AppConstants.ERROR;
 			}
 		}
 	}
