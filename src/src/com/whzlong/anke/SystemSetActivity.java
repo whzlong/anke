@@ -84,7 +84,7 @@ public class SystemSetActivity extends Activity {
 		//服务器信息设置
 		String serverInfo = preference.getString(AppConstants.SERVER_INFO, "");
 		mServerInfo = (TextView)findViewById(R.id.tvServerInfo);
-		mServerInfo.setText(serverInfo);
+		mServerInfo.setText("192.123.122.200:8080");
 		
 		//返回按钮
 		btnBack = (Button) findViewById(R.id.btnBack);
@@ -180,11 +180,11 @@ public class SystemSetActivity extends Activity {
 					break;
 				case R.id.rlServerInfo:
 					//设置服务器信息
-				    intent = new Intent();
-					intent.setClass(SystemSetActivity.this,
-							ServerInfoActivity.class);
-					startActivity(intent);
-					SystemSetActivity.this.finish();
+//				    intent = new Intent();
+//					intent.setClass(SystemSetActivity.this,
+//							ServerInfoActivity.class);
+//					startActivity(intent);
+//					SystemSetActivity.this.finish();
 				default:
 					break;
 			}
