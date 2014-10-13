@@ -23,17 +23,22 @@
     <string name="action_settings">设置</string>
     <drawable name="light_gray">#708090</drawable>
     <string name="title_activity_factory_info">选择钢厂</string>
+    <string name="pollingInterval">轮询时间间隔</string>
+
+    <string name="title_activity_multi_factory_info">报警炼钢厂</string>
     <string name="promptInfoFactory">请点击选择钢厂</string>
     <string name="warningDatetime">报警时间</string>
     <string name="waringFactory">报警炼钢厂</string>
-    <string name="waringTimeArea">报警时间段</string>
-    <string name="pollingInterval">轮询时间间隔</string>
-    <string name="serverInfo">服务器信息</string>
-    <string name="serverIp">服务器IP地址</string>
-    <string name="serverPort">服务器端口号</string>
-    <string name="title_activity_multi_factory_info">报警炼钢厂</string>
+    
     <string name="title_activity_warning_interval">报警时间段</string>
+    <string name="waringTimeArea">报警时间段</string>
+    
     <string name="title_activity_server_info">服务器信息</string>
+    <string name="serverInfo">服务器信息</string>
+    <string name="promptServerIp">请输入服务器IP地址</string>
+    <string name="promptServerPort">请输入服务器端口</string>
+    
+    
     <string name="save">保存</string>
     <string name="confirm">确认</string>
     <string name="cancel">取消</string>

@@ -29,7 +29,7 @@
             android:text="@string/title_activity_server_info"
             android:textColor="#ffffff"
             android:textSize="22sp" />
-        
+
         <Button
             android:id="@+id/btnSave"
             android:layout_width="60dp"
@@ -41,86 +41,41 @@
             android:textColor="#ffffff"
             android:textSize="18sp" />
     </RelativeLayout>
-    
+
     <RelativeLayout
-        	android:id="@+id/serverIpLayout"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/navigationBarLayout"
-                android:clickable="true"
-                android:gravity="center_vertical" >
+        android:id="@+id/serverIpLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/navigationBarLayout"
+        android:clickable="true"
+        android:gravity="center_vertical" >
 
-                <TextView
-                    android:id="@+id/tvServerIp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:text="@string/serverIp"
-                    android:textSize="20sp" />
+        <EditText
+            android:id="@+id/etServerIp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/promptServerIp"
+            android:maxLength="15" >
 
-                <EditText
-                    android:id="@+id/etServerIp1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignRight="@+id/tvServerIp"
-                    android:ems="4"
-                    android:inputType="number" >
-                    <requestFocus />
-                </EditText>
-				<EditText
-                    android:id="@+id/etServerIp2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignRight="@+id/etServerIp1"
-                    android:ems="4"
-                    android:inputType="number" >
-                    <requestFocus />
-                </EditText>
-                <EditText
-                    android:id="@+id/etServerIp3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignRight="@+id/etServerIp2"
-                    android:ems="4"
-                    android:inputType="number" >
-                    <requestFocus />
-                </EditText>
-                <EditText
-                    android:id="@+id/etServerIp4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignRight="@+id/etServerIp3"
-                    android:ems="4"
-                    android:inputType="number" >
-                    <requestFocus />
-                </EditText>
-            </RelativeLayout>
-            
-    <View android:layout_height="1px" android:background="#333333" android:layout_width="fill_parent"></View>
-    
-     <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/serverIpLayout"
-                android:clickable="true"
-                android:gravity="center_vertical" >
+            <requestFocus />
+        </EditText>
 
-                <TextView
-                    android:id="@+id/tvServerPort"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:text="@string/serverPort"
-                    android:textSize="20sp" />
-                <EditText
-                    android:id="@+id/etServerPort"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignRight="@+id/tvServerPort"
-                    android:ems="10"
-                    android:inputType="number" >
-                    <requestFocus />
-				</EditText>
-            </RelativeLayout>
-            
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="#333333" >
+        </View>
+
+        <EditText
+            android:id="@+id/etServerPort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/etServerIp"
+            android:hint="@string/promptServerPort"
+            android:ems="10"
+            android:inputType="number" >
+        </EditText>
+    </RelativeLayout>
+
 </RelativeLayout>

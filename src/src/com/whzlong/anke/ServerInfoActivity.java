@@ -22,7 +22,6 @@ public class ServerInfoActivity extends Activity implements OnClickListener{
 		btnSave = (Button) findViewById(R.id.btnSave);
 		btnSave.setOnClickListener(this);
 		
-		
 		// 返回
 		btnBack = (Button) findViewById(R.id.btnBack);
 		btnBack.setOnClickListener(this);
