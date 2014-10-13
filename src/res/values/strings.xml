@@ -35,8 +35,8 @@
     
     <string name="title_activity_server_info">服务器信息</string>
     <string name="serverInfo">服务器信息</string>
-    <string name="promptServerIp">请输入服务器IP地址</string>
-    <string name="promptServerPort">请输入服务器端口</string>
+    <string name="serverIp">服务器IP地址</string>
+    <string name="serverPort">服务器端口</string>
     
     
     <string name="save">保存</string>
