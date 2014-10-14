@@ -9,7 +9,6 @@
         android:layout_width="fill_parent"
         android:layout_height="55dp"
         android:background="#333333" >
-
         <Button
             android:id="@+id/btnBack"
             android:layout_width="80dp"
@@ -20,7 +19,6 @@
             android:text="@string/back"
             android:textColor="#ffffff"
             android:textSize="20sp" />
-
         <TextView
             android:id="@+id/tvTitleServerInfo"
             android:layout_width="wrap_content"
@@ -29,7 +27,6 @@
             android:text="@string/title_activity_server_info"
             android:textColor="#ffffff"
             android:textSize="22sp" />
-
         <Button
             android:id="@+id/btnSave"
             android:layout_width="60dp"
@@ -50,13 +47,13 @@
         android:clickable="true"
         android:gravity="center_vertical" >
 
-        <TextView 
+        <TextView
             android:id="@+id/tvServerIp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/serverIp"
-            />
-        
+            android:text="@string/serverIp" 
+            android:textSize="20sp"/>
+
         <EditText
             android:id="@+id/etServerIp"
             android:layout_width="wrap_content"
@@ -64,20 +61,16 @@
             android:layout_below="@+id/tvServerIp"
             android:ems="10"
             android:maxLength="15" >
-
             <requestFocus />
         </EditText>
-
-       
     </RelativeLayout>
 
-    
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1px"
-            android:background="#333333" >
-        </View>
-        
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="#333333" >
+    </View>
+
     <RelativeLayout
         android:id="@+id/serverPortLayout"
         android:layout_width="fill_parent"
@@ -85,22 +78,20 @@
         android:layout_below="@+id/serverIpLayout"
         android:clickable="true"
         android:gravity="center_vertical" >
-
-        <TextView 
+        <TextView
             android:id="@+id/tvServerPort"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
-            />
+            android:textSize="20sp"
+            android:text="@string/serverPort" />
+
         <EditText
             android:id="@+id/etServerPort"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/etServerIp"
-            android:hint="@string/promptServerPort"
+            android:layout_below="@+id/tvServerPort"
             android:ems="10"
             android:inputType="number" >
         </EditText>
-        
     </RelativeLayout>
 </RelativeLayout>

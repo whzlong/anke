@@ -289,11 +289,9 @@ public class EnergySavingDataActivity extends Activity {
 		 */
 		public boolean onTouch(View v, MotionEvent event) {
 			if (v.getId() == R.id.btnBack) {
-				// Drawable originalColor = btnBack.getBackground();  abc_list_pressed_holo_light
 				if (event.getAction() == MotionEvent.ACTION_DOWN) {
 					btnBack.setBackgroundResource(R.drawable.light_gray);
 				}
-
 			}
 
 			return false;
