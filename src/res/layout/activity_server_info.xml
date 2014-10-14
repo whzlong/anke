@@ -96,8 +96,7 @@
             android:id="@+id/etServerPort"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/etServerIp"
-            android:hint="@string/promptServerPort"
+            android:layout_below="@+id/tvServerPort"
             android:ems="10"
             android:inputType="number" >
         </EditText>
