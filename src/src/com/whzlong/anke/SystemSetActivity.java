@@ -1,5 +1,7 @@
 package com.whzlong.anke;
 
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -7,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,7 +17,23 @@ import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.whzlong.anke.AppConstants;
+import com.whzlong.anke.tools.WebRequest;
+import android.util.Log;
+
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
 
 public class SystemSetActivity extends Activity {
 	private Button btnBack;
@@ -40,8 +59,45 @@ public class SystemSetActivity extends Activity {
 		setContentView(R.layout.activity_system_set);
 		//初始化各种视图组件
 		InitViews();
+
+		requestByPost();
 	}
 
+	public  void requestByPost(){
+		RequestQueue mQueue = Volley.newRequestQueue(this); 
+		
+//		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest("http://101.231.219.254:8082/restservice.svc/ChkTelCode/13524485769", null,  
+//		        new Response.Listener<JSONObject>() {  
+//		            @Override  
+//		            public void onResponse(JSONObject response) {  
+//		                Log.d("TAG", response.toString());  
+//		            }  
+//		        }, new Response.ErrorListener() {  
+//		            @Override  
+//		            public void onErrorResponse(VolleyError error) {  
+//		                Log.e("TAG", error.getMessage(), error);  
+//		            }  
+//		        });  
+//		mQueue.add(jsonObjectRequest); 
+		
+		StringRequest stringRequest = new StringRequest("http://101.231.219.254:8082/restservice.svc/ChkTelCode/13524485769",  
+                new Response.Listener<String>() {  
+                    @Override  
+                    public void onResponse(String response) {  
+                        Log.d("TAG", response);  
+                    }  
+                }, new Response.ErrorListener() {  
+                    @Override  
+                    public void onErrorResponse(VolleyError error) {  
+                        Log.e("TAG", error.getMessage(), error);  
+                    }  
+                });  
+		
+		mQueue.add(stringRequest); 
+		
+		
+	}
+	
 	/**
 	 * 初始化各种视图组件
 	 */

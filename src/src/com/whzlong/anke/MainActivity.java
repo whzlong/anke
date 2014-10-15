@@ -1,5 +1,7 @@
 package com.whzlong.anke;
 
+import com.whzlong.anke.tools.WebRequest;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
