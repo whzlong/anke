@@ -1,5 +1,7 @@
 package com.whzlong.anke;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -65,8 +67,8 @@ public class SystemSetActivity extends Activity {
 
 	public  void requestByPost(){
 		RequestQueue mQueue = Volley.newRequestQueue(this); 
-		
-//		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest("http://101.231.219.254:8082/restservice.svc/ChkTelCode/13524485769", null,  
+//		
+//		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest("http://101.231.219.254:8082/restservice.svc/factory", null,  
 //		        new Response.Listener<JSONObject>() {  
 //		            @Override  
 //		            public void onResponse(JSONObject response) {  
@@ -81,20 +83,19 @@ public class SystemSetActivity extends Activity {
 //		mQueue.add(jsonObjectRequest); 
 		
 		StringRequest stringRequest = new StringRequest("http://101.231.219.254:8082/restservice.svc/ChkTelCode/13524485769",  
-                new Response.Listener<String>() {  
+                new Response.Listener<String>() {
                     @Override  
                     public void onResponse(String response) {  
-                        Log.d("TAG", response);  
+                        Log.d("TAG", response);
                     }  
                 }, new Response.ErrorListener() {  
                     @Override  
                     public void onErrorResponse(VolleyError error) {  
-                        Log.e("TAG", error.getMessage(), error);  
+                        Log.e("TAG", error.getMessage(), error);
                     }  
                 });  
 		
-		mQueue.add(stringRequest); 
-		
+		mQueue.add(stringRequest);
 		
 	}
 	
