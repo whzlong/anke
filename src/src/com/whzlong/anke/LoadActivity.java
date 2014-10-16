@@ -7,11 +7,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
+import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
 public class LoadActivity extends Activity {
 
 	private final int LOAD_TIME = 1000;
+	protected String phoneNum;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -20,10 +22,18 @@ public class LoadActivity extends Activity {
 		
 		Context context = this.getApplicationContext();
 		
+		TelephonyManager phoneManager = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
+		phoneNum = phoneManager.getLine1Number();
+		
 		if(isNetworkConnected(context)){
 			//跳转至主界面
 			new Handler().postDelayed(new Runnable(){
-				public void run(){				
+				public void run(){	
+					
+					if(phoneNum != null){
+						System.out.println(phoneNum);
+					}
+					
 					Intent intent = new Intent();
 					intent.setClass(LoadActivity.this, MainActivity.class);
 					startActivity(intent);

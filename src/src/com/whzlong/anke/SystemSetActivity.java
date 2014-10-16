@@ -62,7 +62,7 @@ public class SystemSetActivity extends Activity {
 		//初始化各种视图组件
 		InitViews();
 
-		requestByPost();
+		//requestByPost();
 	}
 
 	public  void requestByPost(){
@@ -139,9 +139,9 @@ public class SystemSetActivity extends Activity {
 		lyServerInfo.setOnClickListener(bl);
 		
 		//服务器信息设置
-		String serverInfo = preference.getString(AppConstants.SERVER_INFO, "");
+		String serverInfo = preference.getString(AppConstants.URI_IP_PORT, "");
 		mServerInfo = (TextView)findViewById(R.id.tvServerInfo);
-		mServerInfo.setText("192.123.122.200:8080");
+		mServerInfo.setText(serverInfo);
 		
 		//返回按钮
 		btnBack = (Button) findViewById(R.id.btnBack);

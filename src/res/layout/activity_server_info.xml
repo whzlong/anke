@@ -9,6 +9,7 @@
         android:layout_width="fill_parent"
         android:layout_height="55dp"
         android:background="#333333" >
+
         <Button
             android:id="@+id/btnBack"
             android:layout_width="80dp"
@@ -19,6 +20,7 @@
             android:text="@string/back"
             android:textColor="#ffffff"
             android:textSize="20sp" />
+
         <TextView
             android:id="@+id/tvTitleServerInfo"
             android:layout_width="wrap_content"
@@ -27,6 +29,7 @@
             android:text="@string/title_activity_server_info"
             android:textColor="#ffffff"
             android:textSize="22sp" />
+
         <Button
             android:id="@+id/btnSave"
             android:layout_width="60dp"
@@ -40,10 +43,16 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/blankLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp" >
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/serverIpLayout"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/navigationBarLayout"
+        android:layout_height="150dp"
+        android:layout_below="@+id/blankLayout"
         android:clickable="true"
         android:gravity="center_vertical" >
 
@@ -51,16 +60,20 @@
             android:id="@+id/tvServerIp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/serverIp" 
-            android:textSize="20sp"/>
+            android:layout_centerHorizontal="true"
+            android:text="@string/serverIp"
+            android:textSize="20sp" />
 
         <EditText
             android:id="@+id/etServerIp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvServerIp"
+            android:layout_centerHorizontal="true"
             android:ems="10"
+            android:inputType=""
             android:maxLength="15" >
+
             <requestFocus />
         </EditText>
     </RelativeLayout>
@@ -78,20 +91,25 @@
         android:layout_below="@+id/serverIpLayout"
         android:clickable="true"
         android:gravity="center_vertical" >
+
         <TextView
             android:id="@+id/tvServerPort"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="@string/serverPort" />
+            android:layout_centerHorizontal="true"
+            android:text="@string/serverPort"
+            android:textSize="20sp" />
 
         <EditText
             android:id="@+id/etServerPort"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvServerPort"
+            android:layout_centerHorizontal="true"
             android:ems="10"
-            android:inputType="number" >
+            android:inputType="number"
+            android:maxLength="10" >
         </EditText>
     </RelativeLayout>
+
 </RelativeLayout>

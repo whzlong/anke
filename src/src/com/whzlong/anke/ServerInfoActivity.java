@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
+import android.widget.EditText;
 
 public class ServerInfoActivity extends Activity implements OnTouchListener,OnClickListener{
 	private Button btnBack = null;
@@ -34,6 +35,7 @@ public class ServerInfoActivity extends Activity implements OnTouchListener,OnCl
 		
 		// 返回
 		btnBack = (Button) findViewById(R.id.btnBack);
+		btnBack.setOnTouchListener(this);
 		btnBack.setOnClickListener(this);
 	}
 	
@@ -69,14 +71,24 @@ public class ServerInfoActivity extends Activity implements OnTouchListener,OnCl
 				break;
 			case R.id.btnSave:
 				//保存
+				//IP地址
+				EditText etServerIp = (EditText)findViewById(R.id.etServerIp);
+				EditText etServerPort = (EditText)findViewById(R.id.etServerPort);
+				
+				String ip_port = etServerIp.getText().toString() + ":" + etServerPort.getText().toString();
+				
 				SharedPreferences preference = ServerInfoActivity.this.getSharedPreferences(
 						"perference", MODE_PRIVATE);
-				
 				Editor editor = preference.edit();
-				editor.putString(AppConstants.SERVER_INFO, "200.109.120.100:8080");
+				editor.putString(AppConstants.URI_IP_PORT, ip_port);
 				editor.commit();
 				
-				
+				//返回
+				intent = new Intent();
+				intent.setClass(ServerInfoActivity.this,
+						SystemSetActivity.class);
+				startActivity(intent);
+				ServerInfoActivity.this.finish();
 				break;
 			default:
 				break;

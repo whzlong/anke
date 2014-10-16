@@ -18,5 +18,7 @@ public class AppConstants {
 	
 	public static final String MINUTE_UNIT = "分钟";
 	
-	public static final String SERVER_INFO = "setedServerInfo";
+	public static final String URI_IP_PORT = "URI_IP_PORT";
+	public static final String PROTOCOL = "http://";
+	public static final String PATH1 = "/restservice.svc/factory";
 }
