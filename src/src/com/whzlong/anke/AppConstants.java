@@ -20,5 +20,15 @@ public class AppConstants {
 	
 	public static final String URI_IP_PORT = "URI_IP_PORT";
 	public static final String PROTOCOL = "http://";
-	public static final String PATH1 = "/restservice.svc/factory";
+	public static final String URL_REAL_TIME_DATA = "/restservice.svc/factory";
+	//身份验证
+	public static final String URL_VERIFY_IDENTIFY = "/restservice.svc/ChkTelCode/13524485769";
+	
+	//网络处理相关
+	public static final int OK = 0x10000;
+	public static final int NG = 0x10001;
+	
+	public static final int ERROR_TYPE_1 = 0x20000;
+	public static final int ERROR_TYPE_2 = 0x20001;
+	public static final int ERROR_TYPE_3 = 0x20002;
 }

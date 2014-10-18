@@ -37,10 +37,14 @@
     <string name="serverInfo">服务器信息</string>
     <string name="serverIp">服务器IP地址</string>
     <string name="serverPort">服务器端口</string>
+    <string name="htServerIp">请输入服务器IP地址</string>
+    <string name="htServerPort">请输入服务器端口</string>
     
     
     <string name="save">保存</string>
     <string name="confirm">确认</string>
     <string name="cancel">取消</string>
-
+    
+    <string name="input_prompt_server_info">请输入完整的服务器端信息</string>
+	<string name="input_prompt_select_date">请输入查询时间</string>
 </resources>

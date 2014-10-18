@@ -6,8 +6,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.whzlong.anke.EnergySavingDataActivity.ButtonListener;
-import com.whzlong.anke.EnergySavingDataActivity.ObtainDataThread;
 import com.whzlong.anke.TableAdapter.TableCell;
 import com.whzlong.anke.TableAdapter.TableRow;
 
@@ -17,8 +15,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
