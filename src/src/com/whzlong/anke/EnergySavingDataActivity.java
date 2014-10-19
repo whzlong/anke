@@ -151,8 +151,7 @@ public class EnergySavingDataActivity extends BaseActivity implements
 			Toast.makeText(context, context.getString(R.string.input_prompt_select_date), Toast.LENGTH_LONG).show();
 		}
 		
-		
-		
+		// TODO: 1.查询时间验证
 		
 	}
 	
