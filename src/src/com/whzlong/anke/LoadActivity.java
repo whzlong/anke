@@ -43,22 +43,21 @@ public class LoadActivity extends Activity {
 	protected static final int ERROR3 = 0x20002;
 	private View dialogLayout;
 	private AlertDialog.Builder builder = null;
-	private  String mIpPort = "";
-	
+	private String mIpPort = "";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_load);
 
 		context = this.getApplicationContext();
-		
-		//获取服务器端信息
-		SharedPreferences preference = LoadActivity.this
-				.getSharedPreferences("perference",
-						MODE_PRIVATE);
 
-		mIpPort = AppConstants.PROTOCOL + preference.getString(AppConstants.URI_IP_PORT, "");
-		
+		// 获取服务器端信息
+		SharedPreferences preference = LoadActivity.this.getSharedPreferences(
+				"perference", MODE_PRIVATE);
+
+		mIpPort = AppConstants.PROTOCOL
+				+ preference.getString(AppConstants.URI_IP_PORT, "");
 
 		if (isNetworkConnected(context)) {
 			// 跳转至主界面
@@ -95,7 +94,6 @@ public class LoadActivity extends Activity {
 		return false;
 	}
 
-	
 	protected void verifyIdentity() {
 		// 移动设备国际身份码
 		TelephonyManager phoneManager = (TelephonyManager) this
@@ -103,12 +101,11 @@ public class LoadActivity extends Activity {
 		mImei = phoneManager.getDeviceId();
 
 		String identityUrl = mIpPort + AppConstants.URL_VERIFY_IDENTIFY;
-		
+
 		// 远程获取身份验证结果
 		RequestQueue mQueue = Volley.newRequestQueue(this);
-		
-		StringRequest stringRequest = new StringRequest(
-				identityUrl,
+
+		StringRequest stringRequest = new StringRequest(identityUrl,
 				new Response.Listener<String>() {
 					@Override
 					public void onResponse(String response) {
@@ -148,7 +145,7 @@ public class LoadActivity extends Activity {
 
 		mQueue.add(stringRequest);
 	}
-	
+
 	// 定义一个Handler,更新一览数据
 	private Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -202,7 +199,7 @@ public class LoadActivity extends Activity {
 								if (!"".equals(etServerIp.getText().toString())
 										&& !"".equals(etServerPort.getText()
 												.toString())) {
-									
+
 									String ip_port = etServerIp.getText()
 											.toString()
 											+ ":"
@@ -216,15 +213,25 @@ public class LoadActivity extends Activity {
 									editor.putString(AppConstants.URI_IP_PORT,
 											ip_port);
 									editor.commit();
-									
+									LoadActivity.this.finish();
 								} else {
 									Toast.makeText(
 											LoadActivity.this,
 											context.getString(R.string.input_prompt_server_info),
 											Toast.LENGTH_LONG).show();
+									
+									//阻止对话框消失
+									try {
+										java.lang.reflect.Field field = dialog
+												.getClass().getSuperclass()
+												.getDeclaredField("mShowing");
+										field.setAccessible(true);
+										field.set(dialog, false);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
 								}
-								
-								LoadActivity.this.finish();
+
 							}
 						});
 
@@ -239,6 +246,10 @@ public class LoadActivity extends Activity {
 
 				break;
 			case ERROR2:
+				Toast.makeText(LoadActivity.this,
+						context.getString(R.string.system_error),
+						Toast.LENGTH_LONG).show();
+
 				LoadActivity.this.finish();
 				break;
 			default:
