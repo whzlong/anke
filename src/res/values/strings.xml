@@ -47,4 +47,6 @@
     
     <string name="input_prompt_server_info">请输入完整的服务器端信息</string>
 	<string name="input_prompt_select_date">请输入查询时间</string>
+	
+	<string name="system_error">系统错误，请联系管理人</string>
 </resources>
