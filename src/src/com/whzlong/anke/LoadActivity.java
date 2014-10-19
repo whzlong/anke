@@ -1,5 +1,8 @@
 package com.whzlong.anke;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,7 +33,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class LoadActivity extends Activity {
+public class LoadActivity extends BaseActivity {
 
 	private final int LOAD_TIME = 1000;
 	// 终端唯一识别码
@@ -43,7 +46,6 @@ public class LoadActivity extends Activity {
 	protected static final int ERROR3 = 0x20002;
 	private View dialogLayout;
 	private AlertDialog.Builder builder = null;
-	private String mIpPort = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +53,6 @@ public class LoadActivity extends Activity {
 		setContentView(R.layout.activity_load);
 
 		context = this.getApplicationContext();
-
-		// 获取服务器端信息
-		SharedPreferences preference = LoadActivity.this.getSharedPreferences(
-				"perference", MODE_PRIVATE);
-
-		mIpPort = AppConstants.PROTOCOL
-				+ preference.getString(AppConstants.URI_IP_PORT, "");
 
 		if (isNetworkConnected(context)) {
 			// 跳转至主界面
@@ -86,9 +81,13 @@ public class LoadActivity extends Activity {
 					.getSystemService(Context.CONNECTIVITY_SERVICE);
 			NetworkInfo mNetworkInfo = mConnectivityManager
 					.getActiveNetworkInfo();
-			if (mNetworkInfo != null) {
-				return mNetworkInfo.isAvailable();
-			}
+			
+			// TODO: 撤销
+			return true;
+			
+//			if (mNetworkInfo != null) {
+//				return mNetworkInfo.isAvailable();
+//			}
 		}
 
 		return false;
@@ -100,7 +99,7 @@ public class LoadActivity extends Activity {
 				.getSystemService(Context.TELEPHONY_SERVICE);
 		mImei = phoneManager.getDeviceId();
 
-		String identityUrl = mIpPort + AppConstants.URL_VERIFY_IDENTIFY;
+		String identityUrl = base_ip_port + AppConstants.URL_VERIFY_IDENTIFY;
 
 		// 远程获取身份验证结果
 		RequestQueue mQueue = Volley.newRequestQueue(this);
@@ -146,6 +145,31 @@ public class LoadActivity extends Activity {
 		mQueue.add(stringRequest);
 	}
 
+	/**
+	 * 验证输入的服务器信息
+	 * @param ip
+	 * @param port
+	 * @return
+	 */
+	protected boolean checkInput(String ip, String port){
+		
+		if("".equals(ip) || "".equals(port)){
+			return true;
+		}
+		
+		//TODO: IP地址验证
+		String regex = "^(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|[1-9])\\."
+				+ "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d\\d)\\."
+				+ "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d\\d)\\."
+				+ "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d\\d)$";
+		
+		if(!ip.matches(regex)){
+			return false;
+		}
+		
+		return true;
+	}
+	
 	// 定义一个Handler,更新一览数据
 	private Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -193,12 +217,12 @@ public class LoadActivity extends Activity {
 								// IP地址
 								EditText etServerIp = (EditText) dialogLayout
 										.findViewById(R.id.etServerIp);
+								// 端口地址
 								EditText etServerPort = (EditText) dialogLayout
 										.findViewById(R.id.etServerPort);
-
-								if (!"".equals(etServerIp.getText().toString())
-										&& !"".equals(etServerPort.getText()
-												.toString())) {
+								
+								if (checkInput(etServerIp.getText().toString(), etServerPort.getText()
+										.toString())) {
 
 									String ip_port = etServerIp.getText()
 											.toString()

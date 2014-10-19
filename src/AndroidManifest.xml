@@ -67,6 +67,11 @@
             android:name=".ServerInfoActivity"
             android:label="@string/title_activity_server_info" >
         </activity>
-    </application>
+        
+        <service android:name=".AppService"
+            android:enabled="true">
+            <intent-filter android:name="com.whzlong.anke.appService" />
+        </service>    
+        </application>
 
 </manifest>
