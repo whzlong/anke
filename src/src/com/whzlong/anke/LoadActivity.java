@@ -12,7 +12,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
@@ -39,11 +38,6 @@ public class LoadActivity extends BaseActivity {
 	// 终端唯一识别码
 	private String mImei;
 	private Context context;
-	protected static final int OK = 0x10000;
-	protected static final int NG = 0x10001;
-	protected static final int ERROR1 = 0x20000;
-	protected static final int ERROR2 = 0x20001;
-	protected static final int ERROR3 = 0x20002;
 	private View dialogLayout;
 	private AlertDialog.Builder builder = null;
 
@@ -81,13 +75,10 @@ public class LoadActivity extends BaseActivity {
 					.getSystemService(Context.CONNECTIVITY_SERVICE);
 			NetworkInfo mNetworkInfo = mConnectivityManager
 					.getActiveNetworkInfo();
-			
-			// TODO: 撤销
-			return true;
-			
-//			if (mNetworkInfo != null) {
-//				return mNetworkInfo.isAvailable();
-//			}
+
+			if (mNetworkInfo != null) {
+				return mNetworkInfo.isAvailable();
+			}
 		}
 
 		return false;
@@ -99,7 +90,8 @@ public class LoadActivity extends BaseActivity {
 				.getSystemService(Context.TELEPHONY_SERVICE);
 		mImei = phoneManager.getDeviceId();
 
-		String identityUrl = base_ip_port + AppConstants.URL_VERIFY_IDENTIFY;
+		//TODO: 将IMEI码添入
+		String identityUrl = base_ip_port + AppConstants.URL_VERIFY_IDENTIFY + "/13524485769";
 
 		// 远程获取身份验证结果
 		RequestQueue mQueue = Volley.newRequestQueue(this);
@@ -117,18 +109,18 @@ public class LoadActivity extends BaseActivity {
 							JSONObject jsonObj = new JSONObject(retval);
 
 							retval = jsonObj.getString("authenticationResult");
-
-							if ("1".equals(retval)) {
-								msg.what = OK;
+							
+							if (AppConstants.ZERO.equals(retval)) {
+								msg.what = AppConstants.OK;
 							} else {
-								msg.what = NG;
+								msg.what = AppConstants.NG;
 							}
 
 							mHandler.sendMessage(msg);
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
-							msg.what = ERROR2;
+							msg.what = AppConstants.ERROR2;
 						}
 
 					}
@@ -137,7 +129,7 @@ public class LoadActivity extends BaseActivity {
 					public void onErrorResponse(VolleyError error) {
 						Log.e("TAG", error.getMessage(), error);
 						Message msg = new Message();
-						msg.what = ERROR1;
+						msg.what = AppConstants.ERROR1;
 						mHandler.sendMessage(msg);
 					}
 				});
@@ -147,37 +139,35 @@ public class LoadActivity extends BaseActivity {
 
 	/**
 	 * 验证输入的服务器信息
+	 * 
 	 * @param ip
 	 * @param port
 	 * @return
 	 */
-	protected boolean checkInput(String ip, String port){
-		
+	protected boolean checkInput(String ip, String port) {
+
 		if("".equals(ip) || "".equals(port)){
-			return true;
+			return false;
 		}
 		
-		String[] ipArray = ip.split(".");
+		String[] ipArray = ip.split("\\.");
 		
 		if(ipArray.length != 4){
 			return false;
 		}
 		
+		String regexStr = "^[0-9]*$";
+		Pattern pattern = Pattern.compile(regexStr);
+		Matcher matcher = null;
 		
 		for(String partIp : ipArray){
+			matcher = pattern.matcher(partIp);
 			
+			if("".equals(partIp) || !matcher.matches()){
+				return false;
+			}
 		}
-		
-		//TODO: IP地址验证
-		String regex = "^(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|[1-9])\\."
-				+ "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d\\d)\\."
-				+ "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d\\d)\\."
-				+ "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d\\d)$";
-		
-		if(!ip.matches(regex)){
-			return false;
-		}
-		
+
 		return true;
 	}
 	
@@ -187,14 +177,14 @@ public class LoadActivity extends BaseActivity {
 			Intent intent = null;
 
 			switch (msg.what) {
-			case OK:
+			case AppConstants.OK:
 				// 认证通过
 				intent = new Intent();
 				intent.setClass(LoadActivity.this, MainActivity.class);
 				startActivity(intent);
 				LoadActivity.this.finish();
 				break;
-			case NG:
+			case AppConstants.NG:
 				// 认证未通过
 				EditText et = new EditText(LoadActivity.this);
 				et.setText(mImei);
@@ -210,7 +200,7 @@ public class LoadActivity extends BaseActivity {
 						});
 				builder.show();
 				break;
-			case ERROR1:
+			case AppConstants.ERROR1:
 				// 无法和服务器正常连接，可能是服务器IP地址和端口发生改变，弹出对话框供用户修改IP或端口
 
 				builder = new Builder(LoadActivity.this);
@@ -280,7 +270,7 @@ public class LoadActivity extends BaseActivity {
 				builder.show();
 
 				break;
-			case ERROR2:
+			case AppConstants.ERROR2:
 				Toast.makeText(LoadActivity.this,
 						context.getString(R.string.system_error),
 						Toast.LENGTH_LONG).show();

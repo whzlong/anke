@@ -226,7 +226,7 @@ public class EnergySavingDataActivity extends BaseActivity implements
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
-							msg.what = AppConstants.ERROR_TYPE_2;
+							msg.what = AppConstants.ERROR2;
 						}
 
 						mHandler.sendMessage(msg);
@@ -236,7 +236,7 @@ public class EnergySavingDataActivity extends BaseActivity implements
 					public void onErrorResponse(VolleyError error) {
 						Log.e("TAG", error.getMessage(), error);
 						Message msg = new Message();
-						msg.what = AppConstants.ERROR_TYPE_1;
+						msg.what = AppConstants.ERROR1;
 						mHandler.sendMessage(msg);
 					}
 				});

@@ -18,17 +18,34 @@ public class AppConstants {
 	
 	public static final String MINUTE_UNIT = "分钟";
 	
-	public static final String URI_IP_PORT = "URI_IP_PORT";
-	public static final String PROTOCOL = "http://";
-	public static final String URL_REAL_TIME_DATA = "/restservice.svc/factory";
-	//身份验证
-	public static final String URL_VERIFY_IDENTIFY = "/restservice.svc/ChkTelCode/13524485769";
+	public static final String EMPTY = "";
+	
 	
 	//网络处理相关
 	public static final int OK = 0x10000;
 	public static final int NG = 0x10001;
+
+	protected static final int ERROR1 = 0x20000;
+	protected static final int ERROR2 = 0x20001;
+	protected static final int ERROR3 = 0x20002;
 	
-	public static final int ERROR_TYPE_1 = 0x20000;
-	public static final int ERROR_TYPE_2 = 0x20001;
-	public static final int ERROR_TYPE_3 = 0x20002;
+	public static final String ZERO = "0";
+	public static final String ONE = "1";
+	
+	//网络请求时需要使用的固定文字
+	public static final String URI_IP_PORT = "URI_IP_PORT";
+	public static final String PROTOCOL = "http://";
+	
+	//身份验证
+	public static final String URL_VERIFY_IDENTIFY = "/restservice.svc/ChkTelCode";
+	public static final String KEY_WORD_AUTHENTICATION = "authenticationResult";
+	//请求版本号
+	public static final String APP_VERSION = "/RESTService.svc/Ver";
+	public static final String KEY_WORD_VERSION = "versionStatus";
+	
+
+	public static final String URL_REAL_TIME_DATA = "/restservice.svc/factory";
+	
+	
+	
 }
