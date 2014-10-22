@@ -9,6 +9,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
@@ -18,6 +20,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 public class MainActivity extends BaseActivity implements OnClickListener {
 	private Button btnQuit = null;
@@ -25,6 +29,16 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	private Button btnRealTimeData = null;
 	private Button btnWarningInfo = null;
 	private Button btnSystemSet = null;
+	//查询动画
+    private ProgressDialog mProDialog;
+    //下载对话框
+  	private Dialog downloadDialog;
+  	//进度条
+    private ProgressBar mProgress;
+    //显示下载数值
+    private TextView mProgressText;
+    //下载线程
+    private Thread downLoadThread;
 
 	// 定义一个Handler,更新一览数据
 	private Handler mHandler = new Handler() {
@@ -40,6 +54,12 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 				editor.commit();
 			}else if(!AppConstants.EMPTY.equals(latestVersion) && latestVersion.equals(currentVersionNo)){
 				//TODO: 最新app下载
+				
+				
+				
+				
+				
+				
 			}
 		}
 	};
@@ -132,7 +152,6 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	 * 验证应用版本
 	 */
 	private void checkAppVersion() {
-		// TODO: 将IMEI码添入
 		String identityUrl = base_ip_port + AppConstants.APP_VERSION;
 
 		// 远程获取身份验证结果
