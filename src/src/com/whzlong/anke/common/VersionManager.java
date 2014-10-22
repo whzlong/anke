@@ -9,8 +9,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.whzlong.anke.bean.Version;
 
+import com.whzlong.anke.AppConstants;
 import com.whzlong.anke.R;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -24,9 +33,11 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -147,22 +158,82 @@ public class VersionManager {
 				}
 			}
 		};
-		new Thread() {
-			public void run() {
-				Message msg = new Message();
-				try {
-					Version version = null;
-//					Version version = ApiClient
-//							.checkVersion((AppContext) mContext
-//									.getApplicationContext());
-					msg.what = 1;
-					msg.obj = version;
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				handler.sendMessage(msg);
-			}
-		}.start();
+//		new Thread() {
+//			public void run() {
+//				Message msg = new Message();
+//				try {
+//					Version version = null;
+////					Version version = ApiClient
+////							.checkVersion((AppContext) mContext
+////									.getApplicationContext());
+//					msg.what = 1;
+//					msg.obj = version;
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//				handler.sendMessage(msg);
+//			}
+//		}.start();
+		
+		
+		String base_ip_port = "http://101.231.219.254:8082";
+		
+		
+		String identityUrl = base_ip_port + AppConstants.APP_VERSION;
+
+		// 远程获取身份验证结果
+		RequestQueue mQueue = Volley.newRequestQueue(context);
+
+		StringRequest stringRequest = new StringRequest(identityUrl,
+				new Response.Listener<String>() {
+					@Override
+					public void onResponse(String response) {
+						Log.d("TAG", response);
+						Message msg = new Message();
+						Bundle bundle = new Bundle();
+
+						try {
+							String versionNo = response.substring(1,
+									response.length() - 1);
+							JSONObject jsonObj = new JSONObject(versionNo);
+
+							versionNo = jsonObj.getString(AppConstants.KEY_WORD_VERSION);
+							
+							bundle.putString(AppConstants.KEY_WORD_VERSION, versionNo);
+							
+							msg.what = 1;
+							msg.setData(bundle);
+							Version version = new Version();
+							version.setVersionCode(2);
+							version.setVersionName(versionNo);
+							version.setDownloadUrl("http://101.231.219.254:8082/NewVer/anke.apk");
+							msg.obj = version;
+							
+							handler.sendMessage(msg);
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+							msg.what = AppConstants.ERROR2;
+						}
+
+					}
+				}, new Response.ErrorListener() {
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						Log.e("TAG", error.getMessage(), error);
+						Message msg = new Message();
+						msg.what = AppConstants.ERROR1;
+						mHandler.sendMessage(msg);
+					}
+				});
+
+		mQueue.add(stringRequest);
+		
+		
+		
+		
+		
+		
 
 	}
 
@@ -271,15 +342,15 @@ public class VersionManager {
 		@Override
 		public void run() {
 			try {
-				String apkName = "OSChinaApp_" + mVersion.getVersionName()
+				String apkName = "anke_" + mVersion.getVersionName()
 						+ ".apk";
-				String tmpApk = "OSChinaApp_" + mVersion.getVersionName()
+				String tmpApk = "ankeApp_" + mVersion.getVersionName()
 						+ ".tmp";
 				// 判断是否挂载了SD卡
 				String storageState = Environment.getExternalStorageState();
 				if (storageState.equals(Environment.MEDIA_MOUNTED)) {
 					savePath = Environment.getExternalStorageDirectory()
-							.getAbsolutePath() + "/OSChina/Update/";
+							.getAbsolutePath() + "/anke/Update/";
 					File file = new File(savePath);
 					if (!file.exists()) {
 						file.mkdirs();
@@ -305,7 +376,7 @@ public class VersionManager {
 
 				// 输出临时下载文件
 				File tmpFile = new File(tmpFilePath);
-				FileOutputStream fos = new FileOutputStream(tmpFile);
+				//FileOutputStream fos = new FileOutputStream(tmpFile);
 
 				URL url = new URL(apkUrl);
 				HttpURLConnection conn = (HttpURLConnection) url
@@ -339,10 +410,10 @@ public class VersionManager {
 						}
 						break;
 					}
-					fos.write(buf, 0, numread);
+					//fos.write(buf, 0, numread);
 				} while (!interceptFlag);// 点击取消就停止下载
 
-				fos.close();
+				//fos.close();
 				is.close();
 			} catch (MalformedURLException e) {
 				e.printStackTrace();

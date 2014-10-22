@@ -1,4 +1,4 @@
-package com.whzlong.anke;
+package com.whzlong.anke.view;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -11,6 +11,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.whzlong.anke.AppConstants;
+import com.whzlong.anke.BaseActivity;
+import com.whzlong.anke.R;
+import com.whzlong.anke.R.id;
+import com.whzlong.anke.R.layout;
+import com.whzlong.anke.R.string;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;

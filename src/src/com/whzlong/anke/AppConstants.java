@@ -25,10 +25,10 @@ public class AppConstants {
 	public static final int OK = 0x10000;
 	public static final int NG = 0x10001;
 	//网络异常错误
-	protected static final int ERROR1 = 0x20000;
+	public static final int ERROR1 = 0x20000;
 	//转换为JSON时的错误
-	protected static final int ERROR2 = 0x20001;
-	protected static final int ERROR3 = 0x20002;
+	public static final int ERROR2 = 0x20001;
+	public static final int ERROR3 = 0x20002;
 	
 	public static final String ZERO = "0";
 	public static final String ONE = "1";

@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.whzlong.anke.TableAdapter.TableCell;
 import com.whzlong.anke.TableAdapter.TableRow;
 import com.whzlong.anke.WarningInfoActivity.ObtainDataThread;
+import com.whzlong.anke.view.MainActivity;
 
 /**
  * @author blowingSnow 实时状态查询界面
