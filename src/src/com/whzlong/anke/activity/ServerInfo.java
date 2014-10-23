@@ -1,4 +1,10 @@
-package com.whzlong.anke;
+package com.whzlong.anke.activity;
+
+import com.whzlong.anke.AppConstants;
+import com.whzlong.anke.R;
+import com.whzlong.anke.R.drawable;
+import com.whzlong.anke.R.id;
+import com.whzlong.anke.R.layout;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,7 +18,7 @@ import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class ServerInfoActivity extends Activity implements OnTouchListener,OnClickListener{
+public class ServerInfo extends Activity implements OnTouchListener,OnClickListener{
 	private Button btnBack = null;
 	private Button btnSave = null;
 	
@@ -64,10 +70,10 @@ public class ServerInfoActivity extends Activity implements OnTouchListener,OnCl
 			case R.id.btnBack:
 				//返回按钮
 			    intent = new Intent();
-				intent.setClass(ServerInfoActivity.this,
-						SystemSetActivity.class);
+				intent.setClass(ServerInfo.this,
+						SystemSet.class);
 				startActivity(intent);
-				ServerInfoActivity.this.finish();
+				ServerInfo.this.finish();
 				break;
 			case R.id.btnSave:
 				//保存
@@ -77,7 +83,7 @@ public class ServerInfoActivity extends Activity implements OnTouchListener,OnCl
 				
 				String ip_port = etServerIp.getText().toString() + ":" + etServerPort.getText().toString();
 				
-				SharedPreferences preference = ServerInfoActivity.this.getSharedPreferences(
+				SharedPreferences preference = ServerInfo.this.getSharedPreferences(
 						"perference", MODE_PRIVATE);
 				Editor editor = preference.edit();
 				editor.putString(AppConstants.URI_IP_PORT, ip_port);
@@ -85,10 +91,10 @@ public class ServerInfoActivity extends Activity implements OnTouchListener,OnCl
 				
 				//返回
 				intent = new Intent();
-				intent.setClass(ServerInfoActivity.this,
-						SystemSetActivity.class);
+				intent.setClass(ServerInfo.this,
+						SystemSet.class);
 				startActivity(intent);
-				ServerInfoActivity.this.finish();
+				ServerInfo.this.finish();
 				break;
 			default:
 				break;

@@ -1,9 +1,14 @@
-package com.whzlong.anke;
+package com.whzlong.anke.activity;
 
 import java.util.HashMap;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.whzlong.anke.R;
+import com.whzlong.anke.R.drawable;
+import com.whzlong.anke.R.id;
+import com.whzlong.anke.R.layout;
 
 
 import android.app.Activity;
@@ -22,7 +27,7 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-public class FactoryInfoActivity extends Activity {
+public class FactoryInfo extends Activity {
 
 	private Button btnBack;
 	protected int previousActivityFlag;
@@ -82,12 +87,12 @@ public class FactoryInfoActivity extends Activity {
 					Intent intent = new Intent();
 					switch (previousActivityFlag) {
 					case 1:   //节能数据界面
-						intent.setClass(FactoryInfoActivity.this,
-								EnergySavingDataActivity.class);
+						intent.setClass(FactoryInfo.this,
+								EnergySavingData.class);
 						break;
-					case RealTimeDataActivity.IS_REATIM_DATA_ACTIVITY:  //实时状态查询呢
-						intent.setClass(FactoryInfoActivity.this,
-								RealTimeDataActivity.class);
+					case RealTimeData.IS_REATIM_DATA_ACTIVITY:  //实时状态查询呢
+						intent.setClass(FactoryInfo.this,
+								RealTimeData.class);
 						
 						break;
 
@@ -97,7 +102,7 @@ public class FactoryInfoActivity extends Activity {
 					intent.putExtra("factoryCode", factoryCode);
 					intent.putExtra("factoryName", checkedRb.getText());
 					startActivity(intent);
-					FactoryInfoActivity.this.finish();
+					FactoryInfo.this.finish();
 				}
 				
 				countflg++;
@@ -126,12 +131,12 @@ public class FactoryInfoActivity extends Activity {
 					Intent intent = new Intent();
 					switch (previousActivityFlag) {
 					case 1:   //节能数据界面
-						intent.setClass(FactoryInfoActivity.this,
-								EnergySavingDataActivity.class);
+						intent.setClass(FactoryInfo.this,
+								EnergySavingData.class);
 						break;
-					case RealTimeDataActivity.IS_REATIM_DATA_ACTIVITY:  //实时状态查询呢
-						intent.setClass(FactoryInfoActivity.this,
-								RealTimeDataActivity.class);
+					case RealTimeData.IS_REATIM_DATA_ACTIVITY:  //实时状态查询呢
+						intent.setClass(FactoryInfo.this,
+								RealTimeData.class);
 						
 						break;
 
@@ -142,7 +147,7 @@ public class FactoryInfoActivity extends Activity {
 					intent.putExtra("factoryCode", selectedFactoryCode);
 					intent.putExtra("factoryName", selectedFactoryName);
 					startActivity(intent);
-					FactoryInfoActivity.this.finish();
+					FactoryInfo.this.finish();
 					break;
 				default:
 					break;

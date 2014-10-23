@@ -1,8 +1,12 @@
-package com.whzlong.anke;
+package com.whzlong.anke.adapter;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.whzlong.anke.R;
+import com.whzlong.anke.R.id;
+import com.whzlong.anke.R.layout;
 
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -1,4 +1,4 @@
-package com.whzlong.anke;
+package com.whzlong.anke.adapter;
 
 import android.view.View;
 import android.view.ViewGroup;

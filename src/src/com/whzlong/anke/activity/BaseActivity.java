@@ -1,4 +1,8 @@
-package com.whzlong.anke;
+package com.whzlong.anke.activity;
+
+import com.whzlong.anke.AppConstants;
+import com.whzlong.anke.AppManager;
+import com.whzlong.anke.bean.Url;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -30,8 +34,15 @@ public class BaseActivity extends Activity {
 		preference = this.getSharedPreferences("perference",
 				MODE_PRIVATE);
 
-		base_ip_port = AppConstants.PROTOCOL
-				+ preference.getString(AppConstants.URI_IP_PORT, "");
+		String ipPort = preference.getString(AppConstants.URI_IP_PORT, "");
+		
+		if("".equals(ipPort)){
+			base_ip_port = Url.HTTP
+					+ Url.DEFAULT_URI_IP_PORT;
+		}else{
+			base_ip_port = Url.HTTP
+					+ preference.getString(AppConstants.URI_IP_PORT, "");
+		}
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package com.whzlong.anke;
+package com.whzlong.anke.activity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,8 +9,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.whzlong.anke.CheckboxListAdapter.ViewHolder;
+import com.whzlong.anke.R.drawable;
+import com.whzlong.anke.R.id;
+import com.whzlong.anke.R.layout;
+import com.whzlong.anke.adapter.CheckboxListAdapter;
+import com.whzlong.anke.adapter.CheckboxListAdapter.ViewHolder;
 import com.whzlong.anke.AppConstants;
+import com.whzlong.anke.R;
 
 import android.app.Activity;
 import android.content.Context;
@@ -30,7 +35,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-public class MultiFactoryInfoActivity extends Activity {
+public class MultiFactoryInfo extends Activity {
 	private Button btnBack;
 	private Button btnSave;
 	private RelativeLayout loadingLayout;
@@ -86,7 +91,7 @@ public class MultiFactoryInfoActivity extends Activity {
 	 */
 	private void addFactoryInfoView(List<Map<String, String>> lsMap) {
 		// 获取原来的设置信息
-		preference = MultiFactoryInfoActivity.this.getSharedPreferences(
+		preference = MultiFactoryInfo.this.getSharedPreferences(
 				"perference", MODE_PRIVATE);
 		String defaultCheckedFactory = preference.getString(
 				AppConstants.SELECTED_WARNING_FACTORY_KEY, "");
@@ -176,10 +181,10 @@ public class MultiFactoryInfoActivity extends Activity {
 			case R.id.btnBack:
 				// 返回按钮
 				intent = new Intent();
-				intent.setClass(MultiFactoryInfoActivity.this,
-						SystemSetActivity.class);
+				intent.setClass(MultiFactoryInfo.this,
+						SystemSet.class);
 				startActivity(intent);
-				MultiFactoryInfoActivity.this.finish();
+				MultiFactoryInfo.this.finish();
 				break;
 			case R.id.btnSave:
 				String selectedFactoryCode = "";
@@ -207,10 +212,10 @@ public class MultiFactoryInfoActivity extends Activity {
 				editor.commit();
 
 				intent = new Intent();
-				intent.setClass(MultiFactoryInfoActivity.this,
-						SystemSetActivity.class);
+				intent.setClass(MultiFactoryInfo.this,
+						SystemSet.class);
 				startActivity(intent);
-				MultiFactoryInfoActivity.this.finish();
+				MultiFactoryInfo.this.finish();
 				break;
 			default:
 				break;

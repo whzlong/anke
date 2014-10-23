@@ -17,6 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.whzlong.anke.bean.Url;
 import com.whzlong.anke.bean.Version;
 
 import com.whzlong.anke.AppConstants;
@@ -27,6 +28,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -158,28 +160,15 @@ public class VersionManager {
 				}
 			}
 		};
-//		new Thread() {
-//			public void run() {
-//				Message msg = new Message();
-//				try {
-//					Version version = null;
-////					Version version = ApiClient
-////							.checkVersion((AppContext) mContext
-////									.getApplicationContext());
-//					msg.what = 1;
-//					msg.obj = version;
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//				handler.sendMessage(msg);
-//			}
-//		}.start();
-		
-		
-		String base_ip_port = "http://101.231.219.254:8082";
-		
-		
-		String identityUrl = base_ip_port + AppConstants.APP_VERSION;
+
+		// 获取服务器端信息
+		SharedPreferences preference = context.getSharedPreferences(
+				"perference", Context.MODE_PRIVATE);
+
+		String base_ip_port = Url.HTTP
+				+ preference.getString(AppConstants.URI_IP_PORT, "");
+
+		String identityUrl = base_ip_port + Url.APP_VERSION;
 
 		// 远程获取身份验证结果
 		RequestQueue mQueue = Volley.newRequestQueue(context);
@@ -197,10 +186,12 @@ public class VersionManager {
 									response.length() - 1);
 							JSONObject jsonObj = new JSONObject(versionNo);
 
-							versionNo = jsonObj.getString(AppConstants.KEY_WORD_VERSION);
-							
-							bundle.putString(AppConstants.KEY_WORD_VERSION, versionNo);
-							
+							versionNo = jsonObj
+									.getString(AppConstants.KEY_WORD_VERSION);
+
+							bundle.putString(AppConstants.KEY_WORD_VERSION,
+									versionNo);
+
 							msg.what = 1;
 							msg.setData(bundle);
 							Version version = new Version();
@@ -208,7 +199,7 @@ public class VersionManager {
 							version.setVersionName(versionNo);
 							version.setDownloadUrl("http://101.231.219.254:8082/NewVer/anke.apk");
 							msg.obj = version;
-							
+
 							handler.sendMessage(msg);
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
@@ -228,23 +219,17 @@ public class VersionManager {
 				});
 
 		mQueue.add(stringRequest);
-		
-		
-		
-		
-		
-		
 
 	}
 
 	public static VersionManager getVersionManager() {
-		if(versionManager == null){
+		if (versionManager == null) {
 			versionManager = new VersionManager();
 		}
 		versionManager.interceptFlag = false;
 		return versionManager;
 	}
-	
+
 	/**
 	 * 获取当前客户端版本信息
 	 */
@@ -342,10 +327,8 @@ public class VersionManager {
 		@Override
 		public void run() {
 			try {
-				String apkName = "anke_" + mVersion.getVersionName()
-						+ ".apk";
-				String tmpApk = "ankeApp_" + mVersion.getVersionName()
-						+ ".tmp";
+				String apkName = "anke_" + mVersion.getVersionName() + ".apk";
+				String tmpApk = "anke_" + mVersion.getVersionName() + ".tmp";
 				// 判断是否挂载了SD卡
 				String storageState = Environment.getExternalStorageState();
 				if (storageState.equals(Environment.MEDIA_MOUNTED)) {
@@ -376,7 +359,7 @@ public class VersionManager {
 
 				// 输出临时下载文件
 				File tmpFile = new File(tmpFilePath);
-				//FileOutputStream fos = new FileOutputStream(tmpFile);
+				FileOutputStream fos = new FileOutputStream(tmpFile);
 
 				URL url = new URL(apkUrl);
 				HttpURLConnection conn = (HttpURLConnection) url
@@ -410,10 +393,12 @@ public class VersionManager {
 						}
 						break;
 					}
-					//fos.write(buf, 0, numread);
+					
+					fos.write(buf, 0, numread);
+					
 				} while (!interceptFlag);// 点击取消就停止下载
 
-				//fos.close();
+			    fos.close();
 				is.close();
 			} catch (MalformedURLException e) {
 				e.printStackTrace();

@@ -1,4 +1,4 @@
-package com.whzlong.anke;
+package com.whzlong.anke.activity;
 
 import java.util.ArrayList;
 
@@ -6,9 +6,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.whzlong.anke.TableAdapter.TableCell;
-import com.whzlong.anke.TableAdapter.TableRow;
-import com.whzlong.anke.view.MainActivity;
+import com.whzlong.anke.R;
+import com.whzlong.anke.R.drawable;
+import com.whzlong.anke.R.id;
+import com.whzlong.anke.R.layout;
+import com.whzlong.anke.adapter.TableAdapter;
+import com.whzlong.anke.adapter.TableAdapter.TableCell;
+import com.whzlong.anke.adapter.TableAdapter.TableRow;
 
 import android.app.Activity;
 import android.content.Context;
@@ -27,7 +31,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
 
-public class WarningInfoActivity extends Activity {
+public class WarningInfo extends Activity {
 
 	private Button btnBack;
 	private Button btnSelect;
@@ -211,10 +215,10 @@ public class WarningInfoActivity extends Activity {
 				case R.id.btnBack:
 					//返回按钮
 				    intent = new Intent();
-					intent.setClass(WarningInfoActivity.this,
-							MainActivity.class);
+					intent.setClass(WarningInfo.this,
+							Main.class);
 					startActivity(intent);
-					WarningInfoActivity.this.finish();
+					WarningInfo.this.finish();
 					break;
 				case R.id.btnSelect:
 					//查询处理按钮

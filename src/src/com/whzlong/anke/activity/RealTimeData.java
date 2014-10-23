@@ -1,4 +1,4 @@
-package com.whzlong.anke;
+package com.whzlong.anke.activity;
 
 import java.util.ArrayList;
 
@@ -23,16 +23,19 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.whzlong.anke.TableAdapter.TableCell;
-import com.whzlong.anke.TableAdapter.TableRow;
-import com.whzlong.anke.WarningInfoActivity.ObtainDataThread;
-import com.whzlong.anke.view.MainActivity;
+import com.whzlong.anke.R;
+import com.whzlong.anke.R.id;
+import com.whzlong.anke.R.layout;
+import com.whzlong.anke.activity.WarningInfo.ObtainDataThread;
+import com.whzlong.anke.adapter.TableAdapter;
+import com.whzlong.anke.adapter.TableAdapter.TableCell;
+import com.whzlong.anke.adapter.TableAdapter.TableRow;
 
 /**
  * @author blowingSnow 实时状态查询界面
  * 
  */
-public class RealTimeDataActivity extends Activity implements OnClickListener {
+public class RealTimeData extends Activity implements OnClickListener {
 	private Button btnBack = null;
 	private Button btnSelect = null;
 	private ListView lv;
@@ -92,7 +95,7 @@ public class RealTimeDataActivity extends Activity implements OnClickListener {
 				dataListLayout.setVisibility(View.VISIBLE);
 				Thread.currentThread().interrupt();
 			} else {
-				Toast.makeText(RealTimeDataActivity.this, "无法获取数据，请检查网络连接",
+				Toast.makeText(RealTimeData.this, "无法获取数据，请检查网络连接",
 						Toast.LENGTH_LONG).show();
 			}
 
@@ -218,19 +221,19 @@ public class RealTimeDataActivity extends Activity implements OnClickListener {
 		switch (v.getId()) {
 			case R.id.btnBack: // 返回
 				intent = new Intent();
-				intent.setClass(RealTimeDataActivity.this, MainActivity.class);
+				intent.setClass(RealTimeData.this, Main.class);
 				startActivity(intent);
-				RealTimeDataActivity.this.finish();
+				RealTimeData.this.finish();
 				
 				break;
 			case R.id.etFactoryName: // 选择炼钢厂
 				intent = new Intent();
-				intent.setClass(RealTimeDataActivity.this,
-						FactoryInfoActivity.class);
+				intent.setClass(RealTimeData.this,
+						FactoryInfo.class);
 				intent.putExtra("previousActivityFlag", IS_REATIM_DATA_ACTIVITY);
 				intent.putExtra("factoryCode", factoryCode);
 				startActivity(intent);
-				RealTimeDataActivity.this.finish();
+				RealTimeData.this.finish();
 	
 				break;
 			case R.id.btnSelect: // 查询处理
@@ -256,7 +259,7 @@ public class RealTimeDataActivity extends Activity implements OnClickListener {
 		public void run() {
 			JSONArray returnData = getListData(factoryCode);
 			String s = returnData.toString();
-			Log.d(RealTimeDataActivity.class.getSimpleName(), "s===" + s);
+			Log.d(RealTimeData.class.getSimpleName(), "s===" + s);
 
 			Message msg = new Message();
 			msg.what = STOP;
@@ -357,7 +360,7 @@ public class RealTimeDataActivity extends Activity implements OnClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 				long arg3) {
-			Toast.makeText(RealTimeDataActivity.this,
+			Toast.makeText(RealTimeData.this,
 					"选中第" + String.valueOf(arg2) + "行", 500).show();
 		}
 	}

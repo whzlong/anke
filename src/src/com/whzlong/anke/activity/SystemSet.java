@@ -1,4 +1,4 @@
-package com.whzlong.anke;
+package com.whzlong.anke.activity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,7 +27,12 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.whzlong.anke.AppConstants;
-import com.whzlong.anke.view.MainActivity;
+import com.whzlong.anke.R;
+import com.whzlong.anke.R.drawable;
+import com.whzlong.anke.R.id;
+import com.whzlong.anke.R.layout;
+import com.whzlong.anke.R.string;
+import com.whzlong.anke.bean.Url;
 
 import android.util.Log;
 
@@ -38,7 +43,7 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
 
-public class SystemSetActivity extends Activity {
+public class SystemSet extends Activity {
 	private Button btnBack;
 	private RelativeLayout lyWarningFactory;
 	private RelativeLayout lyWaringTimeArea;
@@ -68,21 +73,7 @@ public class SystemSetActivity extends Activity {
 
 	public  void requestByPost(){
 		RequestQueue mQueue = Volley.newRequestQueue(this); 
-//		
-//		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest("http://101.231.219.254:8082/restservice.svc/factory", null,  
-//		        new Response.Listener<JSONObject>() {  
-//		            @Override  
-//		            public void onResponse(JSONObject response) {  
-//		                Log.d("TAG", response.toString());  
-//		            }  
-//		        }, new Response.ErrorListener() {  
-//		            @Override  
-//		            public void onErrorResponse(VolleyError error) {  
-//		                Log.e("TAG", error.getMessage(), error);  
-//		            }  
-//		        });  
-//		mQueue.add(jsonObjectRequest); 
-		
+	
 		StringRequest stringRequest = new StringRequest("http://101.231.219.254:8082/restservice.svc/ChkTelCode/13524485769",  
                 new Response.Listener<String>() {
                     @Override  
@@ -104,7 +95,7 @@ public class SystemSetActivity extends Activity {
 	 * 初始化各种视图组件
 	 */
 	private void InitViews() {
-		preference = SystemSetActivity.this.getSharedPreferences(
+		preference = SystemSet.this.getSharedPreferences(
 				"perference", MODE_PRIVATE);
 		
 		//按钮事件管理
@@ -186,25 +177,25 @@ public class SystemSetActivity extends Activity {
 				case R.id.btnBack:
 					//返回按钮
 				    intent = new Intent();
-					intent.setClass(SystemSetActivity.this,
-							MainActivity.class);
+					intent.setClass(SystemSet.this,
+							Main.class);
 					startActivity(intent);
-					SystemSetActivity.this.finish();
+					SystemSet.this.finish();
 					break;
 				case R.id.rlWarningFactory:
 					//选择需要提示警告的工厂
 				    intent = new Intent();
-					intent.setClass(SystemSetActivity.this,
-							MultiFactoryInfoActivity.class);
+					intent.setClass(SystemSet.this,
+							MultiFactoryInfo.class);
 					startActivity(intent);
-					SystemSetActivity.this.finish();
+					SystemSet.this.finish();
 					break;
 				case R.id.rlWaringTimeArea:
 					//报警时间段设置
-					AlertDialog.Builder builder = new AlertDialog.Builder(SystemSetActivity.this); 
+					AlertDialog.Builder builder = new AlertDialog.Builder(SystemSet.this); 
 					
 					mSelectedTimeAreaIndex = -1;
-					builder.setTitle(SystemSetActivity.this.getString(R.string.waringTimeArea));
+					builder.setTitle(SystemSet.this.getString(R.string.waringTimeArea));
 					//设置选项
 					builder.setSingleChoiceItems(mTimeAreaName, mSelectedTimeAreaIndex, new DialogInterface.OnClickListener() {  
 				        public void onClick(DialogInterface dialog, int position) {  
@@ -213,7 +204,7 @@ public class SystemSetActivity extends Activity {
 				    });
 					
 					//确认
-				    builder.setPositiveButton(SystemSetActivity.this.getString(R.string.confirm), new DialogInterface.OnClickListener() {  
+				    builder.setPositiveButton(SystemSet.this.getString(R.string.confirm), new DialogInterface.OnClickListener() {  
 				        public void onClick(DialogInterface dialog, int position) {  
 				            if(mSelectedTimeAreaIndex >= 0) {
 				            	Editor editor = preference.edit();
@@ -227,7 +218,7 @@ public class SystemSetActivity extends Activity {
 				    });  
 				    
 				    //取消
-				    builder.setNegativeButton(SystemSetActivity.this.getString(R.string.cancel), new DialogInterface.OnClickListener() {  
+				    builder.setNegativeButton(SystemSet.this.getString(R.string.cancel), new DialogInterface.OnClickListener() {  
 				        public void onClick(DialogInterface dialog, int position) {  
 				 
 				        }  
@@ -239,10 +230,10 @@ public class SystemSetActivity extends Activity {
 				case R.id.rlServerInfo:
 					//设置服务器信息
 				    intent = new Intent();
-					intent.setClass(SystemSetActivity.this,
-							ServerInfoActivity.class);
+					intent.setClass(SystemSet.this,
+							ServerInfo.class);
 					startActivity(intent);
-					SystemSetActivity.this.finish();
+					SystemSet.this.finish();
 				default:
 					break;
 			}

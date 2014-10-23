@@ -1,4 +1,4 @@
-package com.whzlong.anke;
+package com.whzlong.anke.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,9 +22,16 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.whzlong.anke.TableAdapter.TableCell;
-import com.whzlong.anke.TableAdapter.TableRow;
-import com.whzlong.anke.view.MainActivity;
+import com.whzlong.anke.AppConstants;
+import com.whzlong.anke.R;
+import com.whzlong.anke.R.drawable;
+import com.whzlong.anke.R.id;
+import com.whzlong.anke.R.layout;
+import com.whzlong.anke.R.string;
+import com.whzlong.anke.adapter.TableAdapter;
+import com.whzlong.anke.adapter.TableAdapter.TableCell;
+import com.whzlong.anke.adapter.TableAdapter.TableRow;
+import com.whzlong.anke.bean.Url;
 
 import android.widget.EditText;
 import android.widget.ListView;
@@ -32,7 +39,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-public class EnergySavingDataActivity extends BaseActivity implements
+public class EnergySavingData extends BaseActivity implements
 		OnClickListener, OnTouchListener {
 	private EditText etFactoryName;
 	private Button btnBack;
@@ -100,18 +107,18 @@ public class EnergySavingDataActivity extends BaseActivity implements
 		case R.id.btnBack:
 			// 返回按钮
 			intent = new Intent();
-			intent.setClass(EnergySavingDataActivity.this, MainActivity.class);
+			intent.setClass(EnergySavingData.this, Main.class);
 			startActivity(intent);
-			EnergySavingDataActivity.this.finish();
+			EnergySavingData.this.finish();
 			break;
 		case R.id.etFactoryName:
 			intent = new Intent();
-			intent.setClass(EnergySavingDataActivity.this,
-					FactoryInfoActivity.class);
+			intent.setClass(EnergySavingData.this,
+					FactoryInfo.class);
 			intent.putExtra("previousActivityFlag", 1);
 			intent.putExtra("factoryCode", factoryCode);
 			startActivity(intent);
-			EnergySavingDataActivity.this.finish();
+			EnergySavingData.this.finish();
 			break;
 		case R.id.btnSelect:
 			// 查询处理按钮
@@ -175,7 +182,7 @@ public class EnergySavingDataActivity extends BaseActivity implements
 	 */
 	private void getListData(String factory, String dateTimeFrom,
 			String dateTimeTo) {
-		String identityUrl = base_ip_port + AppConstants.URL_VERIFY_IDENTIFY;
+		String identityUrl = base_ip_port + Url.URL_VERIFY_IDENTIFY;
 
 		// 远程获取身份验证结果
 		RequestQueue mQueue = Volley.newRequestQueue(this);

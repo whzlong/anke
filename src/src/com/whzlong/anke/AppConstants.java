@@ -35,18 +35,6 @@ public class AppConstants {
 	
 	//网络请求时需要使用的固定文字
 	public static final String URI_IP_PORT = "URI_IP_PORT";
-	public static final String PROTOCOL = "http://";
-	
-	//身份验证
-	public static final String URL_VERIFY_IDENTIFY = "/restservice.svc/ChkTelCode";
-	public static final String KEY_WORD_AUTHENTICATION = "authenticationResult";
-	//请求版本号
-	public static final String APP_VERSION = "/RESTService.svc/Ver";
 	public static final String KEY_WORD_VERSION = "versionStatus";
-	
-
-	public static final String URL_REAL_TIME_DATA = "/restservice.svc/factory";
-	
-	
 	
 }

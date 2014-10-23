@@ -1,8 +1,7 @@
-package com.whzlong.anke.view;
+package com.whzlong.anke.activity;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,12 +11,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.whzlong.anke.AppConstants;
-import com.whzlong.anke.BaseActivity;
+import com.whzlong.anke.AppContext;
 import com.whzlong.anke.R;
-import com.whzlong.anke.R.id;
-import com.whzlong.anke.R.layout;
-import com.whzlong.anke.R.string;
-
+import com.whzlong.anke.bean.Url;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
@@ -25,8 +21,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -38,23 +32,26 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class LoadActivity extends BaseActivity {
-
+public class Load extends BaseActivity {
+	
 	private final int LOAD_TIME = 1000;
 	// 终端唯一识别码
 	private String mImei;
-	private Context context;
 	private View dialogLayout;
 	private AlertDialog.Builder builder = null;
+	// 全局Context
+	private AppContext appContext;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_load);
 
-		context = this.getApplicationContext();
-
-		if (isNetworkConnected(context)) {
+		appContext = (AppContext) getApplication();
+		//检测版本更新
+		appContext.setConfigCheckUp(true);
+		
+		if (appContext.isNetworkConnected()) {
 			// 跳转至主界面
 			new Handler().postDelayed(new Runnable() {
 				public void run() {
@@ -63,31 +60,9 @@ public class LoadActivity extends BaseActivity {
 				}
 			}, LOAD_TIME);
 		} else {
-			Toast.makeText(context, "网络连接不可用", Toast.LENGTH_LONG).show();
-			LoadActivity.this.finish();
+			Toast.makeText(appContext, "网络连接不可用，请检查网络连接", Toast.LENGTH_LONG).show();
+			Load.this.finish();
 		}
-
-	}
-
-	/**
-	 * 是否有网络连接
-	 * 
-	 * @param context
-	 * @return
-	 */
-	private boolean isNetworkConnected(Context context) {
-		if (context != null) {
-			ConnectivityManager mConnectivityManager = (ConnectivityManager) context
-					.getSystemService(Context.CONNECTIVITY_SERVICE);
-			NetworkInfo mNetworkInfo = mConnectivityManager
-					.getActiveNetworkInfo();
-
-			if (mNetworkInfo != null) {
-				return mNetworkInfo.isAvailable();
-			}
-		}
-
-		return false;
 	}
 
 	protected void verifyIdentity() {
@@ -97,7 +72,7 @@ public class LoadActivity extends BaseActivity {
 		mImei = phoneManager.getDeviceId();
 
 		//TODO: 将IMEI码添入
-		String identityUrl = base_ip_port + AppConstants.URL_VERIFY_IDENTIFY + "/13524485769";
+		String identityUrl = base_ip_port + Url.URL_VERIFY_IDENTIFY + "/13524485769";
 
 		// 远程获取身份验证结果
 		RequestQueue mQueue = Volley.newRequestQueue(this);
@@ -186,22 +161,22 @@ public class LoadActivity extends BaseActivity {
 			case AppConstants.OK:
 				// 认证通过
 				intent = new Intent();
-				intent.setClass(LoadActivity.this, MainActivity.class);
+				intent.setClass(Load.this, Main.class);
 				startActivity(intent);
-				LoadActivity.this.finish();
+				Load.this.finish();
 				break;
 			case AppConstants.NG:
 				// 认证未通过
-				EditText et = new EditText(LoadActivity.this);
+				EditText et = new EditText(Load.this);
 				et.setText(mImei);
 
-				builder = new Builder(LoadActivity.this);
+				builder = new Builder(Load.this);
 				builder.setTitle("IMEI:");
 				builder.setView(et);
 				builder.setPositiveButton("确定",
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int item) {
-								LoadActivity.this.finish();
+								Load.this.finish();
 							}
 						});
 				builder.show();
@@ -209,8 +184,8 @@ public class LoadActivity extends BaseActivity {
 			case AppConstants.ERROR1:
 				// 无法和服务器正常连接，可能是服务器IP地址和端口发生改变，弹出对话框供用户修改IP或端口
 
-				builder = new Builder(LoadActivity.this);
-				builder.setTitle(context.getString(R.string.serverInfo));
+				builder = new Builder(Load.this);
+				builder.setTitle(appContext.getString(R.string.serverInfo));
 
 				// 自定义输入框
 				LayoutInflater inflater = getLayoutInflater();
@@ -236,7 +211,7 @@ public class LoadActivity extends BaseActivity {
 											+ ":"
 											+ etServerPort.getText().toString();
 
-									SharedPreferences preference = LoadActivity.this
+									SharedPreferences preference = Load.this
 											.getSharedPreferences("perference",
 													MODE_PRIVATE);
 
@@ -244,11 +219,11 @@ public class LoadActivity extends BaseActivity {
 									editor.putString(AppConstants.URI_IP_PORT,
 											ip_port);
 									editor.commit();
-									LoadActivity.this.finish();
+									Load.this.finish();
 								} else {
 									Toast.makeText(
-											LoadActivity.this,
-											context.getString(R.string.input_prompt_server_info),
+											Load.this,
+											appContext.getString(R.string.input_prompt_server_info),
 											Toast.LENGTH_LONG).show();
 									
 									//阻止对话框消失
@@ -269,7 +244,7 @@ public class LoadActivity extends BaseActivity {
 				builder.setNegativeButton("取消",
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int item) {
-								LoadActivity.this.finish();
+								Load.this.finish();
 							}
 						});
 
@@ -277,11 +252,11 @@ public class LoadActivity extends BaseActivity {
 
 				break;
 			case AppConstants.ERROR2:
-				Toast.makeText(LoadActivity.this,
-						context.getString(R.string.system_error),
+				Toast.makeText(Load.this,
+						appContext.getString(R.string.system_error),
 						Toast.LENGTH_LONG).show();
 
-				LoadActivity.this.finish();
+				Load.this.finish();
 				break;
 			default:
 				break;
