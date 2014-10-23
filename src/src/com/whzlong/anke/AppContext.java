@@ -73,32 +73,7 @@ public class AppContext extends Application {
 		return failure;
 	}
 	
-	/**
-	 * 清除缓存目录
-	 * @param dir 目录
-	 * @param numDays 当前系统时间
-	 * @return
-	 */
-	private int clearCacheFolder(File dir, long curTime) {          
-	    int deletedFiles = 0;         
-	    if (dir!= null && dir.isDirectory()) {             
-	        try {                
-	            for (File child:dir.listFiles()) {    
-	                if (child.isDirectory()) {              
-	                    deletedFiles += clearCacheFolder(child, curTime);          
-	                }  
-	                if (child.lastModified() < curTime) {     
-	                    if (child.delete()) {                   
-	                        deletedFiles++;           
-	                    }    
-	                }    
-	            }             
-	        } catch(Exception e) {       
-	            e.printStackTrace();    
-	        }     
-	    }       
-	    return deletedFiles;     
-	}
+
 	
 	/**
 	 * 将对象保存到内存缓存中

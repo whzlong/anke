@@ -1,5 +1,6 @@
 package com.whzlong.anke.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -132,7 +133,7 @@ public class EnergySavingData extends BaseActivity implements
 			checkInput(selectDateFrom, selectDateTo);
 			
 			//从服务器上获取数据
-			getListData(factoryCode, etDatatimeFrom.getText().toString(), etDatatimeTo.getText().toString());
+			getListData(factoryCode, selectDateFrom, selectDateTo);
 			//new Thread(new ObtainDataThread()).start();
 			break;
 
@@ -182,8 +183,9 @@ public class EnergySavingData extends BaseActivity implements
 	 */
 	private void getListData(String factory, String dateTimeFrom,
 			String dateTimeTo) {
-		String identityUrl = base_ip_port + Url.URL_VERIFY_IDENTIFY;
-
+		//TODO: 1.
+		//String identityUrl = base_ip_port + Url.URL_VERIFY_IDENTIFY;
+		String identityUrl = "http://101.231.219.254:8082" + Url.URL_VERIFY_IDENTIFY;
 		// 远程获取身份验证结果
 		RequestQueue mQueue = Volley.newRequestQueue(this);
 

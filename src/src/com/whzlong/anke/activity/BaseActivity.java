@@ -6,6 +6,7 @@ import com.whzlong.anke.bean.Url;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -39,6 +40,10 @@ public class BaseActivity extends Activity {
 		if("".equals(ipPort)){
 			base_ip_port = Url.HTTP
 					+ Url.DEFAULT_URI_IP_PORT;
+			
+			Editor editor = preference.edit();
+			editor.putString(AppConstants.URI_IP_PORT, base_ip_port);
+			editor.commit();
 		}else{
 			base_ip_port = Url.HTTP
 					+ preference.getString(AppConstants.URI_IP_PORT, "");
