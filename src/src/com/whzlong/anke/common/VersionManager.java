@@ -179,25 +179,26 @@ public class VersionManager {
 					public void onResponse(String response) {
 						Log.d("TAG", response);
 						Message msg = new Message();
-						Bundle bundle = new Bundle();
 
 						try {
-							String versionNo = response.substring(1,
+							String versionInfo = response.substring(1,
 									response.length() - 1);
-							JSONObject jsonObj = new JSONObject(versionNo);
-
-							versionNo = jsonObj
-									.getString(AppConstants.KEY_WORD_VERSION);
-
-							bundle.putString(AppConstants.KEY_WORD_VERSION,
-									versionNo);
-
+							versionInfo = versionInfo.replace("\\", "");
+							JSONObject jsonObj = new JSONObject(versionInfo);
+							
 							msg.what = 1;
-							msg.setData(bundle);
+							
 							Version version = new Version();
-							version.setVersionCode(2);
-							version.setVersionName(versionNo);
-							version.setDownloadUrl("http://101.231.219.254:8082/NewVer/anke.apk");
+							//版本号
+							version.setVersionCode(Integer.valueOf(jsonObj
+									.getString(AppConstants.KEY_WORD_VERSION_NO)));
+							//版本名称
+							version.setVersionName(jsonObj
+									.getString(AppConstants.KEY_WORD_VERSION_NAME));
+							//下载地址
+							version.setDownloadUrl(jsonObj
+									.getString(AppConstants.KEY_WORD_DOWNLOAD_URL));
+							
 							msg.obj = version;
 
 							handler.sendMessage(msg);

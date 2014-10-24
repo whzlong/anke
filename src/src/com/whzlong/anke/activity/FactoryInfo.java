@@ -283,7 +283,8 @@ public class FactoryInfo extends BaseActivity implements OnClickListener,
 						try {
 							String retval = response.substring(1,
 									response.length() - 1);
-
+							retval = retval.replace("\\", "");
+							
 							if ("".equals(retval)) {
 								msg.what = AppConstants.NG;
 							} else {

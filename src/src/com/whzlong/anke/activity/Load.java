@@ -90,6 +90,8 @@ public class Load extends BaseActivity {
 						try {
 							String retval = response.substring(1,
 									response.length() - 1);
+							
+							retval = retval.replace("\\","");
 							JSONObject jsonObj = new JSONObject(retval);
 
 							retval = jsonObj.getString("authenticationResult");

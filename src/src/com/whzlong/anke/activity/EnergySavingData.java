@@ -84,7 +84,6 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 
 				setTableInfo(titlesArray, dataArray);
 				dataListLayout.setVisibility(View.VISIBLE);
-				// Thread.currentThread().interrupt();
 			} else {
 				Toast.makeText(context, "无法获取数据，请检查网络连接", Toast.LENGTH_LONG)
 						.show();
@@ -169,21 +168,9 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 					.getText().toString();
 
 			checkInput(selectDateFrom, selectDateTo);
-
-			
-			String ret = getlist();
-			String dd = ret.replace("\"", "");
-			JSONArray js = null;
-			try {
-				js = new JSONArray(ret);
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			System.out.print("dd");
 			// 从服务器上获取数据
-			//getListData(factoryCode, selectDateFrom, selectDateTo);
-			// new Thread(new ObtainDataThread()).start();
+			getListData(factoryCode, selectDateFrom, selectDateTo);
+			
 			break;
 
 		default:
@@ -254,7 +241,8 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 						try {
 							String retval = response.substring(1,
 									response.length() - 1);
-
+							retval = retval.replace("\\", "");
+							
 							if ("".equals(retval)) {
 								msg.what = AppConstants.NG;
 							} else {
@@ -306,46 +294,7 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 
 		mQueue.add(stringRequest);
 	}
-
-	private String getlist(){
-		String ret = "";
-		JSONArray jsonArray = new JSONArray();
-		JSONObject rowData = null;
-		
-		 try {
-				 rowData = new JSONObject();
-				 rowData.put(columns[0], "1#");
-				 rowData.put(columns[1], "2014-08-08 08.20");
-				 rowData.put(columns[2], "240.33");
-				 rowData.put(columns[3], "30.10%");
-				 rowData.put(columns[4], "92.24%");
-				 jsonArray.put(rowData);
-				
-				 rowData = new JSONObject();
-				 rowData.put(columns[0], "1#");
-				 rowData.put(columns[1], "2014-08-10 08.20");
-				 rowData.put(columns[2], "248.32");
-				 rowData.put(columns[3], "28.10%");
-				 rowData.put(columns[4], "90.01%");
-				 jsonArray.put(rowData);
-				
-				 rowData = new JSONObject();
-				 rowData.put(columns[0], "1#");
-				 rowData.put(columns[1], "2014-08-15 08.20");
-				 rowData.put(columns[2], "242.41");
-				 rowData.put(columns[3], "31.40%");
-				 rowData.put(columns[4], "88.01%");
-				 jsonArray.put(rowData);
-				
-				 } catch (JSONException e) {
-				 // TODO Auto-generated catch block
-				 e.printStackTrace();
-				 }
-		 
-		 ret=jsonArray.toString();
-				 
-		 return ret;
-	}
+	
 	/**
 	 * 显示表格数据
 	 * 
@@ -386,117 +335,5 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 
 		TableAdapter tableAdapter = new TableAdapter(this, table);
 		lv.setAdapter(tableAdapter);
-		// lv.setOnItemClickListener(new ItemClickEvent());
 	}
-
-	// /**
-	// * 处理各种按钮事件
-	// *
-	// */
-	// class ButtonListener implements OnClickListener, OnTouchListener {
-	// /**
-	// * 单击事件
-	// */
-	// public void onClick(View v) {
-	// Intent intent = null;
-	//
-	// switch (v.getId()) {
-	// case R.id.btnBack:
-	// //返回按钮
-	// intent = new Intent();
-	// intent.setClass(EnergySavingDataActivity.this,
-	// MainActivity.class);
-	// startActivity(intent);
-	// EnergySavingDataActivity.this.finish();
-	// break;
-	// case R.id.etFactoryName:
-	// intent = new Intent();
-	// intent.setClass(EnergySavingDataActivity.this,
-	// FactoryInfoActivity.class);
-	// intent.putExtra("previousActivityFlag", 1);
-	// intent.putExtra("factoryCode", factoryCode);
-	// startActivity(intent);
-	// EnergySavingDataActivity.this.finish();
-	// break;
-	// case R.id.btnSelect:
-	// //查询处理按钮
-	// loadingLayout.setVisibility(View.VISIBLE);
-	// dataListLayout.setVisibility(View.GONE);
-	// btnSelect.setClickable(false);
-	//
-	// etDatatimeFrom = (EditText) findViewById(R.id.etDatatimeFrom);
-	// etDatatimeTo = (EditText) findViewById(R.id.etDatatimeTo);
-	//
-	// new Thread(new ObtainDataThread()).start();
-	// break;
-	//
-	// default:
-	// break;
-	// }
-	//
-	// }
-	//
-	// /**
-	// * 触摸事件
-	// */
-	// public boolean onTouch(View v, MotionEvent event) {
-	// if (v.getId() == R.id.btnBack) {
-	// if (event.getAction() == MotionEvent.ACTION_DOWN) {
-	// btnBack.setBackgroundResource(R.drawable.light_gray);
-	// }
-	// }
-	//
-	// return false;
-	// }
-	// }
-	//
-	// /**
-	// * 获取一览数据的线程
-	// *
-	// */
-	// public class ObtainDataThread implements Runnable {
-	// @Override
-	// public void run() {
-	// JSONArray returnData = getListData(factoryCode, etDatatimeFrom
-	// .getText().toString(), etDatatimeTo.getText().toString());
-	// Message msg = new Message();
-	// msg.what = STOP;
-	// Bundle bundle = new Bundle();
-	//
-	// try {
-	// int length = returnData.length();
-	// String[] array1 = new String[length];
-	// String[] array2 = new String[length];
-	// String[] array3 = new String[length];
-	// String[] array4 = new String[length];
-	// String[] array5 = new String[length];
-	//
-	// for (int i = 0; i < length; i++) {
-	// JSONObject jsonObj = returnData.getJSONObject(i);
-	//
-	// array1[i] = jsonObj.getString(columns[0]);
-	// array2[i] = jsonObj.getString(columns[1]);
-	// array3[i] = jsonObj.getString(columns[2]);
-	// array4[i] = jsonObj.getString(columns[3]);
-	// array5[i] = jsonObj.getString(columns[4]);
-	// }
-	//
-	// bundle.putStringArray(columns[0], array1);
-	// bundle.putStringArray(columns[1], array2);
-	// bundle.putStringArray(columns[2], array3);
-	// bundle.putStringArray(columns[3], array4);
-	// bundle.putStringArray(columns[4], array5);
-	//
-	// msg.setData(bundle);
-	//
-	// mHandler.sendMessage(msg);
-	//
-	// } catch (JSONException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// msg.what = ERROR;
-	// }
-	// }
-	// }
-
 }

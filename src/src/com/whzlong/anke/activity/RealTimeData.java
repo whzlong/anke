@@ -23,6 +23,12 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.whzlong.anke.AppConstants;
 import com.whzlong.anke.R;
 import com.whzlong.anke.R.id;
 import com.whzlong.anke.R.layout;
@@ -30,12 +36,14 @@ import com.whzlong.anke.activity.WarningInfo.ObtainDataThread;
 import com.whzlong.anke.adapter.TableAdapter;
 import com.whzlong.anke.adapter.TableAdapter.TableCell;
 import com.whzlong.anke.adapter.TableAdapter.TableRow;
+import com.whzlong.anke.bean.Url;
+import com.whzlong.anke.common.StringUtils;
 
 /**
  * @author blowingSnow 实时状态查询界面
  * 
  */
-public class RealTimeData extends Activity implements OnClickListener {
+public class RealTimeData extends BaseActivity implements OnClickListener {
 	private Button btnBack = null;
 	private Button btnSelect = null;
 	private ListView lv;
@@ -48,9 +56,9 @@ public class RealTimeData extends Activity implements OnClickListener {
 	public static final int IS_REATIM_DATA_ACTIVITY = 2;
 
 	private String factoryCode; // 炼钢厂代码
-	private String[] columns = new String[] { "position", "packageFactory",
-			"BakingType", "BakingTemperature", "StandardTemperature",
-			"BakingTime", "gasFlow", "airFlow", "currentAlarm" };
+	private String[] columns = new String[] { "HkwName", "GBH",
+			"HKLX", "HKWD", "BJWD",
+			"HKSJ", "MQLL", "KQLL", "BJLX" };
 	String[] titlesArray = new String[] { "烘烤位", "钢包号", "烘烤类型", "烘烤温度", "标准温度",
 			"烘烤时间", "煤气流量", "空气流量", "当前报警" };
 
@@ -109,12 +117,9 @@ public class RealTimeData extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_real_time_data);
 
 		initViews();
-
 	}
 
 	private void initViews() {
-		// TODO Auto-generated method stub
-
 		// 查询处理
 		btnSelect = (Button) findViewById(R.id.btnSelect);
 		btnSelect.setOnClickListener(this);
@@ -142,7 +147,6 @@ public class RealTimeData extends Activity implements OnClickListener {
 		// 返回
 		btnBack = (Button) findViewById(R.id.btnBack);
 		btnBack.setOnClickListener(this);
-
 	}
 
 	/**
@@ -152,70 +156,93 @@ public class RealTimeData extends Activity implements OnClickListener {
 	 *            钢厂代码
 	 * @return
 	 */
-	private JSONArray getListData(String factory) {
-		JSONArray jsonArray = new JSONArray();
-		JSONObject rowData = null;
+	private void getListData(String factory) {
+		String identityUrl = base_ip_port + Url.URL_REAL_TIME_DATA;
 
-		try {
-			rowData = new JSONObject();
-			rowData.put(columns[0], "1#");
-			rowData.put(columns[1], "80");
-			rowData.put(columns[2], "大修");
-			rowData.put(columns[3], "938");
-			rowData.put(columns[4], "900");
-			rowData.put(columns[5], "60");
-			rowData.put(columns[6], "164");
-			rowData.put(columns[7], "206");
-			rowData.put(columns[8], "无");
-			jsonArray.put(rowData);
+		identityUrl = StringUtils.setParams(identityUrl, factory);
 
-			rowData = new JSONObject();
-			rowData.put(columns[0], "1#");
-			rowData.put(columns[1], "11");
-			rowData.put(columns[2], "预备");
-			rowData.put(columns[3], "877");
-			rowData.put(columns[4], "800");
-			rowData.put(columns[5], "70");
-			rowData.put(columns[6], "227");
-			rowData.put(columns[7], "320");
-			rowData.put(columns[8], "无");
-			jsonArray.put(rowData);
+		// 远程获取身份验证结果
+		RequestQueue mQueue = Volley.newRequestQueue(this);
 
-			rowData = new JSONObject();
-			rowData.put(columns[0], "1#");
-			rowData.put(columns[1], "0");
-			rowData.put(columns[2], "永久层");
-			rowData.put(columns[3], "5");
-			rowData.put(columns[4], "5");
-			rowData.put(columns[5], "50");
-			rowData.put(columns[6], "0");
-			rowData.put(columns[7], "0");
-			rowData.put(columns[8], "无");
-			jsonArray.put(rowData);
-			
-			rowData = new JSONObject();
-			rowData.put(columns[0], "1#");
-			rowData.put(columns[1], "76");
-			rowData.put(columns[2], "预备");
-			rowData.put(columns[3], "917");
-			rowData.put(columns[4], "910");
-			rowData.put(columns[5], "20");
-			rowData.put(columns[6], "186");
-			rowData.put(columns[7], "214");
-			rowData.put(columns[8], "无");
-			jsonArray.put(rowData);
+		StringRequest stringRequest = new StringRequest(identityUrl,
+				new Response.Listener<String>() {
+					@Override
+					public void onResponse(String response) {
+						Log.d("TAG", response);
+						Message msg = new Message();
+						Bundle bundle = new Bundle();
 
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+						try {
+							String retval = response.substring(1,
+									response.length() - 1);
+							retval = retval.replace("\\", "");
+							
+							if ("".equals(retval)) {
+								msg.what = AppConstants.NG;
+							} else {
+								JSONArray returnData = new JSONArray(retval);
 
-		return jsonArray;
+								int length = returnData.length();
+								String[] array1 = new String[length];
+								String[] array2 = new String[length];
+								String[] array3 = new String[length];
+								String[] array4 = new String[length];
+								String[] array5 = new String[length];
+								String[] array6 = new String[length];
+								String[] array7 = new String[length];
+								String[] array8 = new String[length];
+								String[] array9 = new String[length];
+
+								JSONObject jsonObj = null;
+								for (int i = 0; i < length; i++) {
+									jsonObj = returnData.getJSONObject(i);
+
+									array1[i] = jsonObj.getString(columns[0]);
+									array2[i] = jsonObj.getString(columns[1]);
+									array3[i] = jsonObj.getString(columns[2]);
+									array4[i] = jsonObj.getString(columns[3]);
+									array5[i] = jsonObj.getString(columns[4]);
+									array6[i] = jsonObj.getString(columns[5]);
+									array7[i] = jsonObj.getString(columns[6]);
+									array8[i] = jsonObj.getString(columns[7]);
+									array9[i] = jsonObj.getString(columns[8]);
+								}
+
+								bundle.putStringArray(columns[0], array1);
+								bundle.putStringArray(columns[1], array2);
+								bundle.putStringArray(columns[2], array3);
+								bundle.putStringArray(columns[3], array4);
+								bundle.putStringArray(columns[4], array5);
+								bundle.putStringArray(columns[5], array6);
+								bundle.putStringArray(columns[6], array7);
+								bundle.putStringArray(columns[7], array8);
+								bundle.putStringArray(columns[8], array9);
+
+								msg.setData(bundle);
+								msg.what = AppConstants.OK;
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+							msg.what = AppConstants.ERROR2;
+						}
+
+						mHandler.sendMessage(msg);
+					}
+				}, new Response.ErrorListener() {
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						Log.e("TAG", error.getMessage(), error);
+						Message msg = new Message();
+						msg.what = AppConstants.ERROR1;
+						mHandler.sendMessage(msg);
+					}
+				});
+
+		mQueue.add(stringRequest);
 	}
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 		Intent intent = null;
 		
 		switch (v.getId()) {
@@ -242,74 +269,11 @@ public class RealTimeData extends Activity implements OnClickListener {
 				dataListLayout.setVisibility(View.GONE);
 				btnSelect.setClickable(false);
 	
-				new Thread(new ObtainDataThread()).start();
+				getListData(factoryCode);
 				break;
 	
 			default:
 				break;
-		}
-	}
-
-	/**
-	 * 获取一览数据的线程
-	 * 
-	 */
-	public class ObtainDataThread implements Runnable {
-		@Override
-		public void run() {
-			JSONArray returnData = getListData(factoryCode);
-			String s = returnData.toString();
-			Log.d(RealTimeData.class.getSimpleName(), "s===" + s);
-
-			Message msg = new Message();
-			msg.what = STOP;
-			Bundle bundle = new Bundle();
-
-			try {
-				int length = returnData.length();
-				String[] array1 = new String[length];
-				String[] array2 = new String[length];
-				String[] array3 = new String[length];
-				String[] array4 = new String[length];
-				String[] array5 = new String[length];
-				String[] array6 = new String[length];
-				String[] array7 = new String[length];
-				String[] array8 = new String[length];
-				String[] array9 = new String[length];
-
-				for (int i = 0; i < length; i++) {
-					JSONObject jsonObj = returnData.getJSONObject(i);
-
-					array1[i] = jsonObj.getString(columns[0]);
-					array2[i] = jsonObj.getString(columns[1]);
-					array3[i] = jsonObj.getString(columns[2]);
-					array4[i] = jsonObj.getString(columns[3]);
-					array5[i] = jsonObj.getString(columns[4]);
-					array6[i] = jsonObj.getString(columns[5]);
-					array7[i] = jsonObj.getString(columns[6]);
-					array8[i] = jsonObj.getString(columns[7]);
-					array9[i] = jsonObj.getString(columns[8]);
-				}
-
-				bundle.putStringArray(columns[0], array1);
-				bundle.putStringArray(columns[1], array2);
-				bundle.putStringArray(columns[2], array3);
-				bundle.putStringArray(columns[3], array4);
-				bundle.putStringArray(columns[4], array5);
-				bundle.putStringArray(columns[5], array6);
-				bundle.putStringArray(columns[6], array7);
-				bundle.putStringArray(columns[7], array8);
-				bundle.putStringArray(columns[8], array9);
-
-				msg.setData(bundle);
-
-				mHandler.sendMessage(msg);
-
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				msg.what = ERROR;
-			}
 		}
 	}
 
@@ -353,15 +317,5 @@ public class RealTimeData extends Activity implements OnClickListener {
 
 		TableAdapter tableAdapter = new TableAdapter(this, table);
 		lv.setAdapter(tableAdapter);
-		// lv.setOnItemClickListener(new ItemClickEvent());
-	}
-
-	class ItemClickEvent implements AdapterView.OnItemClickListener {
-		@Override
-		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-				long arg3) {
-			Toast.makeText(RealTimeData.this,
-					"选中第" + String.valueOf(arg2) + "行", 500).show();
-		}
 	}
 }

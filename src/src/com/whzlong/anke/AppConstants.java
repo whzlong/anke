@@ -49,6 +49,9 @@ public class AppConstants {
 	
 	//网络请求时需要使用的固定文字
 	public static final String URI_IP_PORT = "URI_IP_PORT";
-	public static final String KEY_WORD_VERSION = "versionStatus";
+	public static final String KEY_WORD_VERSION_NO = "versionNo";
+	public static final String KEY_WORD_VERSION_NAME = "versionName";
+	public static final String KEY_WORD_DOWNLOAD_URL = "downloadUrl";
+	
 	
 }
