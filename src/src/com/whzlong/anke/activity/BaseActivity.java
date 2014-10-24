@@ -42,7 +42,7 @@ public class BaseActivity extends Activity {
 					+ Url.DEFAULT_URI_IP_PORT;
 			
 			Editor editor = preference.edit();
-			editor.putString(AppConstants.URI_IP_PORT, base_ip_port);
+			editor.putString(AppConstants.URI_IP_PORT, Url.DEFAULT_URI_IP_PORT);
 			editor.commit();
 		}else{
 			base_ip_port = Url.HTTP

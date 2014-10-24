@@ -10,6 +10,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.regex.Pattern;
 
+import com.whzlong.anke.AppConstants;
+
 /**
  * 字符串操作工具包
  * 
@@ -203,4 +205,25 @@ public class StringUtils {
 		}
 		return res.toString();
 	}
+	
+	/**
+	 * 给URL设定参数
+	 * @param url
+	 * @param params
+	 * @return
+	 */
+	public static String setParams(String url , String... params){
+		String retVal = url;
+		
+		// 设置参数
+        for (int i = 0; i < params.length; i++) {
+        	retVal = retVal.replace(AppConstants.PARAM_BEGIN
+                + AppConstants.MESSAGE_PARAM_INDUCTOR + (i + 1)
+                + AppConstants.PARAM_END, params[i]);
+        }
+		
+		
+		return retVal;
+	}
+	
 }

@@ -14,6 +14,8 @@ import com.whzlong.anke.AppConstants;
 import com.whzlong.anke.AppContext;
 import com.whzlong.anke.R;
 import com.whzlong.anke.bean.Url;
+import com.whzlong.anke.common.StringUtils;
+
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
@@ -72,8 +74,9 @@ public class Load extends BaseActivity {
 		mImei = phoneManager.getDeviceId();
 
 		//TODO: 将IMEI码添入
-		String identityUrl = base_ip_port + Url.URL_VERIFY_IDENTIFY + "/13524485769";
-
+		String identityUrl = base_ip_port + Url.URL_VERIFY_IDENTIFY;
+		identityUrl = StringUtils.setParams(identityUrl, mImei);
+		
 		// 远程获取身份验证结果
 		RequestQueue mQueue = Volley.newRequestQueue(this);
 

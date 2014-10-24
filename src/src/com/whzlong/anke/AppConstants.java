@@ -4,6 +4,20 @@ public class AppConstants {
 
 	public static final int STOP = 0x10000;
 	public static final int ERROR = 0x20000;
+	 /**
+     * 消息参数引导
+     */
+	public static final String MESSAGE_PARAM_INDUCTOR = "%";
+
+    /**
+     * 参数开始
+     */
+	public static final String PARAM_BEGIN = "[";
+
+    /**
+     * 参数结束
+     */
+	public static final String PARAM_END = "]";
 	
 	//系统设置界面
 	//报警炼钢厂选择
