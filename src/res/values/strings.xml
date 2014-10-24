@@ -48,5 +48,7 @@
     <string name="input_prompt_server_info">请输入完整的服务器端信息</string>
 	<string name="input_prompt_select_date">请输入查询时间</string>
 	
-	<string name="system_error">系统错误，请联系管理人</string>
+	<string name="system_error">系统错误，请联系软件开发商</string>
+	<string name="error_select_result_zero">您查询的数据不存在。</string>
+	<string name="error_network_connected">无法连接服务器，请检查你的网络设置或服务器信息。</string>
 </resources>

@@ -64,8 +64,6 @@
                     android:hint="@string/promptInfoFactory"
                     android:ems="15" >
                 </EditText>
-
-
             </TableRow>
 
             <TableRow

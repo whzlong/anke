@@ -6,7 +6,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,12 +13,10 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -29,10 +26,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.whzlong.anke.AppConstants;
+import com.whzlong.anke.AppContext;
 import com.whzlong.anke.R;
-import com.whzlong.anke.R.id;
-import com.whzlong.anke.R.layout;
-import com.whzlong.anke.activity.WarningInfo.ObtainDataThread;
 import com.whzlong.anke.adapter.TableAdapter;
 import com.whzlong.anke.adapter.TableAdapter.TableCell;
 import com.whzlong.anke.adapter.TableAdapter.TableRow;
@@ -53,6 +48,8 @@ public class RealTimeData extends BaseActivity implements OnClickListener {
 	private RelativeLayout loadingLayout;
 	private RelativeLayout dataListLayout;
 
+	// 全局Context
+	private AppContext appContext;
 	public static final int IS_REATIM_DATA_ACTIVITY = 2;
 
 	private String factoryCode; // 炼钢厂代码
@@ -61,14 +58,12 @@ public class RealTimeData extends BaseActivity implements OnClickListener {
 			"HKSJ", "MQLL", "KQLL", "BJLX" };
 	String[] titlesArray = new String[] { "烘烤位", "钢包号", "烘烤类型", "烘烤温度", "标准温度",
 			"烘烤时间", "煤气流量", "空气流量", "当前报警" };
-
-	protected static final int STOP = 100;
-	protected static final int ERROR = 403;
-
+	
 	// 定义一个Handler,更新一览数据
 	private Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
-			if (msg.what == STOP) {
+			switch(msg.what){
+			case AppConstants.OK:
 				loadingLayout.setVisibility(View.GONE);
 				Bundle bundle = msg.getData();
 
@@ -100,14 +95,24 @@ public class RealTimeData extends BaseActivity implements OnClickListener {
 				}
 
 				setTableInfo(titlesArray, dataArray);
-				dataListLayout.setVisibility(View.VISIBLE);
-				Thread.currentThread().interrupt();
-			} else {
-				Toast.makeText(RealTimeData.this, "无法获取数据，请检查网络连接",
+				break;
+			case AppConstants.NG:
+				Toast.makeText(appContext, appContext.getString(R.string.error_select_result_zero), Toast.LENGTH_LONG).show();
+				break;
+			case AppConstants.ERROR1:
+				Toast.makeText(appContext, appContext.getString(R.string.error_network_connected), Toast.LENGTH_LONG).show();
+				break;
+			case AppConstants.ERROR2:
+				Toast.makeText(appContext,
+						appContext.getString(R.string.system_error),
 						Toast.LENGTH_LONG).show();
+				break;
+			default:
+				break;
 			}
 
 			btnSelect.setClickable(true);
+			loadingLayout.setVisibility(View.GONE);
 		}
 	};
 
@@ -116,6 +121,8 @@ public class RealTimeData extends BaseActivity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_real_time_data);
 
+		appContext = (AppContext) getApplication();
+		// 初始化各种视图组件
 		initViews();
 	}
 

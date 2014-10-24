@@ -44,6 +44,118 @@ public class Load extends BaseActivity {
 	// 全局Context
 	private AppContext appContext;
 
+	// 定义一个Handler,更新一览数据
+	private Handler mHandler = new Handler() {
+		public void handleMessage(Message msg) {
+			Intent intent = null;
+
+			switch (msg.what) {
+				case AppConstants.OK:
+					// 认证通过
+					intent = new Intent();
+					intent.setClass(Load.this, Main.class);
+					startActivity(intent);
+					Load.this.finish();
+					break;
+				case AppConstants.NG:
+					// 认证未通过
+					EditText et = new EditText(Load.this);
+					et.setText(mImei);
+	
+					builder = new Builder(Load.this);
+					builder.setTitle("IMEI:");
+					builder.setView(et);
+					builder.setPositiveButton("确定",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int item) {
+									Load.this.finish();
+								}
+							});
+					builder.show();
+					break;
+				case AppConstants.ERROR1:
+					// 无法和服务器正常连接，可能是服务器IP地址和端口发生改变，弹出对话框供用户修改IP或端口
+	
+					builder = new Builder(Load.this);
+					builder.setTitle(appContext.getString(R.string.serverInfo));
+	
+					// 自定义输入框
+					LayoutInflater inflater = getLayoutInflater();
+					dialogLayout = inflater.inflate(R.layout.dialog_server_info,
+							(ViewGroup) findViewById(R.id.dialog));
+	
+					builder.setView(dialogLayout);
+					builder.setPositiveButton("确定",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int item) {
+									// IP地址
+									EditText etServerIp = (EditText) dialogLayout
+											.findViewById(R.id.etServerIp);
+									// 端口地址
+									EditText etServerPort = (EditText) dialogLayout
+											.findViewById(R.id.etServerPort);
+									
+									if (checkInput(etServerIp.getText().toString(), etServerPort.getText()
+											.toString())) {
+	
+										String ip_port = etServerIp.getText()
+												.toString()
+												+ ":"
+												+ etServerPort.getText().toString();
+	
+										SharedPreferences preference = Load.this
+												.getSharedPreferences("perference",
+														MODE_PRIVATE);
+	
+										Editor editor = preference.edit();
+										editor.putString(AppConstants.URI_IP_PORT,
+												ip_port);
+										editor.commit();
+										Load.this.finish();
+									} else {
+										Toast.makeText(
+												Load.this,
+												appContext.getString(R.string.input_prompt_server_info),
+												Toast.LENGTH_LONG).show();
+										
+										//阻止对话框消失
+										try {
+											java.lang.reflect.Field field = dialog
+													.getClass().getSuperclass()
+													.getDeclaredField("mShowing");
+											field.setAccessible(true);
+											field.set(dialog, false);
+										} catch (Exception e) {
+											e.printStackTrace();
+										}
+									}
+	
+								}
+							});
+	
+					builder.setNegativeButton("取消",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int item) {
+									Load.this.finish();
+								}
+							});
+	
+					builder.show();
+	
+					break;
+				case AppConstants.ERROR2:
+					Toast.makeText(Load.this,
+							appContext.getString(R.string.system_error),
+							Toast.LENGTH_LONG).show();
+	
+					Load.this.finish();
+					break;
+				default:
+					break;
+			}
+		}
+	};
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -156,116 +268,5 @@ public class Load extends BaseActivity {
 
 		return true;
 	}
-	
-	// 定义一个Handler,更新一览数据
-	private Handler mHandler = new Handler() {
-		public void handleMessage(Message msg) {
-			Intent intent = null;
 
-			switch (msg.what) {
-			case AppConstants.OK:
-				// 认证通过
-				intent = new Intent();
-				intent.setClass(Load.this, Main.class);
-				startActivity(intent);
-				Load.this.finish();
-				break;
-			case AppConstants.NG:
-				// 认证未通过
-				EditText et = new EditText(Load.this);
-				et.setText(mImei);
-
-				builder = new Builder(Load.this);
-				builder.setTitle("IMEI:");
-				builder.setView(et);
-				builder.setPositiveButton("确定",
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int item) {
-								Load.this.finish();
-							}
-						});
-				builder.show();
-				break;
-			case AppConstants.ERROR1:
-				// 无法和服务器正常连接，可能是服务器IP地址和端口发生改变，弹出对话框供用户修改IP或端口
-
-				builder = new Builder(Load.this);
-				builder.setTitle(appContext.getString(R.string.serverInfo));
-
-				// 自定义输入框
-				LayoutInflater inflater = getLayoutInflater();
-				dialogLayout = inflater.inflate(R.layout.dialog_server_info,
-						(ViewGroup) findViewById(R.id.dialog));
-
-				builder.setView(dialogLayout);
-				builder.setPositiveButton("确定",
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int item) {
-								// IP地址
-								EditText etServerIp = (EditText) dialogLayout
-										.findViewById(R.id.etServerIp);
-								// 端口地址
-								EditText etServerPort = (EditText) dialogLayout
-										.findViewById(R.id.etServerPort);
-								
-								if (checkInput(etServerIp.getText().toString(), etServerPort.getText()
-										.toString())) {
-
-									String ip_port = etServerIp.getText()
-											.toString()
-											+ ":"
-											+ etServerPort.getText().toString();
-
-									SharedPreferences preference = Load.this
-											.getSharedPreferences("perference",
-													MODE_PRIVATE);
-
-									Editor editor = preference.edit();
-									editor.putString(AppConstants.URI_IP_PORT,
-											ip_port);
-									editor.commit();
-									Load.this.finish();
-								} else {
-									Toast.makeText(
-											Load.this,
-											appContext.getString(R.string.input_prompt_server_info),
-											Toast.LENGTH_LONG).show();
-									
-									//阻止对话框消失
-									try {
-										java.lang.reflect.Field field = dialog
-												.getClass().getSuperclass()
-												.getDeclaredField("mShowing");
-										field.setAccessible(true);
-										field.set(dialog, false);
-									} catch (Exception e) {
-										e.printStackTrace();
-									}
-								}
-
-							}
-						});
-
-				builder.setNegativeButton("取消",
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int item) {
-								Load.this.finish();
-							}
-						});
-
-				builder.show();
-
-				break;
-			case AppConstants.ERROR2:
-				Toast.makeText(Load.this,
-						appContext.getString(R.string.system_error),
-						Toast.LENGTH_LONG).show();
-
-				Load.this.finish();
-				break;
-			default:
-				break;
-			}
-		}
-	};
 }

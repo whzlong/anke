@@ -1,7 +1,5 @@
 package com.whzlong.anke.activity;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,11 +22,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.whzlong.anke.AppConstants;
+import com.whzlong.anke.AppContext;
 import com.whzlong.anke.R;
-import com.whzlong.anke.R.drawable;
-import com.whzlong.anke.R.id;
-import com.whzlong.anke.R.layout;
-import com.whzlong.anke.R.string;
 import com.whzlong.anke.adapter.TableAdapter;
 import com.whzlong.anke.adapter.TableAdapter.TableCell;
 import com.whzlong.anke.adapter.TableAdapter.TableRow;
@@ -50,7 +45,8 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 	private String factoryCode = "";
 	private RelativeLayout loadingLayout;
 	private RelativeLayout dataListLayout;
-	protected Context context = null;
+	// 全局Context
+	private AppContext appContext;
 	private String[] titlesArray = new String[] { "烘烤位", "每周最后一条数据", "小时能耗",
 			"节能率", "作业率" };
 	private String[] columns = new String[] { "OPCGroup", "Date", "SXSHL",
@@ -59,34 +55,47 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 	// 定义一个Handler,更新一览数据
 	private Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
-			if (msg.what == AppConstants.OK) {
-				loadingLayout.setVisibility(View.GONE);
-				Bundle bundle = msg.getData();
+			switch(msg.what){
+				case AppConstants.OK:
+					loadingLayout.setVisibility(View.GONE);
+					Bundle bundle = msg.getData();
 
-				String[] array1 = bundle.getStringArray(columns[0]);
-				String[] array2 = bundle.getStringArray(columns[1]);
-				String[] array3 = bundle.getStringArray(columns[2]);
-				String[] array4 = bundle.getStringArray(columns[3]);
-				String[] array5 = bundle.getStringArray(columns[4]);
+					String[] array1 = bundle.getStringArray(columns[0]);
+					String[] array2 = bundle.getStringArray(columns[1]);
+					String[] array3 = bundle.getStringArray(columns[2]);
+					String[] array4 = bundle.getStringArray(columns[3]);
+					String[] array5 = bundle.getStringArray(columns[4]);
 
-				int rowCnt = array1.length;
-				int colCnt = columns.length;
+					int rowCnt = array1.length;
+					int colCnt = columns.length;
 
-				String[][] dataArray = new String[rowCnt][colCnt];
+					String[][] dataArray = new String[rowCnt][colCnt];
 
-				for (int i = 0; i < rowCnt; i++) {
-					dataArray[i][0] = array1[i];
-					dataArray[i][1] = array2[i];
-					dataArray[i][2] = array3[i];
-					dataArray[i][3] = array4[i];
-					dataArray[i][4] = array5[i];
-				}
+					for (int i = 0; i < rowCnt; i++) {
+						dataArray[i][0] = array1[i];
+						dataArray[i][1] = array2[i];
+						dataArray[i][2] = array3[i];
+						dataArray[i][3] = array4[i];
+						dataArray[i][4] = array5[i];
+					}
 
-				setTableInfo(titlesArray, dataArray);
-				dataListLayout.setVisibility(View.VISIBLE);
-			} else {
-				Toast.makeText(context, "无法获取数据，请检查网络连接", Toast.LENGTH_LONG)
-						.show();
+					setTableInfo(titlesArray, dataArray);
+					dataListLayout.setVisibility(View.VISIBLE);
+					
+					break;
+				case AppConstants.NG:
+					Toast.makeText(appContext, appContext.getString(R.string.error_select_result_zero), Toast.LENGTH_LONG).show();
+					break;
+				case AppConstants.ERROR1:
+					Toast.makeText(appContext, appContext.getString(R.string.error_network_connected), Toast.LENGTH_LONG).show();
+					break;
+				case AppConstants.ERROR2:
+					Toast.makeText(appContext,
+							appContext.getString(R.string.system_error),
+							Toast.LENGTH_LONG).show();
+					break;
+				default:
+					break;
 			}
 
 			btnSelect.setClickable(true);
@@ -99,7 +108,7 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_energy_saving_data);
 
-		context = this.getApplicationContext();
+		appContext = (AppContext) getApplication();
 		// 初始化各种视图组件
 		initViews();
 	}
@@ -186,8 +195,8 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 	 */
 	private void checkInput(String dateFrom, String dateTo) {
 		if ("".equals(dateFrom) || "".equals(dateTo)) {
-			Toast.makeText(context,
-					context.getString(R.string.input_prompt_select_date),
+			Toast.makeText(appContext,
+					appContext.getString(R.string.input_prompt_select_date),
 					Toast.LENGTH_LONG).show();
 		}
 
