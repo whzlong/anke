@@ -11,8 +11,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.EditText;
@@ -38,7 +40,7 @@ import com.whzlong.anke.common.StringUtils;
  * @author blowingSnow 实时状态查询界面
  * 
  */
-public class RealTimeData extends BaseActivity implements OnClickListener {
+public class RealTimeData extends BaseActivity implements OnClickListener, OnTouchListener{
 	private Button btnBack = null;
 	private Button btnSelect = null;
 	private ListView lv;
@@ -154,6 +156,7 @@ public class RealTimeData extends BaseActivity implements OnClickListener {
 		// 返回
 		btnBack = (Button) findViewById(R.id.btnBack);
 		btnBack.setOnClickListener(this);
+		btnBack.setOnTouchListener(this);
 	}
 
 	/**
@@ -270,13 +273,21 @@ public class RealTimeData extends BaseActivity implements OnClickListener {
 				RealTimeData.this.finish();
 	
 				break;
-			case R.id.btnSelect: // 查询处理
-				// 查询处理按钮
-				loadingLayout.setVisibility(View.VISIBLE);
-				dataListLayout.setVisibility(View.GONE);
-				btnSelect.setClickable(false);
+			case R.id.btnSelect: 
+				// 查询处理
 	
-				getListData(factoryCode);
+				if(factoryCode == null || "".equals(factoryCode)){
+					Toast.makeText(appContext,
+							appContext.getString(R.string.error_info_factory),
+							Toast.LENGTH_LONG).show();
+				}else{
+					loadingLayout.setVisibility(View.VISIBLE);
+					dataListLayout.setVisibility(View.GONE);
+					btnSelect.setClickable(false);
+					
+					getListData(factoryCode);
+				}
+				
 				break;
 	
 			default:
@@ -284,6 +295,19 @@ public class RealTimeData extends BaseActivity implements OnClickListener {
 		}
 	}
 
+	/**
+	 * 各种控件触摸事件处理
+	 */
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		if (v.getId() == R.id.btnBack) {
+			if (event.getAction() == MotionEvent.ACTION_DOWN) {
+				btnBack.setBackgroundResource(R.drawable.light_gray);
+			}
+		}
+
+		return false;
+	}
 	/**
 	 * 显示表格数据
 	 * 

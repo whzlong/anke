@@ -10,7 +10,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -55,47 +59,52 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 	// 定义一个Handler,更新一览数据
 	private Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
-			switch(msg.what){
-				case AppConstants.OK:
-					loadingLayout.setVisibility(View.GONE);
-					Bundle bundle = msg.getData();
+			switch (msg.what) {
+			case AppConstants.OK:
+				loadingLayout.setVisibility(View.GONE);
+				Bundle bundle = msg.getData();
 
-					String[] array1 = bundle.getStringArray(columns[0]);
-					String[] array2 = bundle.getStringArray(columns[1]);
-					String[] array3 = bundle.getStringArray(columns[2]);
-					String[] array4 = bundle.getStringArray(columns[3]);
-					String[] array5 = bundle.getStringArray(columns[4]);
+				String[] array1 = bundle.getStringArray(columns[0]);
+				String[] array2 = bundle.getStringArray(columns[1]);
+				String[] array3 = bundle.getStringArray(columns[2]);
+				String[] array4 = bundle.getStringArray(columns[3]);
+				String[] array5 = bundle.getStringArray(columns[4]);
 
-					int rowCnt = array1.length;
-					int colCnt = columns.length;
+				int rowCnt = array1.length;
+				int colCnt = columns.length;
 
-					String[][] dataArray = new String[rowCnt][colCnt];
+				String[][] dataArray = new String[rowCnt][colCnt];
 
-					for (int i = 0; i < rowCnt; i++) {
-						dataArray[i][0] = array1[i];
-						dataArray[i][1] = array2[i];
-						dataArray[i][2] = array3[i];
-						dataArray[i][3] = array4[i];
-						dataArray[i][4] = array5[i];
-					}
+				for (int i = 0; i < rowCnt; i++) {
+					dataArray[i][0] = array1[i];
+					dataArray[i][1] = array2[i];
+					dataArray[i][2] = array3[i];
+					dataArray[i][3] = array4[i];
+					dataArray[i][4] = array5[i];
+				}
 
-					setTableInfo(titlesArray, dataArray);
-					dataListLayout.setVisibility(View.VISIBLE);
-					
-					break;
-				case AppConstants.NG:
-					Toast.makeText(appContext, appContext.getString(R.string.error_select_result_zero), Toast.LENGTH_LONG).show();
-					break;
-				case AppConstants.ERROR1:
-					Toast.makeText(appContext, appContext.getString(R.string.error_network_connected), Toast.LENGTH_LONG).show();
-					break;
-				case AppConstants.ERROR2:
-					Toast.makeText(appContext,
-							appContext.getString(R.string.system_error),
-							Toast.LENGTH_LONG).show();
-					break;
-				default:
-					break;
+				setTableInfo(titlesArray, dataArray);
+				dataListLayout.setVisibility(View.VISIBLE);
+
+				break;
+			case AppConstants.NG:
+				Toast.makeText(
+						appContext,
+						appContext.getString(R.string.error_select_result_zero),
+						Toast.LENGTH_LONG).show();
+				break;
+			case AppConstants.ERROR1:
+				Toast.makeText(appContext,
+						appContext.getString(R.string.error_network_connected),
+						Toast.LENGTH_LONG).show();
+				break;
+			case AppConstants.ERROR2:
+				Toast.makeText(appContext,
+						appContext.getString(R.string.system_error),
+						Toast.LENGTH_LONG).show();
+				break;
+			default:
+				break;
 			}
 
 			btnSelect.setClickable(true);
@@ -142,6 +151,67 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 		btnBack.setOnTouchListener(this);
 	}
 
+
+	/**
+	 * 验证输入数据
+	 * 
+	 * @param selectDateFrom
+	 * @param selectDateTo
+	 */
+	private boolean checkInput(String strDateFrom, String strDateTo) {
+		if (factoryCode == null || "".equals(factoryCode)) {
+			Toast.makeText(appContext,
+					appContext.getString(R.string.error_info_factory),
+					Toast.LENGTH_LONG).show();
+			return false;
+		}
+
+		if ("".equals(strDateFrom) || "".equals(strDateTo)) {
+			Toast.makeText(appContext,
+					appContext.getString(R.string.input_prompt_select_date),
+					Toast.LENGTH_LONG).show();
+			return false;
+		}
+
+		SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+		Date dateFrom = null;
+		Date dateTo = null;
+		long maxInterval = 30;
+
+		try {
+			dateFrom = format.parse(strDateFrom);
+			dateTo = format.parse(strDateTo);
+			
+			if(dateFrom.compareTo(dateTo) > 0){
+				Toast.makeText(appContext,
+						appContext.getString(R.string.error_info_date_start_end),
+						Toast.LENGTH_LONG).show();
+				
+				return false;
+			}
+			
+			long days = (dateTo.getTime() - dateFrom.getTime()) / (24*60*60*1000);  
+			
+			if(days > maxInterval){
+				Toast.makeText(appContext,
+						appContext.getString(R.string.error_info_date_interval),
+						Toast.LENGTH_LONG).show();
+				
+				return false;
+			}
+
+		} catch (ParseException e) {
+			Toast.makeText(appContext,
+					appContext.getString(R.string.error_info_date_format),
+					Toast.LENGTH_LONG).show();
+			return false;
+		}
+		
+		
+		return true;
+
+	}
+	
 	/**
 	 * 各种按钮点击事件处理
 	 */
@@ -167,41 +237,24 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 			break;
 		case R.id.btnSelect:
 			// 查询处理按钮
-			loadingLayout.setVisibility(View.VISIBLE);
-			dataListLayout.setVisibility(View.GONE);
-			btnSelect.setClickable(false);
-
 			String selectDateFrom = ((EditText) findViewById(R.id.etDatatimeFrom))
 					.getText().toString();
 			String selectDateTo = ((EditText) findViewById(R.id.etDatatimeTo))
 					.getText().toString();
 
-			checkInput(selectDateFrom, selectDateTo);
-			// 从服务器上获取数据
-			getListData(factoryCode, selectDateFrom, selectDateTo);
-			
+			if(checkInput(selectDateFrom, selectDateTo)){
+				loadingLayout.setVisibility(View.VISIBLE);
+				dataListLayout.setVisibility(View.GONE);
+				btnSelect.setClickable(false);
+				// 从服务器上获取数据
+				getListData(factoryCode, selectDateFrom, selectDateTo);
+			}
+
 			break;
 
 		default:
 			break;
 		}
-	}
-
-	/**
-	 * 验证输入数据
-	 * 
-	 * @param selectDateFrom
-	 * @param selectDateTo
-	 */
-	private void checkInput(String dateFrom, String dateTo) {
-		if ("".equals(dateFrom) || "".equals(dateTo)) {
-			Toast.makeText(appContext,
-					appContext.getString(R.string.input_prompt_select_date),
-					Toast.LENGTH_LONG).show();
-		}
-
-		// TODO: 1.查询时间验证
-
 	}
 
 	/**
@@ -251,7 +304,7 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 							String retval = response.substring(1,
 									response.length() - 1);
 							retval = retval.replace("\\", "");
-							
+
 							if ("".equals(retval)) {
 								msg.what = AppConstants.NG;
 							} else {
@@ -303,7 +356,7 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 
 		mQueue.add(stringRequest);
 	}
-	
+
 	/**
 	 * 显示表格数据
 	 * 

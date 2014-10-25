@@ -81,6 +81,7 @@ public class ServerInfo extends Activity implements OnTouchListener,OnClickListe
 				EditText etServerIp = (EditText)findViewById(R.id.etServerIp);
 				EditText etServerPort = (EditText)findViewById(R.id.etServerPort);
 				
+				//TODO: 输入验证处理
 				String ip_port = etServerIp.getText().toString() + ":" + etServerPort.getText().toString();
 				
 				SharedPreferences preference = ServerInfo.this.getSharedPreferences(

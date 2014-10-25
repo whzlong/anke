@@ -46,7 +46,11 @@
     <string name="cancel">取消</string>
     
     <string name="input_prompt_server_info">请输入完整的服务器端信息</string>
-	<string name="input_prompt_select_date">请输入查询时间</string>
+	<string name="input_prompt_select_date">请输入查询日期</string>
+	<string name="error_info_date_start_end">查询日期的起始日期不能超过结束日期</string>
+	<string name="error_info_date_interval">查询日期的区间不能超过1个月</string>
+	<string name="error_info_date_format">请输入正确的日期格式</string>
+	<string name="error_info_factory">请输入钢厂信息</string>
 	
 	<string name="system_error">系统错误，请联系软件开发商</string>
 	<string name="error_select_result_zero">您查询的数据不存在。</string>
