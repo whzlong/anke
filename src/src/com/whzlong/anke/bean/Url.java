@@ -25,6 +25,6 @@ public class Url implements Serializable {
 	// 实时数据
 	public static String URL_REAL_TIME_DATA = "/RESTService.svc/CData/[%1]";
 	// 历史警告数据查询
-	public static String URL_HISTORY_WARNING_INFO = "/RESTService.svc/JNData/[%1]/[%2]";
+	public static String URL_HISTORY_WARNING_INFO = "/RESTService.svc/Warn/[%1]/[%2]/[%3]";
 
 }

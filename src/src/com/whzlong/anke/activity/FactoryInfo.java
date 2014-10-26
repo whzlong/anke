@@ -11,6 +11,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.whzlong.anke.AppConstants;
+import com.whzlong.anke.AppContext;
 import com.whzlong.anke.R;
 import com.whzlong.anke.R.drawable;
 import com.whzlong.anke.R.id;
@@ -50,6 +51,8 @@ public class FactoryInfo extends BaseActivity implements OnClickListener,
 	private String[] factoryNameArr;
 	private RadioGroup rgFactoryInfo;
 	private int countflg = 0;
+	// 全局Context
+	private AppContext appContext;
 
 	private String[] columns = new String[] { "SteelWorksCode",
 			"SteelWorksName" };
@@ -57,42 +60,59 @@ public class FactoryInfo extends BaseActivity implements OnClickListener,
 	// 定义一个Handler,更新一览数据
 	private Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
-			if (msg.what == AppConstants.OK) {
-				Bundle bundle = msg.getData();
-
-				factoryCodeArr = bundle.getStringArray(columns[0]);
-				factoryNameArr = bundle.getStringArray(columns[1]);
-				factoryInfo = new HashMap<String, String>();
-
-				rgFactoryInfo = (RadioGroup) findViewById(R.id.rgFactoryInfo);
-
-				RadioButton rb = null;
-
-				for (int i = 0; i < factoryNameArr.length; i++) {
-					rb = new RadioButton(rgFactoryInfo.getContext());
-
-					rb.setText(factoryNameArr[i]);
-					rb.setTextSize(20);
-					// 选中其次选中的数据
-					if (factoryCodeArr[i].equals(selectedFactoryCode)) {
-						rb.setChecked(true);
-						// 直接点击返回按钮后，将其次选择的数据返回
-						selectedFactoryName = factoryNameArr[i];
+			switch (msg.what) {
+				case AppConstants.OK:
+					Bundle bundle = msg.getData();
+	
+					factoryCodeArr = bundle.getStringArray(columns[0]);
+					factoryNameArr = bundle.getStringArray(columns[1]);
+					factoryInfo = new HashMap<String, String>();
+	
+					rgFactoryInfo = (RadioGroup) findViewById(R.id.rgFactoryInfo);
+	
+					RadioButton rb = null;
+	
+					for (int i = 0; i < factoryNameArr.length; i++) {
+						rb = new RadioButton(rgFactoryInfo.getContext());
+	
+						rb.setText(factoryNameArr[i]);
+						rb.setTextSize(20);
+						// 选中其次选中的数据
+						if (factoryCodeArr[i].equals(selectedFactoryCode)) {
+							rb.setChecked(true);
+							// 直接点击返回按钮后，将其次选择的数据返回
+							selectedFactoryName = factoryNameArr[i];
+						}
+	
+						rgFactoryInfo.addView(rb);
+	
+						factoryInfo.put(factoryNameArr[i], factoryCodeArr[i]);
 					}
-
-					rgFactoryInfo.addView(rb);
-
-					factoryInfo.put(factoryNameArr[i], factoryCodeArr[i]);
-				}
-
-				loadingLayout.setVisibility(View.GONE);
-				dataListLayout.setVisibility(View.VISIBLE);
-
-				//Thread.currentThread().interrupt();
-			} else {
-				Toast.makeText(context, "无法获取数据，请检查网络连接", Toast.LENGTH_LONG)
-						.show();
+	
+					dataListLayout.setVisibility(View.VISIBLE);
+					break;
+				case AppConstants.NG:
+					Toast.makeText(
+							appContext,
+							appContext.getString(R.string.error_select_result_zero),
+							Toast.LENGTH_LONG).show();
+					break;
+				case AppConstants.ERROR1:
+					Toast.makeText(appContext,
+							appContext.getString(R.string.error_network_connected),
+							Toast.LENGTH_LONG).show();
+					break;
+				case AppConstants.ERROR2:
+					Toast.makeText(appContext,
+							appContext.getString(R.string.system_error),
+							Toast.LENGTH_LONG).show();
+					break;
+				default:
+					break;
 			}
+			
+
+			loadingLayout.setVisibility(View.GONE);
 		}
 	};
 
@@ -101,20 +121,16 @@ public class FactoryInfo extends BaseActivity implements OnClickListener,
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_factory_info);
 
-		context = this.getApplicationContext();
+		appContext = (AppContext) getApplication();
 		// 初始化各种视图组件
 		initViews();
 		// 获取钢厂信息
 		getFactoryInfo();
-		// // 启动线程，获取数据
-		// new Thread(new ObtainFactoryInfoThread()).start();
-
 	}
 
 	private void initViews() {
 		Intent it = this.getIntent();
 		previousActivityFlag = it.getIntExtra("previousActivityFlag", 0);
-
 		// 加载布局
 		loadingLayout = (RelativeLayout) findViewById(R.id.loadingLayout);
 		loadingLayout.setVisibility(View.VISIBLE);
@@ -146,18 +162,22 @@ public class FactoryInfo extends BaseActivity implements OnClickListener,
 							// 返回按钮
 							Intent intent = new Intent();
 							switch (previousActivityFlag) {
-							case 1: // 节能数据界面
-								intent.setClass(FactoryInfo.this,
-										EnergySavingData.class);
-								break;
-							case RealTimeData.IS_REATIM_DATA_ACTIVITY: // 实时状态查询呢
-								intent.setClass(FactoryInfo.this,
-										RealTimeData.class);
-
-								break;
-
-							default:
-								break;
+								case AppConstants.ENERGY_SAVING:
+									// 节能数据界面
+									intent.setClass(FactoryInfo.this,
+											EnergySavingData.class);
+									break;
+								case AppConstants.REAL_TIME:
+									// 实时状态查询
+									intent.setClass(FactoryInfo.this,
+											RealTimeData.class);
+									break;
+								case AppConstants.WARNING_INFO:
+									// 警告信息
+									intent.setClass(FactoryInfo.this,
+											WarningInfo.class);
+								default:
+									break;
 							}
 							
 							intent.putExtra("factoryCode", factoryCode);
@@ -184,16 +204,20 @@ public class FactoryInfo extends BaseActivity implements OnClickListener,
 			Intent intent = new Intent();
 
 			switch (previousActivityFlag) {
-			case 1:
-				// 节能数据界面
-				intent.setClass(FactoryInfo.this, EnergySavingData.class);
-				break;
-			case RealTimeData.IS_REATIM_DATA_ACTIVITY:
-				// 实时状态查询
-				intent.setClass(FactoryInfo.this, RealTimeData.class);
-				break;
-			default:
-				break;
+				case AppConstants.ENERGY_SAVING:
+					// 节能数据界面
+					intent.setClass(FactoryInfo.this, EnergySavingData.class);
+					break;
+				case AppConstants.REAL_TIME:
+					// 实时状态查询
+					intent.setClass(FactoryInfo.this, RealTimeData.class);
+					break;
+				case AppConstants.WARNING_INFO:
+					// 实时状态查询
+					intent.setClass(FactoryInfo.this, WarningInfo.class);
+					break;
+				default:
+					break;
 			}
 
 			intent.putExtra("factoryCode", selectedFactoryCode);
@@ -221,46 +245,6 @@ public class FactoryInfo extends BaseActivity implements OnClickListener,
 
 		return false;
 	}
-
-//	/**
-//	 * 获取钢厂数据的线程
-//	 * 
-//	 */
-//	public class ObtainFactoryInfoThread implements Runnable {
-//		@Override
-//		public void run() {
-//			JSONArray returnData = getFactoryInfo();
-//
-//			Message msg = new Message();
-//			msg.what = STOP;
-//			Bundle bundle = new Bundle();
-//
-//			try {
-//				int length = returnData.length();
-//				String[] array1 = new String[length];
-//				String[] array2 = new String[length];
-//
-//				for (int i = 0; i < length; i++) {
-//					JSONObject jsonObj = returnData.getJSONObject(i);
-//
-//					array1[i] = jsonObj.getString("code");
-//					array2[i] = jsonObj.getString("name");
-//				}
-//
-//				bundle.putStringArray("code", array1);
-//				bundle.putStringArray("name", array2);
-//
-//				msg.setData(bundle);
-//
-//				mHandler.sendMessage(msg);
-//
-//			} catch (JSONException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//				msg.what = ERROR;
-//			}
-//		}
-//	}
 
 	/**
 	 * 获取工厂信息
@@ -309,7 +293,6 @@ public class FactoryInfo extends BaseActivity implements OnClickListener,
 								msg.what = AppConstants.OK;
 							}
 						} catch (JSONException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 							msg.what = AppConstants.ERROR2;
 						}
@@ -327,84 +310,6 @@ public class FactoryInfo extends BaseActivity implements OnClickListener,
 				});
 
 		mQueue.add(stringRequest);
-
-		// JSONArray jsonArray = new JSONArray();
-		//
-		// JSONObject rowData = null;
-		//
-		// try {
-		// rowData = new JSONObject();
-		// rowData.put("code", "01100");
-		// rowData.put("name", "宝钢");
-		// jsonArray.put(rowData);
-		//
-		// rowData = new JSONObject();
-		// rowData.put("code", "02100");
-		// rowData.put("name", "普钢");
-		// jsonArray.put(rowData);
-		//
-		// rowData = new JSONObject();
-		// rowData.put("code", "03100");
-		// rowData.put("name", "美钢");
-		// jsonArray.put(rowData);
-		//
-		// rowData = new JSONObject();
-		// rowData.put("code", "03101");
-		// rowData.put("name", "美钢1");
-		// jsonArray.put(rowData);
-		//
-		// rowData = new JSONObject();
-		// rowData.put("code", "03102");
-		// rowData.put("name", "美钢2");
-		// jsonArray.put(rowData);
-		//
-		// rowData = new JSONObject();
-		// rowData.put("code", "03103");
-		// rowData.put("name", "美钢3");
-		// jsonArray.put(rowData);
-		//
-		// rowData = new JSONObject();
-		// rowData.put("code", "03104");
-		// rowData.put("name", "美钢4");
-		// jsonArray.put(rowData);
-		//
-		// rowData = new JSONObject();
-		// rowData.put("code", "03105");
-		// rowData.put("name", "美钢5");
-		// jsonArray.put(rowData);
-		//
-		// rowData = new JSONObject();
-		// rowData.put("code", "03106");
-		// rowData.put("name", "美钢6");
-		// jsonArray.put(rowData);
-		//
-		// rowData = new JSONObject();
-		// rowData.put("code", "03107");
-		// rowData.put("name", "美钢7");
-		// jsonArray.put(rowData);
-		//
-		// rowData = new JSONObject();
-		// rowData.put("code", "03108");
-		// rowData.put("name", "美钢8");
-		// jsonArray.put(rowData);
-		//
-		// rowData = new JSONObject();
-		// rowData.put("code", "03109");
-		// rowData.put("name", "美钢9");
-		// jsonArray.put(rowData);
-		//
-		// rowData = new JSONObject();
-		// rowData.put("code", "03110");
-		// rowData.put("name", "美钢10");
-		// jsonArray.put(rowData);
-		//
-		// } catch (JSONException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-
-		//return jsonArray;
-
 	}
 
 }

@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.whzlong.anke.R;
-import com.whzlong.anke.R.id;
-import com.whzlong.anke.R.layout;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -20,7 +18,7 @@ public class CheckboxListAdapter extends BaseAdapter {
 	private ViewHolder viewHolder = null;
 	private List<Map<String, String>> mData;
 	public static Map<Integer, Boolean> isSelected;
-	private static final String CHECKBOX_TEXT_KEY = "factoryName";
+	private static final String CHECKBOX_TEXT_KEY = "SteelWorksName";
 	
 	public CheckboxListAdapter(Context context, List<Map<String, String>> content, List<String> lsCheckedData){
 		inflater = LayoutInflater.from(context);
@@ -41,25 +39,21 @@ public class CheckboxListAdapter extends BaseAdapter {
 	
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
 		return mData.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public long getItemId(int position) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public View getView(int position, View view, ViewGroup viewGroup) {
-		// TODO Auto-generated method stub
 		if(view == null){
             view = inflater.inflate(R.layout.checkbox_list_item, null);  
             viewHolder = new ViewHolder();  
@@ -72,11 +66,9 @@ public class CheckboxListAdapter extends BaseAdapter {
 		viewHolder.checkBox.setChecked(isSelected.get(position));
 		viewHolder.checkBox.setText(mData.get(position).get(CHECKBOX_TEXT_KEY).toString());
 		
-		
 		return view;
 	}
 
-	
 	
 	public final class ViewHolder{
 		public CheckBox checkBox;

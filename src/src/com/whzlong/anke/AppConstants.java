@@ -53,5 +53,10 @@ public class AppConstants {
 	public static final String KEY_WORD_VERSION_NAME = "versionName";
 	public static final String KEY_WORD_DOWNLOAD_URL = "downloadUrl";
 	
+	//使用钢厂信息选择界面时，各个主界面的区分
+	public static final int ENERGY_SAVING = 0;
+	public static final int REAL_TIME = 1;
+	public static final int WARNING_INFO = 2;
+	
 	
 }

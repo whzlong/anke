@@ -34,14 +34,14 @@
     <RelativeLayout
         android:id="@+id/loadingLayout"
         android:layout_width="fill_parent"
-        android:layout_height="55dp"
+        android:layout_height="fill_parent"
         android:layout_below="@+id/navigationBarLayout" >
 
         <ProgressBar
             android:id="@+id/pbDataLoad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true" 
             android:visibility="visible" />
     </RelativeLayout>
 

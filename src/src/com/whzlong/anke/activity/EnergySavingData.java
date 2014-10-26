@@ -133,18 +133,19 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 	private void initViews() {
 		// //按钮事件管理
 		// 设置为只读
+		// 钢厂信息
 		etFactoryName = (EditText) findViewById(R.id.etFactoryName);
 		etFactoryName.setCursorVisible(false);
 		etFactoryName.setFocusable(false);
 		etFactoryName.setFocusableInTouchMode(false);
 		etFactoryName.setOnClickListener(this);
-
+		// 查询开始日期
 		etDatatimeFrom = (EditText) findViewById(R.id.etDatatimeFrom);
 		etDatatimeFrom.setCursorVisible(false);
 		etDatatimeFrom.setFocusable(false);
 		etDatatimeFrom.setFocusableInTouchMode(false);
 		etDatatimeFrom.setOnTouchListener(this);
-
+		// 查询结束日期
 		etDatatimeTo = (EditText) findViewById(R.id.etDatatimeTo);
 		etDatatimeTo.setCursorVisible(false);
 		etDatatimeTo.setFocusable(false);
@@ -250,7 +251,7 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 		case R.id.etFactoryName:
 			intent = new Intent();
 			intent.setClass(EnergySavingData.this, FactoryInfo.class);
-			intent.putExtra("previousActivityFlag", 1);
+			intent.putExtra("previousActivityFlag", AppConstants.ENERGY_SAVING);
 			intent.putExtra("factoryCode", factoryCode);
 			startActivity(intent);
 			EnergySavingData.this.finish();
@@ -266,10 +267,10 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 				loadingLayout.setVisibility(View.VISIBLE);
 				dataListLayout.setVisibility(View.GONE);
 				btnSelect.setClickable(false);
-				
+
 				selectDateFrom = selectDateFrom.replace("-", "");
 				selectDateTo = selectDateTo.replace("-", "");
-				
+
 				// 从服务器上获取数据
 				getListData(factoryCode, selectDateFrom, selectDateTo);
 			}
@@ -288,79 +289,84 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 	public boolean onTouch(View v, MotionEvent event) {
 		int inType;
 		Dialog dialog = null;
-		
-		if(event.getAction() == MotionEvent.ACTION_DOWN){
+
+		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			View view = View.inflate(this, R.layout.dialog_date_picker, null);
 			final DatePicker datePicker = (DatePicker) view
 					.findViewById(R.id.date_picker);
 			builder.setView(view);
-			
-			Calendar cal = Calendar.getInstance(); 
-            cal.setTimeInMillis(System.currentTimeMillis()); 
-            datePicker.init(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), null); 
-            
-			switch(v.getId()){
-				case R.id.btnBack:
-					btnBack.setBackgroundResource(R.drawable.light_gray);
-					break;
-				case R.id.etDatatimeFrom:
-					inType = etDatatimeFrom.getInputType(); 
-					etDatatimeFrom.setInputType(InputType.TYPE_NULL); 
-					etDatatimeFrom.onTouchEvent(event); 
-					etDatatimeFrom.setInputType(inType); 
-					etDatatimeFrom.setSelection(etDatatimeFrom.getText().length()); 
-	                   
-	                builder.setTitle("选取起始日期"); 
-	                builder.setPositiveButton("确  定", new DialogInterface.OnClickListener() { 
-	   
-	                    @Override 
-	                    public void onClick(DialogInterface dialog, int which) { 
-	   
-	                        StringBuffer sb = new StringBuffer(); 
-	                        sb.append(String.format("%d-%02d-%02d",  
-	                                datePicker.getYear(),  
-	                                datePicker.getMonth() + 1, 
-	                                datePicker.getDayOfMonth()));
-	   
-	                        etDatatimeFrom.setText(sb); 
-	                        etDatatimeFrom.requestFocus(); 
-	                           
-	                        dialog.cancel(); 
-	                    } 
-	                }); 
-	                   
-	    			dialog = builder.create(); 
-	    	        dialog.show(); 
-					break;
-				case R.id.etDatatimeTo:
-					 inType = etDatatimeTo.getInputType(); 
-					 etDatatimeTo.setInputType(InputType.TYPE_NULL);     
-					 etDatatimeTo.onTouchEvent(event); 
-					 etDatatimeTo.setInputType(inType); 
-					 etDatatimeTo.setSelection(etDatatimeTo.getText().length()); 
-		   
-		                builder.setTitle("选取结束日期"); 
-		                builder.setPositiveButton("确  定", new DialogInterface.OnClickListener() { 
-		   
-		                    @Override 
-		                    public void onClick(DialogInterface dialog, int which) {
-		                        StringBuffer sb = new StringBuffer(); 
-		                        sb.append(String.format("%d-%02d-%02d",  
-		                                datePicker.getYear(),  
-		                                datePicker.getMonth() + 1,  
-		                                datePicker.getDayOfMonth()));
-		                        etDatatimeTo.setText(sb); 
-		                           
-		                        dialog.cancel(); 
-		                    } 
-		                }); 
-		                
-		    			dialog = builder.create(); 
-		    	        dialog.show(); 
-					break;
-				default:
-					break;
+
+			Calendar cal = Calendar.getInstance();
+			cal.setTimeInMillis(System.currentTimeMillis());
+			datePicker.init(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),
+					cal.get(Calendar.DAY_OF_MONTH), null);
+
+			switch (v.getId()) {
+			case R.id.btnBack:
+				btnBack.setBackgroundResource(R.drawable.light_gray);
+				break;
+			case R.id.etDatatimeFrom:
+				inType = etDatatimeFrom.getInputType();
+				etDatatimeFrom.setInputType(InputType.TYPE_NULL);
+				etDatatimeFrom.onTouchEvent(event);
+				etDatatimeFrom.setInputType(inType);
+				etDatatimeFrom.setSelection(etDatatimeFrom.getText().length());
+
+				builder.setTitle("选取起始日期");
+				builder.setPositiveButton("确  定",
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+
+								StringBuffer sb = new StringBuffer();
+								sb.append(String.format("%d-%02d-%02d",
+										datePicker.getYear(),
+										datePicker.getMonth() + 1,
+										datePicker.getDayOfMonth()));
+
+								etDatatimeFrom.setText(sb);
+								etDatatimeFrom.requestFocus();
+
+								dialog.cancel();
+							}
+						});
+
+				dialog = builder.create();
+				dialog.show();
+				break;
+			case R.id.etDatatimeTo:
+				inType = etDatatimeTo.getInputType();
+				etDatatimeTo.setInputType(InputType.TYPE_NULL);
+				etDatatimeTo.onTouchEvent(event);
+				etDatatimeTo.setInputType(inType);
+				etDatatimeTo.setSelection(etDatatimeTo.getText().length());
+
+				builder.setTitle("选取结束日期");
+				builder.setPositiveButton("确  定",
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								StringBuffer sb = new StringBuffer();
+								sb.append(String.format("%d-%02d-%02d",
+										datePicker.getYear(),
+										datePicker.getMonth() + 1,
+										datePicker.getDayOfMonth()));
+								etDatatimeTo.setText(sb);
+
+								dialog.cancel();
+							}
+						});
+
+				dialog = builder.create();
+				dialog.show();
+				break;
+			default:
+				break;
 			}
 		}
 
@@ -378,11 +384,11 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 	 *            查询结束时间
 	 * @return
 	 */
-	private void getListData(String factory, String dateTimeFrom,
+	private void getListData(String factoryCode, String dateTimeFrom,
 			String dateTimeTo) {
 		String identityUrl = base_ip_port + Url.URL_ENERGY_SAVING_DATA;
 
-		identityUrl = StringUtils.setParams(identityUrl, factory, dateTimeFrom,
+		identityUrl = StringUtils.setParams(identityUrl, factoryCode, dateTimeFrom,
 				dateTimeTo);
 
 		// 远程获取身份验证结果

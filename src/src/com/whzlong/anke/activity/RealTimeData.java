@@ -52,7 +52,6 @@ public class RealTimeData extends BaseActivity implements OnClickListener, OnTou
 
 	// 全局Context
 	private AppContext appContext;
-	public static final int IS_REATIM_DATA_ACTIVITY = 2;
 
 	private String factoryCode; // 炼钢厂代码
 	private String[] columns = new String[] { "HkwName", "GBH",
@@ -66,7 +65,7 @@ public class RealTimeData extends BaseActivity implements OnClickListener, OnTou
 		public void handleMessage(Message msg) {
 			switch(msg.what){
 			case AppConstants.OK:
-				loadingLayout.setVisibility(View.GONE);
+				dataListLayout.setVisibility(View.VISIBLE);
 				Bundle bundle = msg.getData();
 
 				String[] array1 = bundle.getStringArray(columns[0]);
@@ -128,6 +127,64 @@ public class RealTimeData extends BaseActivity implements OnClickListener, OnTou
 		initViews();
 	}
 
+	@Override
+	public void onClick(View v) {
+		Intent intent = null;
+		
+		switch (v.getId()) {
+			case R.id.btnBack: // 返回
+				intent = new Intent();
+				intent.setClass(RealTimeData.this, Main.class);
+				startActivity(intent);
+				RealTimeData.this.finish();
+				
+				break;
+			case R.id.etFactoryName: // 选择炼钢厂
+				intent = new Intent();
+				intent.setClass(RealTimeData.this,
+						FactoryInfo.class);
+				intent.putExtra("previousActivityFlag", AppConstants.REAL_TIME);
+				intent.putExtra("factoryCode", factoryCode);
+				startActivity(intent);
+				RealTimeData.this.finish();
+	
+				break;
+			case R.id.btnSelect: 
+				// 查询处理
+	
+				if(factoryCode == null || "".equals(factoryCode)){
+					Toast.makeText(appContext,
+							appContext.getString(R.string.msg_error_factory),
+							Toast.LENGTH_LONG).show();
+				}else{
+					loadingLayout.setVisibility(View.VISIBLE);
+					dataListLayout.setVisibility(View.GONE);
+					btnSelect.setClickable(false);
+					
+					getListData(factoryCode);
+				}
+				
+				break;
+	
+			default:
+				break;
+		}
+	}
+
+	/**
+	 * 各种控件触摸事件处理
+	 */
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		if (v.getId() == R.id.btnBack) {
+			if (event.getAction() == MotionEvent.ACTION_DOWN) {
+				btnBack.setBackgroundResource(R.drawable.light_gray);
+			}
+		}
+
+		return false;
+	}
+	
 	private void initViews() {
 		// 查询处理
 		btnSelect = (Button) findViewById(R.id.btnSelect);
@@ -251,63 +308,6 @@ public class RealTimeData extends BaseActivity implements OnClickListener, OnTou
 		mQueue.add(stringRequest);
 	}
 
-	@Override
-	public void onClick(View v) {
-		Intent intent = null;
-		
-		switch (v.getId()) {
-			case R.id.btnBack: // 返回
-				intent = new Intent();
-				intent.setClass(RealTimeData.this, Main.class);
-				startActivity(intent);
-				RealTimeData.this.finish();
-				
-				break;
-			case R.id.etFactoryName: // 选择炼钢厂
-				intent = new Intent();
-				intent.setClass(RealTimeData.this,
-						FactoryInfo.class);
-				intent.putExtra("previousActivityFlag", IS_REATIM_DATA_ACTIVITY);
-				intent.putExtra("factoryCode", factoryCode);
-				startActivity(intent);
-				RealTimeData.this.finish();
-	
-				break;
-			case R.id.btnSelect: 
-				// 查询处理
-	
-				if(factoryCode == null || "".equals(factoryCode)){
-					Toast.makeText(appContext,
-							appContext.getString(R.string.msg_error_factory),
-							Toast.LENGTH_LONG).show();
-				}else{
-					loadingLayout.setVisibility(View.VISIBLE);
-					dataListLayout.setVisibility(View.GONE);
-					btnSelect.setClickable(false);
-					
-					getListData(factoryCode);
-				}
-				
-				break;
-	
-			default:
-				break;
-		}
-	}
-
-	/**
-	 * 各种控件触摸事件处理
-	 */
-	@Override
-	public boolean onTouch(View v, MotionEvent event) {
-		if (v.getId() == R.id.btnBack) {
-			if (event.getAction() == MotionEvent.ACTION_DOWN) {
-				btnBack.setBackgroundResource(R.drawable.light_gray);
-			}
-		}
-
-		return false;
-	}
 	/**
 	 * 显示表格数据
 	 * 

@@ -3,6 +3,7 @@ package com.whzlong.anke.activity;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.json.JSONArray;
@@ -17,27 +18,27 @@ import com.android.volley.toolbox.Volley;
 import com.whzlong.anke.AppConstants;
 import com.whzlong.anke.AppContext;
 import com.whzlong.anke.R;
-import com.whzlong.anke.R.drawable;
-import com.whzlong.anke.R.id;
-import com.whzlong.anke.R.layout;
 import com.whzlong.anke.adapter.TableAdapter;
 import com.whzlong.anke.adapter.TableAdapter.TableCell;
 import com.whzlong.anke.adapter.TableAdapter.TableRow;
 import com.whzlong.anke.bean.Url;
 import com.whzlong.anke.common.StringUtils;
 
-import android.app.Activity;
-import android.content.Context;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.InputType;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -45,141 +46,130 @@ import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
 
 public class WarningInfo extends BaseActivity implements OnClickListener,
-OnTouchListener{
+		OnTouchListener {
 
 	private Button btnBack;
 	private Button btnSelect;
 	private ListView lv;
 	private RelativeLayout loadingLayout;
 	private RelativeLayout dataListLayout;
-	protected static final int STOP = 0x10000;
-	protected static final int ERROR = 0x20000;
+	private EditText etFactoryName;
+	private EditText etDatatimeFrom;
+	private EditText etDatatimeTo;
+	private String factoryCode = "";
 	// 全局Context
 	private AppContext appContext;
-	private String[] titlesArray = new String[] { "炼钢厂", "烘烤位", "报警时间",
-			"报警内容"};
-	private String[] columns = new String[] { "factory", "positon",
-			"waringTime", "waringContent"};
-	
+	private String[] titlesArray = new String[] { "炼钢厂", "烘烤位", "报警时间", "报警内容" };
+	private String[] columns = new String[] { "SteelWorksName", "HkwName",
+			"GetTime", "BJLX" };
+
 	// 定义一个Handler,更新一览数据
 	private Handler mHandler = new Handler() {
-				public void handleMessage(Message msg) {
-					switch (msg.what) {
-						case AppConstants.OK:
-							loadingLayout.setVisibility(View.GONE);
-							Bundle bundle = msg.getData();
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case AppConstants.OK:
+				loadingLayout.setVisibility(View.GONE);
+				Bundle bundle = msg.getData();
 
-							String[] array1 = bundle.getStringArray(columns[0]);
-							String[] array2 = bundle.getStringArray(columns[1]);
-							String[] array3 = bundle.getStringArray(columns[2]);
-							String[] array4 = bundle.getStringArray(columns[3]);
+				String[] array1 = bundle.getStringArray(columns[0]);
+				String[] array2 = bundle.getStringArray(columns[1]);
+				String[] array3 = bundle.getStringArray(columns[2]);
+				String[] array4 = bundle.getStringArray(columns[3]);
 
-							int rowCnt = array1.length;
-							int colCnt = columns.length;
+				int rowCnt = array1.length;
+				int colCnt = columns.length;
 
-							String[][] dataArray = new String[rowCnt][colCnt];
+				String[][] dataArray = new String[rowCnt][colCnt];
 
-							for (int i = 0; i < rowCnt; i++) {
-								dataArray[i][0] = array1[i];
-								dataArray[i][1] = array2[i];
-								dataArray[i][2] = array3[i];
-								dataArray[i][3] = array4[i];
-							}
-
-							setTableInfo(titlesArray, dataArray);
-							dataListLayout.setVisibility(View.VISIBLE);
-							break;
-						
-						case AppConstants.NG:
-							Toast.makeText(
-									appContext,
-									appContext.getString(R.string.error_select_result_zero),
-									Toast.LENGTH_LONG).show();
-							break;
-						case AppConstants.ERROR1:
-							Toast.makeText(appContext,
-									appContext.getString(R.string.error_network_connected),
-									Toast.LENGTH_LONG).show();
-							break;
-						case AppConstants.ERROR2:
-							Toast.makeText(appContext,
-									appContext.getString(R.string.system_error),
-									Toast.LENGTH_LONG).show();
-							break;
-						default:
-							break;
-					}
-					
-					btnSelect.setClickable(true);
-					loadingLayout.setVisibility(View.GONE);
+				for (int i = 0; i < rowCnt; i++) {
+					dataArray[i][0] = array1[i];
+					dataArray[i][1] = array2[i];
+					dataArray[i][2] = array3[i];
+					dataArray[i][3] = array4[i];
 				}
-			};
-			
-			
+
+				setTableInfo(titlesArray, dataArray);
+				dataListLayout.setVisibility(View.VISIBLE);
+				break;
+
+			case AppConstants.NG:
+				Toast.makeText(
+						appContext,
+						appContext.getString(R.string.error_select_result_zero),
+						Toast.LENGTH_LONG).show();
+				break;
+			case AppConstants.ERROR1:
+				Toast.makeText(appContext,
+						appContext.getString(R.string.error_network_connected),
+						Toast.LENGTH_LONG).show();
+				break;
+			case AppConstants.ERROR2:
+				Toast.makeText(appContext,
+						appContext.getString(R.string.system_error),
+						Toast.LENGTH_LONG).show();
+				break;
+			default:
+				break;
+			}
+
+			btnSelect.setClickable(true);
+			loadingLayout.setVisibility(View.GONE);
+		}
+	};
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_warning_info);
-		
+
 		appContext = (AppContext) getApplication();
-		
+
 		// 初始化各种视图组件
 		initViews();
 	}
-	
 
-	private void initViews(){
-		//加载布局
-		loadingLayout = (RelativeLayout) findViewById(R.id.loadingLayout);
-		loadingLayout.setVisibility(View.GONE);
-
-		//一览数据布局
-		dataListLayout = (RelativeLayout) findViewById(R.id.dataListLayout);
-		dataListLayout.setVisibility(View.GONE);
-
-		//查询处理
-		btnSelect = (Button) findViewById(R.id.btnSelect);
-		btnSelect.setOnClickListener(this);
-				
-		//返回
-		btnBack = (Button) findViewById(R.id.btnBack);
-		btnBack.setOnClickListener(this);
-		btnBack.setOnTouchListener(this);
-	}
-	
 	/**
 	 * 单击事件
 	 */
 	@Override
 	public void onClick(View v) {
 		Intent intent = null;
-				
+
 		switch (v.getId()) {
-			case R.id.btnBack:
-				//返回按钮
-			    intent = new Intent();
-				intent.setClass(WarningInfo.this,
-						Main.class);
-				startActivity(intent);
-				WarningInfo.this.finish();
-				break;
-			case R.id.btnSelect:
-				//查询处理按钮
-				String strDatatimeFrom = ((EditText) findViewById(R.id.etDatatimeFrom)).getText().toString();
-				String strDatatimeTo = ((EditText) findViewById(R.id.etDatatimeTo)).getText().toString();
-				
-				if(checkInput(strDatatimeFrom, strDatatimeTo)){
-					loadingLayout.setVisibility(View.VISIBLE);
-					dataListLayout.setVisibility(View.GONE);
-					btnSelect.setClickable(false);
-					
-					getListData(strDatatimeFrom, strDatatimeTo);
-				}
-				
-				break;
-			
-			default:
-				break;
+		case R.id.btnBack:
+			// 返回按钮
+			intent = new Intent();
+			intent.setClass(WarningInfo.this, Main.class);
+			startActivity(intent);
+			WarningInfo.this.finish();
+			break;
+		case R.id.etFactoryName:
+			intent = new Intent();
+			intent.setClass(WarningInfo.this, FactoryInfo.class);
+			intent.putExtra("previousActivityFlag", AppConstants.WARNING_INFO);
+			intent.putExtra("factoryCode", factoryCode);
+			startActivity(intent);
+			WarningInfo.this.finish();
+			break;
+		case R.id.btnSelect:
+			// 查询处理按钮
+			String strDatatimeFrom = ((EditText) findViewById(R.id.etDatatimeFrom))
+					.getText().toString();
+			String strDatatimeTo = ((EditText) findViewById(R.id.etDatatimeTo))
+					.getText().toString();
+
+			if (checkInput(strDatatimeFrom, strDatatimeTo)) {
+				loadingLayout.setVisibility(View.VISIBLE);
+				dataListLayout.setVisibility(View.GONE);
+				btnSelect.setClickable(false);
+
+				getListData(factoryCode, strDatatimeFrom, strDatatimeTo);
+			}
+
+			break;
+
+		default:
+			break;
 		}
 
 	}
@@ -189,31 +179,155 @@ OnTouchListener{
 	 */
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
-		if (v.getId() == R.id.btnBack) {
-			if (event.getAction() == MotionEvent.ACTION_DOWN) {
-				btnBack.setBackgroundResource(R.drawable.light_gray);
-			}
-
+		int inType;
+		Dialog dialog = null;
+		
+		if(event.getAction() == MotionEvent.ACTION_DOWN){
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			View view = View.inflate(this, R.layout.dialog_date_picker, null);
+			final DatePicker datePicker = (DatePicker) view
+					.findViewById(R.id.date_picker);
+			builder.setView(view);
+			
+			Calendar cal = Calendar.getInstance(); 
+            cal.setTimeInMillis(System.currentTimeMillis()); 
+            datePicker.init(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), null); 
+            
+            switch(v.getId()){
+	            case R.id.btnBack:
+					btnBack.setBackgroundResource(R.drawable.light_gray);
+					break;
+	            case R.id.etDatatimeFrom:
+					inType = etDatatimeFrom.getInputType(); 
+					etDatatimeFrom.setInputType(InputType.TYPE_NULL); 
+					etDatatimeFrom.onTouchEvent(event); 
+					etDatatimeFrom.setInputType(inType); 
+					etDatatimeFrom.setSelection(etDatatimeFrom.getText().length()); 
+	                   
+	                builder.setTitle("选取起始日期"); 
+	                builder.setPositiveButton("确  定", new DialogInterface.OnClickListener() { 
+	   
+	                    @Override 
+	                    public void onClick(DialogInterface dialog, int which) { 
+	   
+	                        StringBuffer sb = new StringBuffer(); 
+	                        sb.append(String.format("%d-%02d-%02d",  
+	                                datePicker.getYear(),  
+	                                datePicker.getMonth() + 1, 
+	                                datePicker.getDayOfMonth()));
+	   
+	                        etDatatimeFrom.setText(sb); 
+	                        etDatatimeFrom.requestFocus(); 
+	                           
+	                        dialog.cancel(); 
+	                    } 
+	                }); 
+	                   
+	    			dialog = builder.create(); 
+	    	        dialog.show(); 
+					break;
+				case R.id.etDatatimeTo:
+					 inType = etDatatimeTo.getInputType(); 
+					 etDatatimeTo.setInputType(InputType.TYPE_NULL);     
+					 etDatatimeTo.onTouchEvent(event); 
+					 etDatatimeTo.setInputType(inType); 
+					 etDatatimeTo.setSelection(etDatatimeTo.getText().length()); 
+		   
+		                builder.setTitle("选取结束日期"); 
+		                builder.setPositiveButton("确  定", new DialogInterface.OnClickListener() { 
+		   
+		                    @Override 
+		                    public void onClick(DialogInterface dialog, int which) {
+		                        StringBuffer sb = new StringBuffer(); 
+		                        sb.append(String.format("%d-%02d-%02d",  
+		                                datePicker.getYear(),  
+		                                datePicker.getMonth() + 1,  
+		                                datePicker.getDayOfMonth()));
+		                        etDatatimeTo.setText(sb); 
+		                           
+		                        dialog.cancel(); 
+		                    } 
+		                }); 
+		                
+		    			dialog = builder.create(); 
+		    	        dialog.show(); 
+					break;
+	            default:
+					break;
+            
+            }
 		}
 
 		return false;
 	}
-	
+
+	private void initViews() {
+		//加载布局
+		loadingLayout = (RelativeLayout) findViewById(R.id.loadingLayout);
+		loadingLayout.setVisibility(View.GONE);
+
+		//一览数据布局
+		dataListLayout = (RelativeLayout) findViewById(R.id.dataListLayout);
+		dataListLayout.setVisibility(View.GONE);
+
+		//钢厂信息
+		etFactoryName = (EditText) findViewById(R.id.etFactoryName);
+		etFactoryName.setCursorVisible(false);
+		etFactoryName.setFocusable(false);
+		etFactoryName.setFocusableInTouchMode(false);
+		etFactoryName.setOnClickListener(this);
+		//查询开始日期
+		etDatatimeFrom = (EditText) findViewById(R.id.etDatatimeFrom);
+		etDatatimeFrom.setCursorVisible(false);
+		etDatatimeFrom.setFocusable(false);
+		etDatatimeFrom.setFocusableInTouchMode(false);
+		etDatatimeFrom.setOnTouchListener(this);
+		//查询结束日期
+		etDatatimeTo = (EditText) findViewById(R.id.etDatatimeTo);
+		etDatatimeTo.setCursorVisible(false);
+		etDatatimeTo.setFocusable(false);
+		etDatatimeTo.setFocusableInTouchMode(false);
+		etDatatimeTo.setOnTouchListener(this);
+		
+		//如果从选择钢厂界面返回，需要设置选择的钢厂信息
+		Intent intent = this.getIntent();
+		factoryCode = intent.getStringExtra("factoryCode");
+		String factoryName = intent.getStringExtra("factoryName");
+		etFactoryName.setText(factoryName);
+
+		// 查询处理
+		btnSelect = (Button) findViewById(R.id.btnSelect);
+		btnSelect.setOnClickListener(this);
+
+		// 返回
+		btnBack = (Button) findViewById(R.id.btnBack);
+		btnBack.setOnClickListener(this);
+		btnBack.setOnTouchListener(this);
+	}
+
 	/**
 	 * 验证输入
+	 * 
 	 * @param dateFrom
 	 * @param dateTo
 	 * @return
 	 */
-	private boolean checkInput(String strDateFrom, String strDateTo){
-		if("".equals(strDateFrom) || "".equals(strDateTo)){
+	private boolean checkInput(String strDateFrom, String strDateTo) {
+		if (factoryCode == null || "".equals(factoryCode)) {
+			Toast.makeText(appContext,
+					appContext.getString(R.string.msg_error_factory),
+					Toast.LENGTH_LONG).show();
+			return false;
+		}
+		
+		if ("".equals(strDateFrom) || "".equals(strDateTo)) {
 			Toast.makeText(appContext,
 					appContext.getString(R.string.input_prompt_select_date),
 					Toast.LENGTH_LONG).show();
 			return false;
 		}
-		
-		SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		Date dateFrom = null;
 		Date dateTo = null;
 		long maxInterval = 30;
@@ -221,22 +335,24 @@ OnTouchListener{
 		try {
 			dateFrom = format.parse(strDateFrom);
 			dateTo = format.parse(strDateTo);
-			
-			if(dateFrom.compareTo(dateTo) > 0){
-				Toast.makeText(appContext,
+
+			if (dateFrom.compareTo(dateTo) > 0) {
+				Toast.makeText(
+						appContext,
 						appContext.getString(R.string.msg_error_date_start_end),
 						Toast.LENGTH_LONG).show();
-				
+
 				return false;
 			}
-			
-			long days = (dateTo.getTime() - dateFrom.getTime()) / (24*60*60*1000);  
-			
-			if(days > maxInterval){
+
+			long days = (dateTo.getTime() - dateFrom.getTime())
+					/ (24 * 60 * 60 * 1000);
+
+			if (days > maxInterval) {
 				Toast.makeText(appContext,
 						appContext.getString(R.string.msg_error_date_interval),
 						Toast.LENGTH_LONG).show();
-				
+
 				return false;
 			}
 
@@ -246,9 +362,10 @@ OnTouchListener{
 					Toast.LENGTH_LONG).show();
 			return false;
 		}
-		
+
 		return true;
 	}
+
 	/**
 	 * 通过Web Service请求数据
 	 * 
@@ -258,12 +375,11 @@ OnTouchListener{
 	 *            查询结束时间
 	 * @return
 	 */
-	private void getListData(String dateTimeFrom,
-			String dateTimeTo) {
-		
+	private void getListData(String factoryCode, String dateTimeFrom, String dateTimeTo) {
+
 		String identityUrl = base_ip_port + Url.URL_HISTORY_WARNING_INFO;
 
-		identityUrl = StringUtils.setParams(identityUrl, dateTimeFrom,
+		identityUrl = StringUtils.setParams(identityUrl, factoryCode, dateTimeFrom,
 				dateTimeTo);
 
 		// 远程获取身份验证结果
@@ -330,7 +446,7 @@ OnTouchListener{
 
 		mQueue.add(stringRequest);
 	}
-	
+
 	/**
 	 * 显示表格数据
 	 * 
@@ -340,9 +456,9 @@ OnTouchListener{
 	 *            数据
 	 */
 	private void setTableInfo(String[] titlesArray, String[][] dataArray) {
-		//获取ListView
+		// 获取ListView
 		lv = (ListView) this.findViewById(R.id.lstWarningInfo);
-		
+
 		ArrayList<TableRow> table = new ArrayList<TableRow>();
 		int columnLength = titlesArray.length;
 		TableCell[] titles = new TableCell[columnLength];
