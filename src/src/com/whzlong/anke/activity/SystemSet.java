@@ -98,6 +98,7 @@ public class SystemSet extends Activity implements OnClickListener,
 								mWaringTimeAreaInfo
 										.setText(mTimeAreaName[mSelectedTimeAreaIndex]);
 							}
+							
 						}
 					});
 
@@ -111,7 +112,6 @@ public class SystemSet extends Activity implements OnClickListener,
 					});
 
 			builder.create().show();
-
 			break;
 		case R.id.rlServerInfo:
 			// 设置服务器信息
@@ -129,17 +129,23 @@ public class SystemSet extends Activity implements OnClickListener,
 	 * 触摸事件
 	 */
 	public boolean onTouch(View v, MotionEvent event) {
-		switch (v.getId()) {
+		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			switch (v.getId()) {
 			case R.id.btnBack:
-				if (event.getAction() == MotionEvent.ACTION_DOWN) {
-					btnBack.setBackgroundResource(R.drawable.light_gray);
-				}
+				btnBack.setBackgroundResource(R.drawable.light_gray);
 				break;
 			case R.id.rlWarningFactory:
-				lyWarningFactory.setBackgroundColor(Color.GRAY);
+				lyWarningFactory.setBackgroundColor(Color.LTGRAY);
+				break;
+			case R.id.rlWaringTimeArea:
+				lyWaringTimeArea.setBackgroundColor(Color.LTGRAY);
+				break;
+			case R.id.rlServerInfo:
+				lyServerInfo.setBackgroundColor(Color.LTGRAY);
 				break;
 			default:
 				break;
+			}
 		}
 
 		return false;
@@ -171,6 +177,7 @@ public class SystemSet extends Activity implements OnClickListener,
 		// 报警时间段
 		lyWaringTimeArea = (RelativeLayout) findViewById(R.id.rlWaringTimeArea);
 		lyWaringTimeArea.setOnClickListener(this);
+		lyWaringTimeArea.setOnTouchListener(this);
 
 		mWaringTimeAreaInfo = (TextView) findViewById(R.id.tvWaringTimeAreaInfo);
 		mWaringTimeAreaInfo.setText(getSelectedTimeAreaName());
@@ -184,6 +191,7 @@ public class SystemSet extends Activity implements OnClickListener,
 		// 服务器信息
 		lyServerInfo = (RelativeLayout) findViewById(R.id.rlServerInfo);
 		lyServerInfo.setOnClickListener(this);
+		lyServerInfo.setOnTouchListener(this);
 
 		// 服务器信息设置
 		String serverInfo = preference.getString(AppConstants.URI_IP_PORT, "");
