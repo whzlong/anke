@@ -95,7 +95,7 @@ public class Load extends BaseActivity {
 									EditText etServerPort = (EditText) dialogLayout
 											.findViewById(R.id.etServerPort);
 									
-									if (checkInput(etServerIp.getText().toString(), etServerPort.getText()
+									if (StringUtils.checkInput(etServerIp.getText().toString(), etServerPort.getText()
 											.toString())) {
 	
 										String ip_port = etServerIp.getText()
@@ -233,40 +233,6 @@ public class Load extends BaseActivity {
 				});
 
 		mQueue.add(stringRequest);
-	}
-
-	/**
-	 * 验证输入的服务器信息
-	 * 
-	 * @param ip
-	 * @param port
-	 * @return
-	 */
-	protected boolean checkInput(String ip, String port) {
-
-		if("".equals(ip) || "".equals(port)){
-			return false;
-		}
-		
-		String[] ipArray = ip.split("\\.");
-		
-		if(ipArray.length != 4){
-			return false;
-		}
-		
-		String regexStr = "^[0-9]*$";
-		Pattern pattern = Pattern.compile(regexStr);
-		Matcher matcher = null;
-		
-		for(String partIp : ipArray){
-			matcher = pattern.matcher(partIp);
-			
-			if("".equals(partIp) || !matcher.matches()){
-				return false;
-			}
-		}
-
-		return true;
 	}
 
 }

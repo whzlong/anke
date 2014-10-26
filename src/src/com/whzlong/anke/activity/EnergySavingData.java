@@ -1,9 +1,13 @@
 package com.whzlong.anke.activity;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.InputType;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,6 +18,7 @@ import android.widget.Button;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.json.JSONArray;
@@ -34,6 +39,7 @@ import com.whzlong.anke.adapter.TableAdapter.TableRow;
 import com.whzlong.anke.bean.Url;
 import com.whzlong.anke.common.StringUtils;
 
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.LinearLayout.LayoutParams;
@@ -43,6 +49,8 @@ import android.widget.Toast;
 public class EnergySavingData extends BaseActivity implements OnClickListener,
 		OnTouchListener {
 	private EditText etFactoryName;
+	private EditText etDatatimeFrom;
+	private EditText etDatatimeTo;
 	private Button btnBack;
 	private Button btnSelect;
 	private ListView lv;
@@ -131,6 +139,18 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 		etFactoryName.setFocusableInTouchMode(false);
 		etFactoryName.setOnClickListener(this);
 
+		etDatatimeFrom = (EditText) findViewById(R.id.etDatatimeFrom);
+		etDatatimeFrom.setCursorVisible(false);
+		etDatatimeFrom.setFocusable(false);
+		etDatatimeFrom.setFocusableInTouchMode(false);
+		etDatatimeFrom.setOnTouchListener(this);
+
+		etDatatimeTo = (EditText) findViewById(R.id.etDatatimeTo);
+		etDatatimeTo.setCursorVisible(false);
+		etDatatimeTo.setFocusable(false);
+		etDatatimeTo.setFocusableInTouchMode(false);
+		etDatatimeTo.setOnTouchListener(this);
+
 		// 如果从选择钢厂界面返回，需要设置选择的钢厂信息
 		Intent intent = this.getIntent();
 		factoryCode = intent.getStringExtra("factoryCode");
@@ -151,7 +171,6 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 		btnBack.setOnTouchListener(this);
 	}
 
-
 	/**
 	 * 验证输入数据
 	 * 
@@ -161,7 +180,7 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 	private boolean checkInput(String strDateFrom, String strDateTo) {
 		if (factoryCode == null || "".equals(factoryCode)) {
 			Toast.makeText(appContext,
-					appContext.getString(R.string.error_info_factory),
+					appContext.getString(R.string.msg_error_factory),
 					Toast.LENGTH_LONG).show();
 			return false;
 		}
@@ -173,7 +192,7 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 			return false;
 		}
 
-		SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		Date dateFrom = null;
 		Date dateTo = null;
 		long maxInterval = 30;
@@ -181,37 +200,38 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 		try {
 			dateFrom = format.parse(strDateFrom);
 			dateTo = format.parse(strDateTo);
-			
-			if(dateFrom.compareTo(dateTo) > 0){
-				Toast.makeText(appContext,
-						appContext.getString(R.string.error_info_date_start_end),
+
+			if (dateFrom.compareTo(dateTo) > 0) {
+				Toast.makeText(
+						appContext,
+						appContext.getString(R.string.msg_error_date_start_end),
 						Toast.LENGTH_LONG).show();
-				
+
 				return false;
 			}
-			
-			long days = (dateTo.getTime() - dateFrom.getTime()) / (24*60*60*1000);  
-			
-			if(days > maxInterval){
+
+			long days = (dateTo.getTime() - dateFrom.getTime())
+					/ (24 * 60 * 60 * 1000);
+
+			if (days > maxInterval) {
 				Toast.makeText(appContext,
-						appContext.getString(R.string.error_info_date_interval),
+						appContext.getString(R.string.msg_error_date_interval),
 						Toast.LENGTH_LONG).show();
-				
+
 				return false;
 			}
 
 		} catch (ParseException e) {
 			Toast.makeText(appContext,
-					appContext.getString(R.string.error_info_date_format),
+					appContext.getString(R.string.msg_error__date_format),
 					Toast.LENGTH_LONG).show();
 			return false;
 		}
-		
-		
+
 		return true;
 
 	}
-	
+
 	/**
 	 * 各种按钮点击事件处理
 	 */
@@ -242,10 +262,14 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 			String selectDateTo = ((EditText) findViewById(R.id.etDatatimeTo))
 					.getText().toString();
 
-			if(checkInput(selectDateFrom, selectDateTo)){
+			if (checkInput(selectDateFrom, selectDateTo)) {
 				loadingLayout.setVisibility(View.VISIBLE);
 				dataListLayout.setVisibility(View.GONE);
 				btnSelect.setClickable(false);
+				
+				selectDateFrom = selectDateFrom.replace("-", "");
+				selectDateTo = selectDateTo.replace("-", "");
+				
 				// 从服务器上获取数据
 				getListData(factoryCode, selectDateFrom, selectDateTo);
 			}
@@ -262,9 +286,81 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 	 */
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
-		if (v.getId() == R.id.btnBack) {
-			if (event.getAction() == MotionEvent.ACTION_DOWN) {
-				btnBack.setBackgroundResource(R.drawable.light_gray);
+		int inType;
+		Dialog dialog = null;
+		
+		if(event.getAction() == MotionEvent.ACTION_DOWN){
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			View view = View.inflate(this, R.layout.dialog_date_picker, null);
+			final DatePicker datePicker = (DatePicker) view
+					.findViewById(R.id.date_picker);
+			builder.setView(view);
+			
+			Calendar cal = Calendar.getInstance(); 
+            cal.setTimeInMillis(System.currentTimeMillis()); 
+            datePicker.init(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), null); 
+            
+			switch(v.getId()){
+				case R.id.btnBack:
+					btnBack.setBackgroundResource(R.drawable.light_gray);
+					break;
+				case R.id.etDatatimeFrom:
+					inType = etDatatimeFrom.getInputType(); 
+					etDatatimeFrom.setInputType(InputType.TYPE_NULL); 
+					etDatatimeFrom.onTouchEvent(event); 
+					etDatatimeFrom.setInputType(inType); 
+					etDatatimeFrom.setSelection(etDatatimeFrom.getText().length()); 
+	                   
+	                builder.setTitle("选取起始日期"); 
+	                builder.setPositiveButton("确  定", new DialogInterface.OnClickListener() { 
+	   
+	                    @Override 
+	                    public void onClick(DialogInterface dialog, int which) { 
+	   
+	                        StringBuffer sb = new StringBuffer(); 
+	                        sb.append(String.format("%d-%02d-%02d",  
+	                                datePicker.getYear(),  
+	                                datePicker.getMonth() + 1, 
+	                                datePicker.getDayOfMonth()));
+	   
+	                        etDatatimeFrom.setText(sb); 
+	                        etDatatimeFrom.requestFocus(); 
+	                           
+	                        dialog.cancel(); 
+	                    } 
+	                }); 
+	                   
+	    			dialog = builder.create(); 
+	    	        dialog.show(); 
+					break;
+				case R.id.etDatatimeTo:
+					 inType = etDatatimeTo.getInputType(); 
+					 etDatatimeTo.setInputType(InputType.TYPE_NULL);     
+					 etDatatimeTo.onTouchEvent(event); 
+					 etDatatimeTo.setInputType(inType); 
+					 etDatatimeTo.setSelection(etDatatimeTo.getText().length()); 
+		   
+		                builder.setTitle("选取结束日期"); 
+		                builder.setPositiveButton("确  定", new DialogInterface.OnClickListener() { 
+		   
+		                    @Override 
+		                    public void onClick(DialogInterface dialog, int which) {
+		                        StringBuffer sb = new StringBuffer(); 
+		                        sb.append(String.format("%d-%02d-%02d",  
+		                                datePicker.getYear(),  
+		                                datePicker.getMonth() + 1,  
+		                                datePicker.getDayOfMonth()));
+		                        etDatatimeTo.setText(sb); 
+		                           
+		                        dialog.cancel(); 
+		                    } 
+		                }); 
+		                
+		    			dialog = builder.create(); 
+		    	        dialog.show(); 
+					break;
+				default:
+					break;
 			}
 		}
 

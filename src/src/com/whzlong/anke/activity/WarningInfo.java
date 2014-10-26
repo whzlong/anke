@@ -50,8 +50,6 @@ OnTouchListener{
 	private Button btnBack;
 	private Button btnSelect;
 	private ListView lv;
-	private EditText etDatatimeFrom;
-	private EditText etDatatimeTo;
 	private RelativeLayout loadingLayout;
 	private RelativeLayout dataListLayout;
 	protected static final int STOP = 0x10000;
@@ -226,7 +224,7 @@ OnTouchListener{
 			
 			if(dateFrom.compareTo(dateTo) > 0){
 				Toast.makeText(appContext,
-						appContext.getString(R.string.error_info_date_start_end),
+						appContext.getString(R.string.msg_error_date_start_end),
 						Toast.LENGTH_LONG).show();
 				
 				return false;
@@ -236,7 +234,7 @@ OnTouchListener{
 			
 			if(days > maxInterval){
 				Toast.makeText(appContext,
-						appContext.getString(R.string.error_info_date_interval),
+						appContext.getString(R.string.msg_error_date_interval),
 						Toast.LENGTH_LONG).show();
 				
 				return false;
@@ -244,7 +242,7 @@ OnTouchListener{
 
 		} catch (ParseException e) {
 			Toast.makeText(appContext,
-					appContext.getString(R.string.error_info_date_format),
+					appContext.getString(R.string.msg_error__date_format),
 					Toast.LENGTH_LONG).show();
 			return false;
 		}

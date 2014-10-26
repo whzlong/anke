@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.whzlong.anke.AppConstants;
@@ -226,4 +227,37 @@ public class StringUtils {
 		return retVal;
 	}
 	
+	/**
+	 * 验证输入的服务器信息
+	 * 
+	 * @param ip
+	 * @param port
+	 * @return
+	 */
+	public static boolean checkInput(String ip, String port) {
+
+		if("".equals(ip) || "".equals(port)){
+			return false;
+		}
+		
+		String[] ipArray = ip.split("\\.");
+		
+		if(ipArray.length != 4){
+			return false;
+		}
+		
+		String regexStr = "^[0-9]*$";
+		Pattern pattern = Pattern.compile(regexStr);
+		Matcher matcher = null;
+		
+		for(String partIp : ipArray){
+			matcher = pattern.matcher(partIp);
+			
+			if("".equals(partIp) || !matcher.matches()){
+				return false;
+			}
+		}
+
+		return true;
+	}
 }

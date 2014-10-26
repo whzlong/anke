@@ -278,7 +278,7 @@ public class RealTimeData extends BaseActivity implements OnClickListener, OnTou
 	
 				if(factoryCode == null || "".equals(factoryCode)){
 					Toast.makeText(appContext,
-							appContext.getString(R.string.error_info_factory),
+							appContext.getString(R.string.msg_error_factory),
 							Toast.LENGTH_LONG).show();
 				}else{
 					loadingLayout.setVisibility(View.VISIBLE);
