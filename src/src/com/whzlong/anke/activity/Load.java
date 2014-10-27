@@ -1,7 +1,5 @@
 package com.whzlong.anke.activity;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -185,7 +183,6 @@ public class Load extends BaseActivity {
 				.getSystemService(Context.TELEPHONY_SERVICE);
 		mImei = phoneManager.getDeviceId();
 
-		//TODO: 将IMEI码添入
 		String identityUrl = base_ip_port + Url.URL_VERIFY_IDENTIFY;
 		identityUrl = StringUtils.setParams(identityUrl, mImei);
 		
@@ -216,7 +213,6 @@ public class Load extends BaseActivity {
 
 							mHandler.sendMessage(msg);
 						} catch (JSONException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 							msg.what = AppConstants.ERROR2;
 						}

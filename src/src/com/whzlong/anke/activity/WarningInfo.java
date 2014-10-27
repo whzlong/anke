@@ -33,8 +33,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.InputType;
 import android.util.Log;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
@@ -181,6 +184,10 @@ public class WarningInfo extends BaseActivity implements OnClickListener,
 	public boolean onTouch(View v, MotionEvent event) {
 		int inType;
 		Dialog dialog = null;
+		Window dialogWindow = null;
+		WindowManager wm = null;
+		WindowManager.LayoutParams  lyParams = null;
+		Display dp = null;
 		
 		if(event.getAction() == MotionEvent.ACTION_DOWN){
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -224,6 +231,15 @@ public class WarningInfo extends BaseActivity implements OnClickListener,
 	                }); 
 	                   
 	    			dialog = builder.create(); 
+	    			
+	    			dialogWindow = dialog.getWindow();
+			        wm = getWindowManager();
+			        dp = wm.getDefaultDisplay(); // 获取屏幕宽、高用
+			        lyParams = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+			        lyParams.height = (int) (dp.getHeight() * 0.4); // 高度设置为屏幕的0.6
+			        lyParams.width = (int) (dp.getWidth() * 0.5); // 宽度设置为屏幕的0.65
+			        dialogWindow.setAttributes(lyParams);
+			        
 	    	        dialog.show(); 
 					break;
 				case R.id.etDatatimeTo:
@@ -250,6 +266,15 @@ public class WarningInfo extends BaseActivity implements OnClickListener,
 		                }); 
 		                
 		    			dialog = builder.create(); 
+		    			
+		    			dialogWindow = dialog.getWindow();
+				        wm = getWindowManager();
+				        dp = wm.getDefaultDisplay(); // 获取屏幕宽、高用
+				        lyParams = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+				        lyParams.height = (int) (dp.getHeight() * 0.4); // 高度设置为屏幕的0.6
+				        lyParams.width = (int) (dp.getWidth() * 0.5); // 宽度设置为屏幕的0.65
+				        dialogWindow.setAttributes(lyParams);
+				        
 		    	        dialog.show(); 
 					break;
 	            default:

@@ -9,10 +9,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.InputType;
 import android.util.Log;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import java.text.ParseException;
@@ -60,7 +63,7 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 	// 全局Context
 	private AppContext appContext;
 	private String[] titlesArray = new String[] { "烘烤位", "每周最后一条数据", "小时能耗",
-			"节能率", "作业率" };
+			"作业率", "节能率" };
 	private String[] columns = new String[] { "OPCGroup", "Date", "SXSHL",
 			"SSYL", "SJNL" };
 
@@ -289,6 +292,10 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 	public boolean onTouch(View v, MotionEvent event) {
 		int inType;
 		Dialog dialog = null;
+		Window dialogWindow = null;
+		WindowManager wm = null;
+		WindowManager.LayoutParams  lyParams = null;
+		Display dp = null;
 
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -302,6 +309,8 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 			datePicker.init(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),
 					cal.get(Calendar.DAY_OF_MONTH), null);
 
+			
+			
 			switch (v.getId()) {
 			case R.id.btnBack:
 				btnBack.setBackgroundResource(R.drawable.light_gray);
@@ -335,6 +344,15 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 						});
 
 				dialog = builder.create();
+				
+				dialogWindow = dialog.getWindow();
+		        wm = getWindowManager();
+		        dp = wm.getDefaultDisplay(); // 获取屏幕宽、高用
+		        lyParams = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+		        lyParams.height = (int) (dp.getHeight() * 0.4); // 高度设置为屏幕的0.6
+		        lyParams.width = (int) (dp.getWidth() * 0.5); // 宽度设置为屏幕的0.65
+		        dialogWindow.setAttributes(lyParams);
+				
 				dialog.show();
 				break;
 			case R.id.etDatatimeTo:
@@ -363,6 +381,15 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 						});
 
 				dialog = builder.create();
+				
+				dialogWindow = dialog.getWindow();
+		        wm = getWindowManager();
+		        dp = wm.getDefaultDisplay(); // 获取屏幕宽、高用
+		        lyParams = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+		        lyParams.height = (int) (dp.getHeight() * 0.4); // 高度设置为屏幕的0.6
+		        lyParams.width = (int) (dp.getWidth() * 0.5); // 宽度设置为屏幕的0.65
+		        dialogWindow.setAttributes(lyParams);
+		        
 				dialog.show();
 				break;
 			default:

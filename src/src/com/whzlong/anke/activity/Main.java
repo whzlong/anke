@@ -32,36 +32,10 @@ public class Main extends BaseActivity implements OnClickListener {
 		if(appContext.isCheckUp()){
 			VersionManager.getVersionManager().checkAppUpdate(this, false);
 		}
-	}
-
-	/**
-	 * 初始化各种视图组件
-	 */
-	private void initViews() {
-		// 节能数据查询
-		btnEnergySavingData = (Button) findViewById(R.id.btnEnergySavingData);
-		btnEnergySavingData.setTextSize(20);
-		btnEnergySavingData.setOnClickListener(this);
-
-		// 实时状态查询
-		btnRealTimeData = (Button) findViewById(R.id.btnRealTimeData);
-		btnRealTimeData.setTextSize(20);
-		btnRealTimeData.setOnClickListener(this);
-
-		// 警告信息查询
-		btnWarningInfo = (Button) findViewById(R.id.btnWarningInfo);
-		btnWarningInfo.setTextSize(20);
-		btnWarningInfo.setOnClickListener(this);
-
-		// 系统设置
-		btnSystemSet = (Button) findViewById(R.id.btnSystemSet);
-		btnSystemSet.setTextSize(20);
-		btnSystemSet.setOnClickListener(this);
-
-		// 退出
-		btnQuit = (Button) findViewById(R.id.btnQuit);
-		btnQuit.setTextSize(20);
-		btnQuit.setOnClickListener(this);
+		
+		//启动后台服务
+		//TODO:后台服务
+		//startBackService();
 	}
 
 	@Override
@@ -105,5 +79,42 @@ public class Main extends BaseActivity implements OnClickListener {
 			break;
 		}
 	}
+	
+	/**
+	 * 初始化各种视图组件
+	 */
+	private void initViews() {
+		// 节能数据查询
+		btnEnergySavingData = (Button) findViewById(R.id.btnEnergySavingData);
+		btnEnergySavingData.setTextSize(20);
+		btnEnergySavingData.setOnClickListener(this);
 
+		// 实时状态查询
+		btnRealTimeData = (Button) findViewById(R.id.btnRealTimeData);
+		btnRealTimeData.setTextSize(20);
+		btnRealTimeData.setOnClickListener(this);
+
+		// 警告信息查询
+		btnWarningInfo = (Button) findViewById(R.id.btnWarningInfo);
+		btnWarningInfo.setTextSize(20);
+		btnWarningInfo.setOnClickListener(this);
+
+		// 系统设置
+		btnSystemSet = (Button) findViewById(R.id.btnSystemSet);
+		btnSystemSet.setTextSize(20);
+		btnSystemSet.setOnClickListener(this);
+
+		// 退出
+		btnQuit = (Button) findViewById(R.id.btnQuit);
+		btnQuit.setTextSize(20);
+		btnQuit.setOnClickListener(this);
+	}
+
+	/**
+	 * 启动后台服务
+	 */
+	private void startBackService(){
+		Intent intent = new Intent("com.whzlong.anke.appService");
+		startService(intent);
+	}
 }

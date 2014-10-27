@@ -14,18 +14,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.whzlong.anke.R.drawable;
-import com.whzlong.anke.R.id;
-import com.whzlong.anke.R.layout;
 import com.whzlong.anke.adapter.CheckboxListAdapter;
 import com.whzlong.anke.adapter.CheckboxListAdapter.ViewHolder;
 import com.whzlong.anke.bean.Url;
 import com.whzlong.anke.AppConstants;
 import com.whzlong.anke.AppContext;
 import com.whzlong.anke.R;
-
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;

@@ -6,9 +6,6 @@ public class Url implements Serializable {
 	public final static String HTTP = "http://";
 	public final static String HTTPS = "https://";
 
-	private final static String URL_SPLITTER = "/";
-	private final static String URL_UNDERLINE = "_";
-
 	public static final String PROTOCOL = "http://";
 	public static final String DEFAULT_URI_IP_PORT = "101.231.219.254" + ":"
 			+ "8082";
