@@ -46,7 +46,7 @@ public class BaseActivity extends Activity {
 			editor.commit();
 		}else{
 			base_ip_port = Url.HTTP
-					+ preference.getString(AppConstants.URI_IP_PORT, "");
+					+ ipPort;
 		}
 	}
 
