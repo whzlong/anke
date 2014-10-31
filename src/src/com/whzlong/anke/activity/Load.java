@@ -73,7 +73,10 @@ public class Load extends BaseActivity {
 					break;
 				case AppConstants.ERROR1:
 					// 无法和服务器正常连接，可能是服务器IP地址和端口发生改变，弹出对话框供用户修改IP或端口
-	
+					Toast.makeText(Load.this,
+							appContext.getString(R.string.system_error),
+							Toast.LENGTH_LONG).show();
+					
 					builder = new Builder(Load.this);
 					builder.setTitle(appContext.getString(R.string.serverInfo));
 	
