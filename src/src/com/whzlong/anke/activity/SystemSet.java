@@ -171,6 +171,7 @@ public class SystemSet extends Activity implements OnClickListener,
 			displayFactoryName = defaultCheckedFactory.substring(0,
 					WARNING_FACTORY_LENGTH) + "...";
 		}
+		
 		mWarningFactoryInfo = (TextView) findViewById(R.id.tvWarningFactoryInfo);
 		mWarningFactoryInfo.setText(displayFactoryName);
 

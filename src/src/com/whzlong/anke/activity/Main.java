@@ -1,6 +1,7 @@
 package com.whzlong.anke.activity;
 
 import com.whzlong.anke.AppContext;
+import com.whzlong.anke.AppService;
 import com.whzlong.anke.R;
 import com.whzlong.anke.common.VersionManager;
 import android.content.Intent;
@@ -35,7 +36,7 @@ public class Main extends BaseActivity implements OnClickListener {
 		
 		//启动后台服务
 		//TODO:后台服务
-		//startBackService();
+		startBackService();
 	}
 
 	@Override
@@ -114,7 +115,7 @@ public class Main extends BaseActivity implements OnClickListener {
 	 * 启动后台服务
 	 */
 	private void startBackService(){
-		Intent intent = new Intent("com.whzlong.anke.appService");
+		Intent intent = new Intent(Main.this, AppService.class);
 		startService(intent);
 	}
 }

@@ -206,7 +206,7 @@ public class Load extends BaseActivity {
 							retval = retval.replace("\\","");
 							JSONObject jsonObj = new JSONObject(retval);
 
-							retval = jsonObj.getString("authenticationResult");
+							retval = jsonObj.getString(AppConstants.AUTHENTICATION_RESULT);
 							
 							if (AppConstants.ZERO.equals(retval)) {
 								msg.what = AppConstants.OK;

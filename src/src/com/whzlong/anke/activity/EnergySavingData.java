@@ -261,8 +261,10 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 			break;
 		case R.id.btnSelect:
 			// 查询处理按钮
+			//查询开始时间
 			String selectDateFrom = ((EditText) findViewById(R.id.etDatatimeFrom))
 					.getText().toString();
+			//查询结束时间
 			String selectDateTo = ((EditText) findViewById(R.id.etDatatimeTo))
 					.getText().toString();
 
@@ -432,7 +434,7 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 									response.length() - 1);
 							retval = retval.replace("\\", "");
 
-							if ("".equals(retval)) {
+							if (AppConstants.EMPTY.equals(retval)) {
 								msg.what = AppConstants.NG;
 							} else {
 								JSONArray returnData = new JSONArray(retval);
