@@ -65,6 +65,10 @@ public class AppService extends Service {
 				Notification notification = new Notification(icon, tickerText,
 						when);
 				
+//				Notification notification = new Notification.Builder(appContext)
+//				.setc
+				
+				
 				RemoteViews contentView = new RemoteViews(getPackageName(),
 						R.layout.notification);
 				
