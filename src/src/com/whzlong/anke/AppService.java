@@ -31,7 +31,7 @@ import android.widget.RemoteViews;
 import android.widget.Toast;
 
 public class AppService extends Service {
-	private static final String TAG = "AnkeService"; 
+	private static final String TAG = "AnkeService";
 	// 获取服务器端信息
 	protected SharedPreferences preference;
 	private String base_ip_port;
@@ -50,50 +50,36 @@ public class AppService extends Service {
 				String warningFactoryCodes = bundle
 						.getString(AppConstants.WARNING_FACTORY_CODES);
 
-				
 				String ns = Context.NOTIFICATION_SERVICE;
-				NotificationManager mNotificationManager = (NotificationManager) getSystemService(ns);
 
-				// 定义Notification的各种属性
 				// 通知图标
-				int icon = R.drawable.loading9; 
+				int icon = R.drawable.loading9;
 				// 状态栏显示的通知文本提示
-				CharSequence tickerText = "Hello"; 
+				CharSequence tickerText = "钢厂";
 				// 通知产生的时间，会在通知信息里显示
-				long when = System.currentTimeMillis(); 
+				long when = System.currentTimeMillis();
 				// 用上面的属性初始化 Nofification
 				Notification notification = new Notification(icon, tickerText,
 						when);
-				
-//				Notification notification = new Notification.Builder(appContext)
-//				.setc
-				
-				
+
 				RemoteViews contentView = new RemoteViews(getPackageName(),
 						R.layout.notification);
-				
+
 				contentView.setImageViewResource(R.id.ntImage,
 						R.drawable.abc_ic_go);
-				CharSequence tickerText1 = "Hello,this is JC"; 
-				contentView.setTextViewText(R.id.ntMsg, tickerText1);
-				
+				CharSequence content = "钢铁1厂；钢铁2厂";
+				//contentView.setTextViewText(R.id.ntMsg, content);
+
 				notification.contentView = contentView;
-				
+
 				Intent notificationIntent = new Intent();
 				PendingIntent contentIntent = PendingIntent.getActivity(
 						appContext, 0, notificationIntent, 0);
-				
 				notification.contentIntent = contentIntent;
-				// 把Notification传递给NotificationManager
+
+				NotificationManager mNotificationManager = (NotificationManager) getSystemService(ns);
 				mNotificationManager.notify(0, notification);
 
-				//notification.defaults |= Notification.DEFAULT_VIBRATE;
-				notification.defaults = Notification.DEFAULT_SOUND; 
-				notification.flags = Notification.FLAG_AUTO_CANCEL;
-				
-//				long[] vibrate = {0,100,200,300};  
-//
-//				notification.vibrate = vibrate; 
 				break;
 			case AppConstants.NG:
 				Toast.makeText(
@@ -125,7 +111,7 @@ public class AppService extends Service {
 
 	@Override
 	public void onCreate() {
-		Log.i(TAG, "AnkeService-onCreate"); 
+		Log.i(TAG, "AnkeService-onCreate");
 		super.onCreate();
 
 		appContext = (AppContext) getApplication();
