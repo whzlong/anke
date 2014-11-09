@@ -11,6 +11,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.whzlong.anke.activity.WarningInfo;
 import com.whzlong.anke.bean.Url;
 import com.whzlong.anke.common.StringUtils;
 
@@ -18,6 +19,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -36,6 +38,7 @@ public class AppService extends Service {
 	protected SharedPreferences preference;
 	private String base_ip_port;
 	private Timer mTimer;
+	private int test;
 	// 全局Context
 	private AppContext appContext;
 	// 定义一个Handler,更新一览数据
@@ -55,7 +58,7 @@ public class AppService extends Service {
 				// 通知图标
 				int icon = R.drawable.loading9;
 				// 状态栏显示的通知文本提示
-				CharSequence tickerText = "钢厂";
+				CharSequence tickerText = "钢厂警告信息";
 				// 通知产生的时间，会在通知信息里显示
 				long when = System.currentTimeMillis();
 				// 用上面的属性初始化 Nofification
@@ -67,15 +70,19 @@ public class AppService extends Service {
 
 				contentView.setImageViewResource(R.id.ntImage,
 						R.drawable.abc_ic_go);
-				CharSequence content = "钢铁1厂；钢铁2厂";
-				//contentView.setTextViewText(R.id.ntMsg, content);
+				test += 1;
+				CharSequence content = "钢铁" + String.valueOf(test) + "厂";
+				contentView.setTextViewText(R.id.ntMsg, content);
 
 				notification.contentView = contentView;
 
-				Intent notificationIntent = new Intent();
+				Intent notificationIntent = new Intent(appContext, WarningInfo.class);
+				
 				PendingIntent contentIntent = PendingIntent.getActivity(
 						appContext, 0, notificationIntent, 0);
 				notification.contentIntent = contentIntent;
+				
+				notification.defaults = notification.DEFAULT_SOUND|notification.DEFAULT_VIBRATE;
 
 				NotificationManager mNotificationManager = (NotificationManager) getSystemService(ns);
 				mNotificationManager.notify(0, notification);
@@ -172,7 +179,7 @@ public class AppService extends Service {
 				// handler.sendMessage( msg );
 
 			}
-		}, 0, 20 * 1000);
+		}, 0, 50 * 1000);
 
 		return super.onStartCommand(intent, flags, startId);
 	}
@@ -184,7 +191,7 @@ public class AppService extends Service {
 			mTimer.cancel();
 		}
 	}
-
+	
 	private void getWarningInfo(String url) {
 		// 远程获取身份验证结果
 		RequestQueue mQueue = Volley.newRequestQueue(this);

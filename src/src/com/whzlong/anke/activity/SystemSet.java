@@ -16,11 +16,16 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.whzlong.anke.AppConstants;
+import com.whzlong.anke.AppContext;
+import com.whzlong.anke.AppManager;
+import com.whzlong.anke.AppService;
 import com.whzlong.anke.R;
+import com.whzlong.anke.activity.Main;
 
 public class SystemSet extends Activity implements OnClickListener,
 		OnTouchListener {
 	private Button btnBack;
+	private Button btnQuitApp;
 	private RelativeLayout lyWarningFactory;
 	private RelativeLayout lyWaringTimeArea;
 	private RelativeLayout lyServerInfo;
@@ -28,20 +33,25 @@ public class SystemSet extends Activity implements OnClickListener,
 	private TextView mWaringTimeAreaInfo;
 	private TextView mPollingIntervalInfo;
 	private TextView mServerInfo;
+	// 全局Context
+	private AppContext appContext;
 
 	private static final int WARNING_FACTORY_LENGTH = 15;
 	private SharedPreferences preference;
 	private int mSelectedTimeAreaIndex = -1;
 	// 显示在界面上的报警时间段
 	private static final String[] mTimeAreaName = { "00:00 ~ 08:00",
-			"08:00 ~ 17:00", "17:00 ~ 24:00" };
+			"08:00 ~ 17:00", "17:00 ~ 24:00", "关闭" };
 	// 报警时间段对应的Code，供查询使用
-	private static final String[] mTimeAreaCode = { "1", "2", "3" };
+	private static final String[] mTimeAreaCode = { "1", "2", "3", "4" };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_system_set);
+		
+		appContext = (AppContext) getApplication();
+		
 		// 初始化各种视图组件
 		InitViews();
 	}
@@ -119,6 +129,15 @@ public class SystemSet extends Activity implements OnClickListener,
 			intent.setClass(SystemSet.this, ServerInfo.class);
 			startActivity(intent);
 			SystemSet.this.finish();
+		case R.id.btnQuitApp:
+			//退出服务
+			intent = new Intent(appContext, AppService.class);
+			stopService(intent);
+			
+			//退出界面
+			AppManager.getAppManager().AppExit(appContext);
+			
+			break;
 		default:
 			break;
 		}
@@ -203,6 +222,10 @@ public class SystemSet extends Activity implements OnClickListener,
 		btnBack = (Button) findViewById(R.id.btnBack);
 		btnBack.setOnClickListener(this);
 		btnBack.setOnTouchListener(this);
+		
+		// 完全退出按钮
+		btnQuitApp = (Button) findViewById(R.id.btnQuitApp);
+		btnQuitApp.setOnClickListener(this);
 	}
 
 	/**

@@ -34,9 +34,9 @@ public class Main extends BaseActivity implements OnClickListener {
 			VersionManager.getVersionManager().checkAppUpdate(this, false);
 		}
 		
-		//启动后台服务
-		//TODO:后台服务
-		startBackService();
+		//启动服务
+		Intent intent = new Intent(Main.this, AppService.class);
+		startService(intent);
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public class Main extends BaseActivity implements OnClickListener {
 			break;
 		}
 	}
-	
+		
 	/**
 	 * 初始化各种视图组件
 	 */
@@ -110,12 +110,5 @@ public class Main extends BaseActivity implements OnClickListener {
 		btnQuit.setTextSize(20);
 		btnQuit.setOnClickListener(this);
 	}
-
-	/**
-	 * 启动后台服务
-	 */
-	private void startBackService(){
-		Intent intent = new Intent(Main.this, AppService.class);
-		startService(intent);
-	}
+	
 }

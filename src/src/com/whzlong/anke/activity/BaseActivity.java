@@ -1,10 +1,15 @@
 package com.whzlong.anke.activity;
 
+import java.util.List;
+
 import com.whzlong.anke.AppConstants;
 import com.whzlong.anke.AppManager;
+import com.whzlong.anke.AppService;
 import com.whzlong.anke.bean.Url;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
@@ -48,6 +53,7 @@ public class BaseActivity extends Activity {
 			base_ip_port = Url.HTTP
 					+ ipPort;
 		}
+		
 	}
 
 	@Override

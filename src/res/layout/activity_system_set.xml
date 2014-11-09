@@ -61,12 +61,16 @@
                     android:id="@+id/tvWarningFactoryInfo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
                     android:textSize="16sp" />
             </RelativeLayout>
-            
-            <View android:layout_height="1px" android:background="#333333" android:layout_width="fill_parent"></View>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:background="#333333" >
+            </View>
 
             <RelativeLayout
                 android:id="@+id/rlWaringTimeArea"
@@ -87,13 +91,17 @@
                     android:id="@+id/tvWaringTimeAreaInfo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
                     android:textSize="16sp" />
             </RelativeLayout>
 
-            <View android:layout_height="1px" android:background="#333333" android:layout_width="fill_parent"></View>
-            
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:background="#333333" >
+            </View>
+
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -112,13 +120,17 @@
                     android:id="@+id/tvPollingIntervalInfo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
                     android:textSize="16sp" />
             </RelativeLayout>
 
-            <View android:layout_height="1px" android:background="#333333" android:layout_width="fill_parent"></View>
-            
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:background="#333333" >
+            </View>
+
             <RelativeLayout
                 android:id="@+id/rlServerInfo"
                 android:layout_width="fill_parent"
@@ -138,13 +150,37 @@
                     android:id="@+id/tvServerInfo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
                     android:textSize="16sp" />
             </RelativeLayout>
-            
-            <View android:layout_height="1px" android:background="#333333" android:layout_width="fill_parent"></View>
-            
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:background="#333333" >
+            </View>
+
+            <RelativeLayout
+                android:id="@+id/rlBlank"
+                android:layout_width="fill_parent"
+                android:layout_height="200dp" />
+
+            <RelativeLayout
+                android:id="@+id/rlQuitApp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:gravity="center_vertical" >
+
+                <Button
+                    android:id="@+id/btnQuitApp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center_horizontal"
+                    android:text="@string/quitWhole" />
+            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
 
