@@ -131,4 +131,16 @@ public class AppConstants {
 	//代表通知界面
 	public static final String NOTIFICATION = "previousPage";
 	
+	//获取警告信息时间段
+	public static final int TIME_AREA_ZERO = 0;
+	public static final int TIME_AREA_ONE = 1;
+	public static final int TIME_AREA_TWO = 2;
+	public static final int TIME_AREA_THREE = 3;
+	
+	// 显示在界面上的报警时间段
+	public static final String[] TIME_AREA_NAME = { "00:00 ~ 08:00",
+			"08:00 ~ 17:00", "17:00 ~ 24:00", "关闭" };
+	// 报警时间段对应的Code，供查询使用
+	public static final int[] TIME_AREA_CODE = { 0, 1, 2, 3 };
+	
 }

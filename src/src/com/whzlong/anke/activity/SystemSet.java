@@ -39,11 +39,7 @@ public class SystemSet extends Activity implements OnClickListener,
 	private static final int WARNING_FACTORY_LENGTH = 15;
 	private SharedPreferences preference;
 	private int mSelectedTimeAreaIndex = -1;
-	// 显示在界面上的报警时间段
-	private static final String[] mTimeAreaName = { "00:00 ~ 08:00",
-			"08:00 ~ 17:00", "17:00 ~ 24:00", "关闭" };
-	// 报警时间段对应的Code，供查询使用
-	private static final String[] mTimeAreaCode = { "1", "2", "3", "4" };
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +81,7 @@ public class SystemSet extends Activity implements OnClickListener,
 			mSelectedTimeAreaIndex = -1;
 			builder.setTitle(SystemSet.this.getString(R.string.waringTimeArea));
 			// 设置选项
-			builder.setSingleChoiceItems(mTimeAreaName, mSelectedTimeAreaIndex,
+			builder.setSingleChoiceItems(AppConstants.TIME_AREA_NAME, mSelectedTimeAreaIndex,
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int position) {
 							mSelectedTimeAreaIndex = position;
@@ -99,14 +95,14 @@ public class SystemSet extends Activity implements OnClickListener,
 						public void onClick(DialogInterface dialog, int position) {
 							if (mSelectedTimeAreaIndex >= 0) {
 								Editor editor = preference.edit();
-								editor.putString(
+								editor.putInt(
 										AppConstants.SELECTED_TIME_AREA,
-										mTimeAreaCode[mSelectedTimeAreaIndex]);
+										AppConstants.TIME_AREA_CODE[mSelectedTimeAreaIndex]);
 								editor.commit();
 
 								// 设置界面警告时间段的值
 								mWaringTimeAreaInfo
-										.setText(mTimeAreaName[mSelectedTimeAreaIndex]);
+										.setText(AppConstants.TIME_AREA_NAME[mSelectedTimeAreaIndex]);
 							}
 							
 						}
@@ -235,12 +231,11 @@ public class SystemSet extends Activity implements OnClickListener,
 	 */
 	private String getSelectedTimeAreaName() {
 		String selectedTimeAreaName = "";
-		String selectedTimeAreaCode = preference.getString(
-				AppConstants.SELECTED_TIME_AREA, "");
+		int selectedTimeAreaCode = Integer.valueOf(preference.getString(AppConstants.SELECTED_TIME_AREA, ""));
 
-		for (int i = 0; i < mTimeAreaCode.length; i++) {
-			if (mTimeAreaCode[i].equals(selectedTimeAreaCode)) {
-				selectedTimeAreaName = mTimeAreaName[i];
+		for (int i = 0; i < AppConstants.TIME_AREA_CODE.length; i++) {
+			if (AppConstants.TIME_AREA_CODE[i] == selectedTimeAreaCode) {
+				selectedTimeAreaName = AppConstants.TIME_AREA_NAME[i];
 				// 报警时间段对话框打开时，默认选中的数据
 				mSelectedTimeAreaIndex = i;
 			}

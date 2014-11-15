@@ -63,19 +63,21 @@ public class AppService extends Service {
 
 				RemoteViews contentView = new RemoteViews(getPackageName(),
 						R.layout.notification);
-				
+
 				contentView.setImageViewResource(R.id.ntImage,
 						R.drawable.abc_ic_go);
 				notification.contentView = contentView;
 
-				Intent notificationIntent = new Intent(appContext, WarningInfo.class);
+				Intent notificationIntent = new Intent(appContext,
+						WarningInfo.class);
 				notificationIntent.putExtra(AppConstants.NOTIFICATION, "1");
-				
+
 				PendingIntent contentIntent = PendingIntent.getActivity(
 						appContext, 0, notificationIntent, 0);
-				
+
 				notification.contentIntent = contentIntent;
-				notification.defaults = notification.DEFAULT_SOUND|notification.DEFAULT_VIBRATE;
+				notification.defaults = notification.DEFAULT_SOUND
+						| notification.DEFAULT_VIBRATE;
 
 				NotificationManager mNotificationManager = (NotificationManager) getSystemService(ns);
 				mNotificationManager.notify(0, notification);
@@ -122,7 +124,31 @@ public class AppService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		// 获取收取警告信息指定的时间区域
+		int timeArea = preference.getInt(AppConstants.SELECTED_TIME_AREA, 4);
+		int timeFrom;
+		int timeTo;
+
+		switch (timeArea) {
+			case AppConstants.TIME_AREA_ZERO:
+				String timearea = AppConstants.TIME_AREA_NAME[AppConstants.TIME_AREA_ZERO];
+				String[] timeFromTo = timearea.split(" ~ ");
+				break;
+			case AppConstants.TIME_AREA_ONE:
+	
+				break;
+			case AppConstants.TIME_AREA_TWO:
+	
+				break;
+			case AppConstants.TIME_AREA_THREE:
+	
+				break;
+			default:
+				break;
+		}
+
 		mTimer = new Timer();
+
 		mTimer.schedule(new TimerTask() {
 
 			@Override
@@ -141,13 +167,14 @@ public class AppService extends Service {
 				} else {
 					base_ip_port = Url.HTTP + ipPort;
 				}
-				
-				String identityUrl = base_ip_port + Url.URL_HISTORY_WARNING_REMIND;
+
+				String identityUrl = base_ip_port
+						+ Url.URL_HISTORY_WARNING_REMIND;
 
 				getWarningInfo(identityUrl);
 
 			}
-		}, 0, 50 * 1000);
+		}, 0, 60 * 1000);
 
 		return super.onStartCommand(intent, flags, startId);
 	}
@@ -159,7 +186,7 @@ public class AppService extends Service {
 			mTimer.cancel();
 		}
 	}
-	
+
 	private void getWarningInfo(String url) {
 		// 远程获取身份验证结果
 		RequestQueue mQueue = Volley.newRequestQueue(this);
@@ -175,13 +202,12 @@ public class AppService extends Service {
 								response.length() - 1);
 						retval = retval.replace("\\", "");
 
-
 						if (AppConstants.EMPTY.equals(retval)) {
 							msg.what = AppConstants.NG;
 						} else {
 							msg.what = AppConstants.OK;
 						}
-						
+
 						mHandler.sendMessage(msg);
 					}
 				}, new Response.ErrorListener() {
