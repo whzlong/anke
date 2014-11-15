@@ -165,8 +165,14 @@ public class WarningInfo extends BaseActivity implements OnClickListener,
 				loadingLayout.setVisibility(View.VISIBLE);
 				dataListLayout.setVisibility(View.GONE);
 				btnSelect.setClickable(false);
+				
+				String identityUrl = base_ip_port + Url.URL_HISTORY_WARNING_INFO;
 
-				getListData(factoryCode, strDatatimeFrom, strDatatimeTo);
+				identityUrl = StringUtils.setParams(identityUrl, factoryCode, strDatatimeFrom,
+						strDatatimeTo);
+
+				
+				getListData(identityUrl);
 			}
 
 			break;
@@ -334,7 +340,13 @@ public class WarningInfo extends BaseActivity implements OnClickListener,
 		
 		//TODO:从通知栏跳转过来
 		if(AppConstants.ONE.equals(previousPage)){
+			loadingLayout.setVisibility(View.VISIBLE);
+			dataListLayout.setVisibility(View.GONE);
+			btnSelect.setClickable(false);
 			
+			String identityUrl = base_ip_port + Url.URL_HISTORY_WARNING_REMIND;
+
+			getListData(identityUrl);
 		}
 		
 	}
@@ -400,26 +412,20 @@ public class WarningInfo extends BaseActivity implements OnClickListener,
 		return true;
 	}
 
+	
 	/**
 	 * 通过Web Service请求数据
 	 * 
-	 * @param dateTimeFrom
-	 *            查询开始时间
-	 * @param dateTimeTo
-	 *            查询结束时间
+	 * @param requestUrl
+	 *            请求URL
 	 * @return
 	 */
-	private void getListData(String factoryCode, String dateTimeFrom, String dateTimeTo) {
-
-		String identityUrl = base_ip_port + Url.URL_HISTORY_WARNING_INFO;
-
-		identityUrl = StringUtils.setParams(identityUrl, factoryCode, dateTimeFrom,
-				dateTimeTo);
+	private void getListData(String requestUrl) {
 
 		// 远程获取身份验证结果
 		RequestQueue mQueue = Volley.newRequestQueue(this);
 
-		StringRequest stringRequest = new StringRequest(identityUrl,
+		StringRequest stringRequest = new StringRequest(requestUrl,
 				new Response.Listener<String>() {
 					@Override
 					public void onResponse(String response) {
