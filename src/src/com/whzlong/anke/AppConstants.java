@@ -128,4 +128,7 @@ public class AppConstants {
 	//网络认证
 	public static final String AUTHENTICATION_RESULT = "authenticationResult";
 	
+	//代表通知界面
+	public static final String NOTIFICATION = "previousPage";
+	
 }

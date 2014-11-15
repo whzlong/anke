@@ -3,6 +3,7 @@ package com.whzlong.anke;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -48,11 +49,6 @@ public class AppService extends Service {
 			case AppConstants.OK:
 				Bundle bundle = msg.getData();
 
-				// String[] warningFactoryCodes =
-				// bundle.getStringArray(AppConstants.WARNING_FACTORY_CODES);
-				String warningFactoryCodes = bundle
-						.getString(AppConstants.WARNING_FACTORY_CODES);
-
 				String ns = Context.NOTIFICATION_SERVICE;
 
 				// 通知图标
@@ -67,21 +63,18 @@ public class AppService extends Service {
 
 				RemoteViews contentView = new RemoteViews(getPackageName(),
 						R.layout.notification);
-
+				
 				contentView.setImageViewResource(R.id.ntImage,
 						R.drawable.abc_ic_go);
-				test += 1;
-				CharSequence content = "钢铁" + String.valueOf(test) + "厂";
-				contentView.setTextViewText(R.id.ntMsg, content);
-
 				notification.contentView = contentView;
 
 				Intent notificationIntent = new Intent(appContext, WarningInfo.class);
+				notificationIntent.putExtra(AppConstants.NOTIFICATION, "1");
 				
 				PendingIntent contentIntent = PendingIntent.getActivity(
 						appContext, 0, notificationIntent, 0);
-				notification.contentIntent = contentIntent;
 				
+				notification.contentIntent = contentIntent;
 				notification.defaults = notification.DEFAULT_SOUND|notification.DEFAULT_VIBRATE;
 
 				NotificationManager mNotificationManager = (NotificationManager) getSystemService(ns);
@@ -148,35 +141,10 @@ public class AppService extends Service {
 				} else {
 					base_ip_port = Url.HTTP + ipPort;
 				}
-
-				// String factoryCodes =
-				// preference.getString(AppConstants.SELECTED_WARNING_FACTORY_KEY,
-				// "");
-				//
-				// String identityUrl = base_ip_port + Url.URL_REAL_TIME_DATA;
-				//
-				// factoryCodes = "TestData1";
-				// identityUrl = StringUtils.setParams(identityUrl,
-				// factoryCodes);
-
-				// 移动设备国际身份码
-				String mImei = "356440043501517";
-
-				String identityUrl = base_ip_port + Url.URL_VERIFY_IDENTIFY;
-				identityUrl = StringUtils.setParams(identityUrl, mImei);
+				
+				String identityUrl = base_ip_port + Url.URL_HISTORY_WARNING_REMIND;
 
 				getWarningInfo(identityUrl);
-
-				// // 定时更新
-				// String jsonString = getWarningInfo();
-				// // 发送广播
-				// Intent intent = new Intent();
-				// intent.setAction( BROADCASTACTION );
-				// intent.putExtra( "jsonstr", jsonString );
-				// sendBroadcast( intent );
-				// Message msg = handler.obtainMessage();
-				// msg.what = UPDATAWEATHER;
-				// handler.sendMessage( msg );
 
 			}
 		}, 0, 50 * 1000);
@@ -202,43 +170,18 @@ public class AppService extends Service {
 					public void onResponse(String response) {
 						Log.d("TAG", response);
 						Message msg = new Message();
-						Bundle bundle = new Bundle();
 
-						try {
-							String retval = response.substring(1,
-									response.length() - 1);
-							retval = retval.replace("\\", "");
+						String retval = response.substring(1,
+								response.length() - 1);
+						retval = retval.replace("\\", "");
 
-							JSONObject jsonObj = new JSONObject(retval);
 
-							// retval =
-							// jsonObj.getString(AppConstants.WARNING_FACTORY_CODES);
-
-							// DELETE
-							retval = jsonObj
-									.getString(AppConstants.AUTHENTICATION_RESULT);
-
-							if ("".equals(retval)) {
-								msg.what = AppConstants.NG;
-							} else {
-								// String[] warningFactoryCodes =
-								// retval.split("&");
-
-								// bundle.putStringArray(AppConstants.WARNING_FACTORY_CODES,
-								// warningFactoryCodes);
-
-								bundle.putString(
-										AppConstants.WARNING_FACTORY_CODES,
-										retval);
-
-								msg.setData(bundle);
-								msg.what = AppConstants.OK;
-							}
-						} catch (JSONException e) {
-							e.printStackTrace();
-							msg.what = AppConstants.ERROR2;
+						if (AppConstants.EMPTY.equals(retval)) {
+							msg.what = AppConstants.NG;
+						} else {
+							msg.what = AppConstants.OK;
 						}
-
+						
 						mHandler.sendMessage(msg);
 					}
 				}, new Response.ErrorListener() {

@@ -2,40 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#6b6868"
     android:orientation="horizontal" >
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/ntImage"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:background="#6b6868"
-        android:orientation="vertical" >
+        android:layout_marginRight="10dp" />
 
-        <ImageView
-            android:id="@+id/ntImage"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_marginRight="10dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:background="#6b6868"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/ntMsgTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/notificationTitle"
-            android:textColor="#f5ebeb" />
-
-        <TextView
-            android:id="@+id/ntMsg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="13sp"
-            android:textColor="#f5ebeb" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/ntMsgTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/notificationTitle"
+        android:textColor="#f5ebeb" />
 
 </LinearLayout>

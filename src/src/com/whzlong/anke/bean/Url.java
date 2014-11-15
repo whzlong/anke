@@ -23,7 +23,7 @@ public class Url implements Serializable {
 	public static String URL_REAL_TIME_DATA = "/RESTService.svc/CData/[%1]";
 	// 历史警告数据查询
 	public static String URL_HISTORY_WARNING_INFO = "/RESTService.svc/Warn/[%1]/[%2]/[%3]";
-	// 历史警告数据查询
-	public static String URL_HISTORY_WARNING_REMIND = "/RESTService.svc/WarningRemind/[%1]";
+	// 获取轮查时间段内需要提醒的报警信息
+	public static String URL_HISTORY_WARNING_REMIND = "/RESTService.svc/NewWarn";
 
 }

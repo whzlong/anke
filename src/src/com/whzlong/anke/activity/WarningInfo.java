@@ -328,6 +328,15 @@ public class WarningInfo extends BaseActivity implements OnClickListener,
 		btnBack = (Button) findViewById(R.id.btnBack);
 		btnBack.setOnClickListener(this);
 		btnBack.setOnTouchListener(this);
+		
+		//当从通知界面跳转过来时，显示当前警告数据
+		String previousPage = intent.getStringExtra(AppConstants.NOTIFICATION);
+		
+		//TODO:从通知栏跳转过来
+		if(AppConstants.ONE.equals(previousPage)){
+			
+		}
+		
 	}
 
 	/**
