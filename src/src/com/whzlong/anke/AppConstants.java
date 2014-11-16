@@ -140,6 +140,7 @@ public class AppConstants {
 	// 显示在界面上的报警时间段
 	public static final String[] TIME_AREA_NAME = { "00:00 ~ 08:00",
 			"08:00 ~ 17:00", "17:00 ~ 24:00", "关闭" };
+	public static final int[] TIME_AREA_POINT = { 0, 8, 17, 24 };
 	// 报警时间段对应的Code，供查询使用
 	public static final int[] TIME_AREA_CODE = { 0, 1, 2, 3 };
 	

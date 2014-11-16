@@ -101,8 +101,10 @@ public class SystemSet extends Activity implements OnClickListener,
 								editor.commit();
 
 								// 设置界面警告时间段的值
-								mWaringTimeAreaInfo
-										.setText(AppConstants.TIME_AREA_NAME[mSelectedTimeAreaIndex]);
+								mWaringTimeAreaInfo.setText(AppConstants.TIME_AREA_NAME[mSelectedTimeAreaIndex]);
+								
+								//TODO:重新启动实时获取警告信息的服务
+								
 							}
 							
 						}

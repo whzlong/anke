@@ -40,6 +40,8 @@ public class AppService extends Service {
 	private String base_ip_port;
 	private Timer mTimer;
 	private int test;
+	private int mTimeArea;
+	
 	// 全局Context
 	private AppContext appContext;
 	// 定义一个Handler,更新一览数据
@@ -125,56 +127,57 @@ public class AppService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		// 获取收取警告信息指定的时间区域
-		int timeArea = preference.getInt(AppConstants.SELECTED_TIME_AREA, 4);
-		int timeFrom;
-		int timeTo;
-
-		switch (timeArea) {
-			case AppConstants.TIME_AREA_ZERO:
-				String timearea = AppConstants.TIME_AREA_NAME[AppConstants.TIME_AREA_ZERO];
-				String[] timeFromTo = timearea.split(" ~ ");
-				break;
-			case AppConstants.TIME_AREA_ONE:
-	
-				break;
-			case AppConstants.TIME_AREA_TWO:
-	
-				break;
-			case AppConstants.TIME_AREA_THREE:
-	
-				break;
-			default:
-				break;
-		}
-
+		mTimeArea = preference.getInt(AppConstants.SELECTED_TIME_AREA, 4);
+		
 		mTimer = new Timer();
-
 		mTimer.schedule(new TimerTask() {
 
 			@Override
 			public void run() {
+				int timeFrom = 0;
+				int timeTo = 0;
 
-				String ipPort = preference.getString(AppConstants.URI_IP_PORT,
-						"");
-
-				if ("".equals(ipPort)) {
-					base_ip_port = Url.HTTP + Url.DEFAULT_URI_IP_PORT;
-
-					Editor editor = preference.edit();
-					editor.putString(AppConstants.URI_IP_PORT,
-							Url.DEFAULT_URI_IP_PORT);
-					editor.commit();
-				} else {
-					base_ip_port = Url.HTTP + ipPort;
+				switch (mTimeArea) {
+					case AppConstants.TIME_AREA_ZERO:
+						timeFrom = AppConstants.TIME_AREA_POINT[0];
+						timeTo = AppConstants.TIME_AREA_POINT[1];
+						break;
+					case AppConstants.TIME_AREA_ONE:
+						timeFrom = AppConstants.TIME_AREA_POINT[1];
+						timeTo = AppConstants.TIME_AREA_POINT[2];
+						break;
+					case AppConstants.TIME_AREA_TWO:
+						timeFrom = AppConstants.TIME_AREA_POINT[2];
+						timeTo = AppConstants.TIME_AREA_POINT[3];
+						break;
+					default:
+						break;
 				}
+				
+				if(AppConstants.TIME_AREA_THREE != mTimeArea){
+					if(mTimeArea >= timeFrom && mTimeArea < timeTo){
+						String ipPort = preference.getString(AppConstants.URI_IP_PORT,
+								"");
+						
+						if ("".equals(ipPort)) {
+							base_ip_port = Url.HTTP + Url.DEFAULT_URI_IP_PORT;
 
-				String identityUrl = base_ip_port
-						+ Url.URL_HISTORY_WARNING_REMIND;
+							Editor editor = preference.edit();
+							editor.putString(AppConstants.URI_IP_PORT,
+									Url.DEFAULT_URI_IP_PORT);
+							editor.commit();
+						} else {
+							base_ip_port = Url.HTTP + ipPort;
+						}
 
-				getWarningInfo(identityUrl);
-
+						String identityUrl = base_ip_port
+								+ Url.URL_HISTORY_WARNING_REMIND;
+						
+						getWarningInfo(identityUrl);
+					}
+				}
 			}
-		}, 0, 60 * 1000);
+		}, 0, AppConstants.SELECTED_POLLING_INTERVAL * 60 * 1000);
 
 		return super.onStartCommand(intent, flags, startId);
 	}
