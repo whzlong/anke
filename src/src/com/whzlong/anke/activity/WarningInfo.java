@@ -338,7 +338,7 @@ public class WarningInfo extends BaseActivity implements OnClickListener,
 		//当从通知界面跳转过来时，显示当前警告数据
 		String previousPage = intent.getStringExtra(AppConstants.NOTIFICATION);
 		
-		//TODO:从通知栏跳转过来
+		//从通知栏跳转过来后，显示最新的警告信息
 		if(AppConstants.ONE.equals(previousPage)){
 			loadingLayout.setVisibility(View.VISIBLE);
 			dataListLayout.setVisibility(View.GONE);

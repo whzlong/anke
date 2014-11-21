@@ -71,7 +71,7 @@ public class ServerInfo extends Activity implements OnTouchListener,OnClickListe
 				String strServerIp = ((EditText)findViewById(R.id.etServerIp)).getText().toString();
 				String strServerPort = ((EditText)findViewById(R.id.etServerPort)).getText().toString();
 				
-				//TODO: 输入验证处理
+				//输入验证处理
 				if(StringUtils.checkInput(strServerIp, strServerPort)){
 					String ip_port = strServerIp + ":" + strServerPort;
 					

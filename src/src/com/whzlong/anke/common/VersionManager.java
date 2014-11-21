@@ -202,7 +202,6 @@ public class VersionManager {
 
 							handler.sendMessage(msg);
 						} catch (JSONException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 							msg.what = AppConstants.ERROR2;
 						}
