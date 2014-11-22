@@ -3,10 +3,6 @@ package com.whzlong.anke;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -14,18 +10,14 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.whzlong.anke.activity.WarningInfo;
 import com.whzlong.anke.bean.Url;
-import com.whzlong.anke.common.StringUtils;
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -39,7 +31,6 @@ public class AppService extends Service {
 	protected SharedPreferences preference;
 	private String base_ip_port;
 	private Timer mTimer;
-	private int test;
 	private int mTimeArea;
 	
 	// 全局Context
@@ -49,8 +40,6 @@ public class AppService extends Service {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case AppConstants.OK:
-				Bundle bundle = msg.getData();
-
 				String ns = Context.NOTIFICATION_SERVICE;
 
 				// 通知图标

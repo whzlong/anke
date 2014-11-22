@@ -236,7 +236,9 @@ public class SystemSet extends Activity implements OnClickListener,
 	 */
 	private String getSelectedTimeAreaName() {
 		String selectedTimeAreaName = "";
-		int selectedTimeAreaCode = Integer.valueOf(preference.getString(AppConstants.SELECTED_TIME_AREA, ""));
+		String selectedTimeArea = preference.getString(AppConstants.SELECTED_TIME_AREA, "");
+		
+		int selectedTimeAreaCode = (!AppConstants.EMPTY.equals(selectedTimeArea)) ? Integer.valueOf(selectedTimeArea) : 1;
 
 		for (int i = 0; i < AppConstants.TIME_AREA_CODE.length; i++) {
 			if (AppConstants.TIME_AREA_CODE[i] == selectedTimeAreaCode) {
