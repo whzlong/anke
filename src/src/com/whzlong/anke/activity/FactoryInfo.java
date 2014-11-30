@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -55,56 +56,55 @@ public class FactoryInfo extends BaseActivity implements OnClickListener,
 	private Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-				case AppConstants.OK:
-					Bundle bundle = msg.getData();
-	
-					factoryCodeArr = bundle.getStringArray(columns[0]);
-					factoryNameArr = bundle.getStringArray(columns[1]);
-					factoryInfo = new HashMap<String, String>();
-	
-					rgFactoryInfo = (RadioGroup) findViewById(R.id.rgFactoryInfo);
-	
-					RadioButton rb = null;
-	
-					for (int i = 0; i < factoryNameArr.length; i++) {
-						rb = new RadioButton(rgFactoryInfo.getContext());
-	
-						rb.setText(factoryNameArr[i]);
-						rb.setTextSize(20);
-						// 选中其次选中的数据
-						if (factoryCodeArr[i].equals(selectedFactoryCode)) {
-							rb.setChecked(true);
-							// 直接点击返回按钮后，将其次选择的数据返回
-							selectedFactoryName = factoryNameArr[i];
-						}
-	
-						rgFactoryInfo.addView(rb);
-	
-						factoryInfo.put(factoryNameArr[i], factoryCodeArr[i]);
+			case AppConstants.OK:
+				Bundle bundle = msg.getData();
+
+				factoryCodeArr = bundle.getStringArray(columns[0]);
+				factoryNameArr = bundle.getStringArray(columns[1]);
+				factoryInfo = new HashMap<String, String>();
+
+				rgFactoryInfo = (RadioGroup) findViewById(R.id.rgFactoryInfo);
+
+				RadioButton rb = null;
+
+				for (int i = 0; i < factoryNameArr.length; i++) {
+					rb = new RadioButton(rgFactoryInfo.getContext());
+
+					rb.setText(factoryNameArr[i]);
+					rb.setTextSize(20);
+					// 选中其次选中的数据
+					if (factoryCodeArr[i].equals(selectedFactoryCode)) {
+						rb.setChecked(true);
+						// 直接点击返回按钮后，将其次选择的数据返回
+						selectedFactoryName = factoryNameArr[i];
 					}
-	
-					dataListLayout.setVisibility(View.VISIBLE);
-					break;
-				case AppConstants.NG:
-					Toast.makeText(
-							appContext,
-							appContext.getString(R.string.error_select_result_zero),
-							Toast.LENGTH_LONG).show();
-					break;
-				case AppConstants.ERROR1:
-					Toast.makeText(appContext,
-							appContext.getString(R.string.error_network_connected),
-							Toast.LENGTH_LONG).show();
-					break;
-				case AppConstants.ERROR2:
-					Toast.makeText(appContext,
-							appContext.getString(R.string.system_error),
-							Toast.LENGTH_LONG).show();
-					break;
-				default:
-					break;
+
+					rgFactoryInfo.addView(rb);
+
+					factoryInfo.put(factoryNameArr[i], factoryCodeArr[i]);
+				}
+
+				dataListLayout.setVisibility(View.VISIBLE);
+				break;
+			case AppConstants.NG:
+				Toast.makeText(
+						appContext,
+						appContext.getString(R.string.error_select_result_zero),
+						Toast.LENGTH_LONG).show();
+				break;
+			case AppConstants.ERROR1:
+				Toast.makeText(appContext,
+						appContext.getString(R.string.error_network_connected),
+						Toast.LENGTH_LONG).show();
+				break;
+			case AppConstants.ERROR2:
+				Toast.makeText(appContext,
+						appContext.getString(R.string.system_error),
+						Toast.LENGTH_LONG).show();
+				break;
+			default:
+				break;
 			}
-			
 
 			loadingLayout.setVisibility(View.GONE);
 		}
@@ -156,24 +156,24 @@ public class FactoryInfo extends BaseActivity implements OnClickListener,
 							// 返回按钮
 							Intent intent = new Intent();
 							switch (previousActivityFlag) {
-								case AppConstants.ENERGY_SAVING:
-									// 节能数据界面
-									intent.setClass(FactoryInfo.this,
-											EnergySavingData.class);
-									break;
-								case AppConstants.REAL_TIME:
-									// 实时状态查询
-									intent.setClass(FactoryInfo.this,
-											RealTimeData.class);
-									break;
-								case AppConstants.WARNING_INFO:
-									// 警告信息
-									intent.setClass(FactoryInfo.this,
-											WarningInfo.class);
-								default:
-									break;
+							case AppConstants.ENERGY_SAVING:
+								// 节能数据界面
+								intent.setClass(FactoryInfo.this,
+										EnergySavingData.class);
+								break;
+							case AppConstants.REAL_TIME:
+								// 实时状态查询
+								intent.setClass(FactoryInfo.this,
+										RealTimeData.class);
+								break;
+							case AppConstants.WARNING_INFO:
+								// 警告信息
+								intent.setClass(FactoryInfo.this,
+										WarningInfo.class);
+							default:
+								break;
 							}
-							
+
 							intent.putExtra("factoryCode", factoryCode);
 							intent.putExtra("factoryName", checkedRb.getText());
 							startActivity(intent);
@@ -187,6 +187,39 @@ public class FactoryInfo extends BaseActivity implements OnClickListener,
 
 	}
 
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			// 返回按钮
+			Intent intent = new Intent();
+
+			switch (previousActivityFlag) {
+			case AppConstants.ENERGY_SAVING:
+				// 节能数据界面
+				intent.setClass(FactoryInfo.this, EnergySavingData.class);
+				break;
+			case AppConstants.REAL_TIME:
+				// 实时状态查询
+				intent.setClass(FactoryInfo.this, RealTimeData.class);
+				break;
+			case AppConstants.WARNING_INFO:
+				// 实时状态查询
+				intent.setClass(FactoryInfo.this, WarningInfo.class);
+				break;
+			default:
+				break;
+			}
+
+			intent.putExtra("factoryCode", selectedFactoryCode);
+			intent.putExtra("factoryName", selectedFactoryName);
+			startActivity(intent);
+			FactoryInfo.this.finish();
+		}
+
+		return false;
+	}
+
 	/**
 	 * 单击事件
 	 */
@@ -198,20 +231,20 @@ public class FactoryInfo extends BaseActivity implements OnClickListener,
 			Intent intent = new Intent();
 
 			switch (previousActivityFlag) {
-				case AppConstants.ENERGY_SAVING:
-					// 节能数据界面
-					intent.setClass(FactoryInfo.this, EnergySavingData.class);
-					break;
-				case AppConstants.REAL_TIME:
-					// 实时状态查询
-					intent.setClass(FactoryInfo.this, RealTimeData.class);
-					break;
-				case AppConstants.WARNING_INFO:
-					// 实时状态查询
-					intent.setClass(FactoryInfo.this, WarningInfo.class);
-					break;
-				default:
-					break;
+			case AppConstants.ENERGY_SAVING:
+				// 节能数据界面
+				intent.setClass(FactoryInfo.this, EnergySavingData.class);
+				break;
+			case AppConstants.REAL_TIME:
+				// 实时状态查询
+				intent.setClass(FactoryInfo.this, RealTimeData.class);
+				break;
+			case AppConstants.WARNING_INFO:
+				// 实时状态查询
+				intent.setClass(FactoryInfo.this, WarningInfo.class);
+				break;
+			default:
+				break;
 			}
 
 			intent.putExtra("factoryCode", selectedFactoryCode);
@@ -262,7 +295,7 @@ public class FactoryInfo extends BaseActivity implements OnClickListener,
 							String retval = response.substring(1,
 									response.length() - 1);
 							retval = retval.replace("\\", "");
-							
+
 							if ("".equals(retval)) {
 								msg.what = AppConstants.NG;
 							} else {

@@ -10,6 +10,7 @@ import android.os.Message;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Display;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -134,7 +135,7 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 	}
 
 	private void initViews() {
-		// //按钮事件管理
+		//按钮事件管理
 		// 设置为只读
 		// 钢厂信息
 		etFactoryName = (EditText) findViewById(R.id.etFactoryName);
@@ -236,6 +237,20 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 
 	}
 
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			// 返回按钮
+			Intent intent = new Intent();
+			intent.setClass(EnergySavingData.this, Main.class);
+			startActivity(intent);
+			EnergySavingData.this.finish();
+		}
+
+		return false;
+	}
+
 	/**
 	 * 各种按钮点击事件处理
 	 */
@@ -261,10 +276,10 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 			break;
 		case R.id.btnSelect:
 			// 查询处理按钮
-			//查询开始时间
+			// 查询开始时间
 			String selectDateFrom = ((EditText) findViewById(R.id.etDatatimeFrom))
 					.getText().toString();
-			//查询结束时间
+			// 查询结束时间
 			String selectDateTo = ((EditText) findViewById(R.id.etDatatimeTo))
 					.getText().toString();
 
@@ -296,7 +311,7 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 		Dialog dialog = null;
 		Window dialogWindow = null;
 		WindowManager wm = null;
-		WindowManager.LayoutParams  lyParams = null;
+		WindowManager.LayoutParams lyParams = null;
 		Display dp = null;
 
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -310,7 +325,7 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 			cal.setTimeInMillis(System.currentTimeMillis());
 			datePicker.init(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),
 					cal.get(Calendar.DAY_OF_MONTH), null);
-			
+
 			switch (v.getId()) {
 			case R.id.btnBack:
 				btnBack.setBackgroundResource(R.drawable.light_gray);
@@ -344,15 +359,15 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 						});
 
 				dialog = builder.create();
-				
+
 				dialogWindow = dialog.getWindow();
-		        wm = getWindowManager();
-		        dp = wm.getDefaultDisplay(); // 获取屏幕宽、高用
-		        lyParams = dialogWindow.getAttributes(); // 获取对话框当前的参数值
-		        lyParams.height = (int) (dp.getHeight() * 0.4); // 高度设置为屏幕的0.6
-		        lyParams.width = (int) (dp.getWidth() * 0.5); // 宽度设置为屏幕的0.65
-		        dialogWindow.setAttributes(lyParams);
-				
+				wm = getWindowManager();
+				dp = wm.getDefaultDisplay(); // 获取屏幕宽、高用
+				lyParams = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+				lyParams.height = (int) (dp.getHeight() * 0.4); // 高度设置为屏幕的0.6
+				lyParams.width = (int) (dp.getWidth() * 0.5); // 宽度设置为屏幕的0.65
+				dialogWindow.setAttributes(lyParams);
+
 				dialog.show();
 				break;
 			case R.id.etDatatimeTo:
@@ -381,15 +396,15 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 						});
 
 				dialog = builder.create();
-				
+
 				dialogWindow = dialog.getWindow();
-		        wm = getWindowManager();
-		        dp = wm.getDefaultDisplay(); // 获取屏幕宽、高用
-		        lyParams = dialogWindow.getAttributes(); // 获取对话框当前的参数值
-		        lyParams.height = (int) (dp.getHeight() * 0.4); // 高度设置为屏幕的0.6
-		        lyParams.width = (int) (dp.getWidth() * 0.5); // 宽度设置为屏幕的0.65
-		        dialogWindow.setAttributes(lyParams);
-		        
+				wm = getWindowManager();
+				dp = wm.getDefaultDisplay(); // 获取屏幕宽、高用
+				lyParams = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+				lyParams.height = (int) (dp.getHeight() * 0.4); // 高度设置为屏幕的0.6
+				lyParams.width = (int) (dp.getWidth() * 0.5); // 宽度设置为屏幕的0.65
+				dialogWindow.setAttributes(lyParams);
+
 				dialog.show();
 				break;
 			default:
@@ -415,8 +430,8 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 			String dateTimeTo) {
 		String identityUrl = base_ip_port + Url.URL_ENERGY_SAVING_DATA;
 
-		identityUrl = StringUtils.setParams(identityUrl, factoryCode, dateTimeFrom,
-				dateTimeTo);
+		identityUrl = StringUtils.setParams(identityUrl, factoryCode,
+				dateTimeFrom, dateTimeTo);
 
 		// 远程获取身份验证结果
 		RequestQueue mQueue = Volley.newRequestQueue(this);

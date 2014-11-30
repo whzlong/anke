@@ -34,6 +34,7 @@ import android.os.Message;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Display;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -131,6 +132,20 @@ public class WarningInfo extends BaseActivity implements OnClickListener,
 		initViews();
 	}
 
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			// 返回按钮
+			Intent intent = new Intent();
+			intent.setClass(WarningInfo.this, Main.class);
+			startActivity(intent);
+			WarningInfo.this.finish();
+		}
+
+		return false;
+	}
+	
 	/**
 	 * 单击事件
 	 */

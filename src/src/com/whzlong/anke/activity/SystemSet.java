@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -52,6 +53,20 @@ public class SystemSet extends Activity implements OnClickListener,
 		InitViews();
 	}
 
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			// 返回按钮
+			Intent intent = new Intent();
+			intent.setClass(SystemSet.this, Main.class);
+			startActivity(intent);
+			SystemSet.this.finish();
+		}
+
+		return false;
+	}
+	
 	/**
 	 * 单击事件
 	 */

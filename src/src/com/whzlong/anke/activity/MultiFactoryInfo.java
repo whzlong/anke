@@ -27,6 +27,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,7 +38,8 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-public class MultiFactoryInfo extends BaseActivity implements OnClickListener, OnTouchListener{
+public class MultiFactoryInfo extends BaseActivity implements OnClickListener,
+		OnTouchListener {
 	private Button btnBack;
 	private Button btnSave;
 	private RelativeLayout loadingLayout;
@@ -49,7 +51,8 @@ public class MultiFactoryInfo extends BaseActivity implements OnClickListener, O
 	// 全局Context
 	private AppContext appContext;
 	private SharedPreferences preference;
-	private String[] columns = new String[] { "SteelWorksCode", "SteelWorksName" };
+	private String[] columns = new String[] { "SteelWorksCode",
+			"SteelWorksName" };
 
 	// 定义一个Handler,更新一览数据
 	private Handler mHandler = new Handler() {
@@ -99,19 +102,33 @@ public class MultiFactoryInfo extends BaseActivity implements OnClickListener, O
 			default:
 				break;
 			}
-			
+
 			loadingLayout.setVisibility(View.GONE);
 		}
 	};
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_multi_factory_info);
-		
+
 		appContext = (AppContext) getApplication();
-		//初始化各种视图组件
+		// 初始化各种视图组件
 		InitViews();
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			// 返回按钮
+			Intent intent = new Intent();
+			intent.setClass(MultiFactoryInfo.this, SystemSet.class);
+			startActivity(intent);
+			MultiFactoryInfo.this.finish();
+		}
+
+		return false;
 	}
 
 	/**
@@ -125,8 +142,7 @@ public class MultiFactoryInfo extends BaseActivity implements OnClickListener, O
 		case R.id.btnBack:
 			// 返回按钮
 			intent = new Intent();
-			intent.setClass(MultiFactoryInfo.this,
-					SystemSet.class);
+			intent.setClass(MultiFactoryInfo.this, SystemSet.class);
 			startActivity(intent);
 			MultiFactoryInfo.this.finish();
 			break;
@@ -150,14 +166,15 @@ public class MultiFactoryInfo extends BaseActivity implements OnClickListener, O
 
 			Editor editor = preference.edit();
 
-			editor.putString(AppConstants.SELECTED_WARNING_FACTORY_KEY, selectedFactoryCode);
-			editor.putString(AppConstants.SELECTED_WARNING_FACTORY_NAME, selectedFactoryName);
-			
+			editor.putString(AppConstants.SELECTED_WARNING_FACTORY_KEY,
+					selectedFactoryCode);
+			editor.putString(AppConstants.SELECTED_WARNING_FACTORY_NAME,
+					selectedFactoryName);
+
 			editor.commit();
 
 			intent = new Intent();
-			intent.setClass(MultiFactoryInfo.this,
-					SystemSet.class);
+			intent.setClass(MultiFactoryInfo.this, SystemSet.class);
 			startActivity(intent);
 			MultiFactoryInfo.this.finish();
 			break;
@@ -181,7 +198,7 @@ public class MultiFactoryInfo extends BaseActivity implements OnClickListener, O
 
 		return false;
 	}
-	
+
 	/**
 	 * 初始化各种视图组件
 	 */
@@ -212,22 +229,23 @@ public class MultiFactoryInfo extends BaseActivity implements OnClickListener, O
 	 */
 	private void addFactoryInfoView(List<Map<String, String>> lsMap) {
 		// 获取原来的设置信息
-		preference = MultiFactoryInfo.this.getSharedPreferences(
-				"perference", MODE_PRIVATE);
+		preference = MultiFactoryInfo.this.getSharedPreferences("perference",
+				MODE_PRIVATE);
 		String defaultCheckedFactory = preference.getString(
 				AppConstants.SELECTED_WARNING_FACTORY_KEY, "");
-		
+
 		List<String> lsCheckedData = null;
-		
-		if(defaultCheckedFactory != ""){
-			String[] defaultCheckedFactoryArray = defaultCheckedFactory.split("&");
-			
+
+		if (defaultCheckedFactory != "") {
+			String[] defaultCheckedFactoryArray = defaultCheckedFactory
+					.split("&");
+
 			lsCheckedData = new ArrayList<String>();
 			for (String code : defaultCheckedFactoryArray) {
-				if(mpGetNameByCode.get(code) != null){
-					//保存选中的钢厂Code
+				if (mpGetNameByCode.get(code) != null) {
+					// 保存选中的钢厂Code
 					lsSelectedFactoryCode.add(code);
-					//保存选中的钢厂名称
+					// 保存选中的钢厂名称
 					lsCheckedData.add(mpGetNameByCode.get(code));
 				}
 			}
@@ -263,7 +281,7 @@ public class MultiFactoryInfo extends BaseActivity implements OnClickListener, O
 				});
 	}
 
-	private void getListData(){
+	private void getListData() {
 		String identityUrl = base_ip_port + Url.URL_FACTORY_INFO;
 		// 远程获取身份验证结果
 		RequestQueue mQueue = Volley.newRequestQueue(this);
@@ -280,7 +298,7 @@ public class MultiFactoryInfo extends BaseActivity implements OnClickListener, O
 							String retval = response.substring(1,
 									response.length() - 1);
 							retval = retval.replace("\\", "");
-							
+
 							if ("".equals(retval)) {
 								msg.what = AppConstants.NG;
 							} else {
@@ -323,5 +341,5 @@ public class MultiFactoryInfo extends BaseActivity implements OnClickListener, O
 
 		mQueue.add(stringRequest);
 	}
-	
+
 }

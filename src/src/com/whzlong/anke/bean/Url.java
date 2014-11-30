@@ -3,6 +3,8 @@ package com.whzlong.anke.bean;
 import java.io.Serializable;
 
 public class Url implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	public final static String HTTP = "http://";
 	public final static String HTTPS = "https://";
 

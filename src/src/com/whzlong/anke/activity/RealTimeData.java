@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -127,6 +128,20 @@ public class RealTimeData extends BaseActivity implements OnClickListener, OnTou
 		initViews();
 	}
 
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			// 返回按钮
+			Intent intent = new Intent();
+			intent.setClass(RealTimeData.this, Main.class);
+			startActivity(intent);
+			RealTimeData.this.finish();
+		}
+
+		return false;
+	}
+	
 	@Override
 	public void onClick(View v) {
 		Intent intent = null;
