@@ -21,8 +21,9 @@
             android:layout_height="wrap_content"            
             android:gravity="center_horizontal"
             android:layout_centerHorizontal="true"
-            android:text="@string/energy_saving_data" />
-
+            android:text="@string/energy_saving_data" 
+            android:background="@drawable/button_shape" 
+            android:textColor="@color/white" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -35,9 +36,11 @@
             android:id="@+id/btnRealTimeData"
             android:layout_width="160dp"
             android:layout_height="wrap_content"
-            android:text="@string/real_time_data" 
+            android:text="@string/real_time_data"
             android:gravity="center_horizontal"
             android:layout_centerHorizontal="true"
+            android:background="@drawable/button_shape" 
+            android:textColor="@color/white"
             />
     </RelativeLayout>
 
@@ -54,6 +57,8 @@
             android:text="@string/warning_info" 
             android:gravity="center_horizontal"
             android:layout_centerHorizontal="true"
+            android:background="@drawable/button_shape" 
+            android:textColor="@color/white"
             />
     </RelativeLayout>
     
@@ -70,6 +75,8 @@
             android:text="@string/system_set" 
             android:gravity="center_horizontal"
             android:layout_centerHorizontal="true"
+            android:background="@drawable/button_shape" 
+            android:textColor="@color/white"
             />
     </RelativeLayout>
 
@@ -86,6 +93,8 @@
             android:text="@string/quit" 
             android:gravity="center_horizontal"
             android:layout_centerHorizontal="true"
+            android:background="@drawable/button_shape" 
+            android:textColor="@color/white"
             />
     </RelativeLayout>
 
