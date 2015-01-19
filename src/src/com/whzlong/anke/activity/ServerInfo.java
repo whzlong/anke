@@ -19,7 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class ServerInfo extends Activity implements OnTouchListener,
+public class ServerInfo extends BaseActivity implements OnTouchListener,
 		OnClickListener {
 	private Button btnBack = null;
 	private Button btnSave = null;

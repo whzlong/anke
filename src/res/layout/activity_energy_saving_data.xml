@@ -35,6 +35,7 @@
         android:id="@+id/selectConditionLayout"
         android:layout_width="fill_parent"
         android:layout_height="90dp"
+        android:paddingLeft="10sp"
         android:layout_below="@+id/navigationBarLayout" >
 
         <TableLayout
@@ -52,8 +53,9 @@
                     android:id="@+id/tvFactory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingRight="12sp"
                     android:text="@string/factory"
-                    android:textSize="15sp" />
+                    android:textSize="17sp" />
 
                 <EditText
                     android:id="@+id/etFactoryName"
@@ -75,8 +77,9 @@
                     android:id="@+id/tvSelectDatetime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingRight="12sp"
                     android:text="@string/selectDatetime"
-                    android:textSize="15sp" />
+                    android:textSize="17sp" />
 
                 <EditText
                     android:id="@+id/etDatatimeFrom"
@@ -112,25 +115,32 @@
         android:id="@+id/selectLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="10sp"
         android:layout_below="@+id/selectConditionLayout" >
 
        	<Button
             android:id="@+id/btnSelect"
             android:layout_width="100dp"
             android:layout_height="40dp"
-            android:gravity="center"
+            android:paddingTop="6sp"
             android:background="@drawable/button_shape"
             android:text="@string/select"
             android:textColor="@color/white" >
-        	</Button>
+        </Button>
         	
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/blankLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="10dp"
+        android:layout_below="@+id/selectLayout" />
+    
+    <RelativeLayout
         android:id="@+id/loadingLayout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/selectLayout" >
+        android:layout_below="@+id/blankLayout" >
 
         <ProgressBar
             android:id="@+id/pbDataLoad"
@@ -145,6 +155,8 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_alignParentLeft="true"
+        android:paddingLeft="10sp"
+        android:paddingRight="10sp"
         android:layout_below="@+id/loadingLayout" >
 
         <HorizontalScrollView

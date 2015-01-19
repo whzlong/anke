@@ -1,6 +1,5 @@
 package com.whzlong.anke.activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,7 +22,7 @@ import com.whzlong.anke.AppService;
 import com.whzlong.anke.R;
 import com.whzlong.anke.activity.Main;
 
-public class SystemSet extends Activity implements OnClickListener,
+public class SystemSet extends BaseActivity implements OnClickListener,
 		OnTouchListener {
 	private Button btnBack;
 	private Button btnQuitApp;
