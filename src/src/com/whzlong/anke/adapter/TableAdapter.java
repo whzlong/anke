@@ -40,7 +40,7 @@ public class TableAdapter extends BaseAdapter {
 
 	public View getView(int position, View convertView, ViewGroup parent) {
 		TableRow tableRow = table.get(position);
-		return new TableRowView(this.context, tableRow);
+		return new TableRowView(this.context, tableRow, position);
 	}
 
 	/**
@@ -50,9 +50,11 @@ public class TableAdapter extends BaseAdapter {
 	 */
 	class TableRowView extends LinearLayout {
 		
-		public TableRowView(Context context, TableRow tableRow) {
+		public TableRowView(Context context, TableRow tableRow, int position) {
 			super(context);
 
+			int[] colors = { Color.WHITE, Color.rgb(219, 238, 244) };//RGB颜色 
+			
 			this.setOrientation(LinearLayout.HORIZONTAL);
 			
 			for (int i = 0; i < tableRow.getSize(); i++) {
@@ -72,7 +74,7 @@ public class TableAdapter extends BaseAdapter {
 					
 					textCell.setLines(1);
 					textCell.setGravity(Gravity.CENTER);
-					textCell.setBackgroundColor(R.drawable.light_green);
+					textCell.setBackgroundColor(colors[position % 2]);
 					
 					// 背景黑色
 					textCell.setText(String.valueOf(tableCell.value));
