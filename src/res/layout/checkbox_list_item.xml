@@ -7,7 +7,7 @@
 	<CheckBox 
 	    android:id="@+id/listCheckbox"
 	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
+	    android:layout_height="50dp"
 	     android:focusable="false"
         android:focusableInTouchMode="false" 
         android:clickable="false"

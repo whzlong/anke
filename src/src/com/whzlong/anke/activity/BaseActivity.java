@@ -2,16 +2,22 @@ package com.whzlong.anke.activity;
 
 import com.whzlong.anke.AppConstants;
 import com.whzlong.anke.AppManager;
+import com.whzlong.anke.R;
 import com.whzlong.anke.bean.Url;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
+import android.widget.Button;
 
-public class BaseActivity extends Activity {
+public class BaseActivity extends Activity{
 
 	protected String base_ip_port = "";
 	// 获取服务器端信息
@@ -33,23 +39,19 @@ public class BaseActivity extends Activity {
 		AppManager.getAppManager().addActivity(this);
 
 		// 获取服务器端信息
-		preference = this.getSharedPreferences("perference",
-				MODE_PRIVATE);
+		preference = this.getSharedPreferences("perference", MODE_PRIVATE);
 
 		String ipPort = preference.getString(AppConstants.URI_IP_PORT, "");
-		
-		if("".equals(ipPort)){
-			base_ip_port = Url.HTTP
-					+ Url.DEFAULT_URI_IP_PORT;
-			
+
+		if ("".equals(ipPort)) {
+			base_ip_port = Url.HTTP + Url.DEFAULT_URI_IP_PORT;
+
 			Editor editor = preference.edit();
 			editor.putString(AppConstants.URI_IP_PORT, Url.DEFAULT_URI_IP_PORT);
 			editor.commit();
-		}else{
-			base_ip_port = Url.HTTP
-					+ ipPort;
+		} else {
+			base_ip_port = Url.HTTP + ipPort;
 		}
-		
 	}
 
 	@Override

@@ -7,8 +7,8 @@
     <RelativeLayout
         android:id="@+id/navigationBarLayout"
         android:layout_width="fill_parent"
-        android:layout_height="55dp"
-        android:background="#333333" >
+        android:layout_height="50dp"
+        android:background="@color/dark_gray" >
 
         <Button
             android:id="@+id/btnBack"
@@ -16,10 +16,10 @@
             android:layout_height="fill_parent"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:background="#333333"
+            android:background="@color/dark_gray"
             android:text="@string/back"
-            android:textColor="#ffffff"
-            android:textSize="20sp" />
+            android:textColor="@color/white"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/tvTitleEnergySavingData"
@@ -27,17 +27,18 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/warning_info"
-            android:textColor="#ffffff"
-            android:textSize="22sp" />
+            android:textColor="@color/white"
+            android:textSize="20sp" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/selectConditionLayout"
         android:layout_width="fill_parent"
-        android:layout_height="140dp"
+        android:layout_height="90dp"
+        android:paddingLeft="10sp"
         android:layout_below="@+id/navigationBarLayout" >
 
-        <TableLayout
+       <TableLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_alignParentLeft="true"
@@ -52,7 +53,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/factory"
-                    android:textSize="15sp" />
+                    android:paddingRight="12sp"
+                    android:textSize="17sp" />
 
                 <EditText
                     android:id="@+id/etFactoryName"
@@ -75,7 +77,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/warningDatetime"
-                    android:textSize="15sp" />
+                    android:paddingRight="12sp"
+                    android:textSize="17sp" />
 
                 <EditText
                     android:id="@+id/etDatatimeFrom"
@@ -92,7 +95,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/intervalMark"
-                    android:textSize="15sp" />
+                    android:textSize="17sp" />
 
                 <EditText
                     android:id="@+id/etDatatimeTo"
@@ -105,26 +108,39 @@
                 </EditText>
             </TableRow>
 
-            <TableRow
-                android:id="@+id/tableRow3"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" >
-
-                <Button
-                    android:id="@+id/btnSelect"
-                    android:layout_width="20dip"
-                    android:layout_height="wrap_content"
-                    android:text="@string/select" >
-                </Button>
-            </TableRow>
         </TableLayout>
     </RelativeLayout>
+    
+ <RelativeLayout
+        android:id="@+id/selectLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10sp"
+        android:layout_below="@+id/selectConditionLayout" >
 
+       	<Button
+            android:id="@+id/btnSelect"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:paddingTop="6sp"
+            android:background="@drawable/button_shape"
+            android:text="@string/select"
+            android:textColor="@color/white" >
+        </Button>
+        	
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/blankLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="10dp"
+        android:layout_below="@+id/selectLayout" />
+    
     <RelativeLayout
         android:id="@+id/loadingLayout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/selectConditionLayout" >
+        android:layout_below="@+id/blankLayout" >
 
         <ProgressBar
             android:id="@+id/pbDataLoad"
@@ -139,6 +155,8 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_alignParentLeft="true"
+        android:paddingLeft="10sp"
+        android:paddingRight="10sp"
         android:layout_below="@+id/loadingLayout" >
 
         <HorizontalScrollView

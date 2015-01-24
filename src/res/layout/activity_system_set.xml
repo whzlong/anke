@@ -7,8 +7,8 @@
     <RelativeLayout
         android:id="@+id/navigationBarLayout"
         android:layout_width="fill_parent"
-        android:layout_height="55dp"
-        android:background="#333333" >
+        android:layout_height="50dp"
+        android:background="@color/dark_gray" >
 
         <Button
             android:id="@+id/btnBack"
@@ -16,10 +16,10 @@
             android:layout_height="fill_parent"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:background="#333333"
+            android:background="@color/dark_gray"
             android:text="@string/back"
-            android:textColor="#ffffff"
-            android:textSize="20sp" />
+            android:textColor="@color/white"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/tvTitleSystemSet"
@@ -27,8 +27,8 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/system_set"
-            android:textColor="#ffffff"
-            android:textSize="22sp" />
+            android:textColor="@color/white"
+            android:textSize="20sp" />
     </RelativeLayout>
 
     <ScrollView
@@ -171,6 +171,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:clickable="true"
+                android:paddingLeft="10sp"
+                android:paddingRight="10sp"
                 android:gravity="center_vertical" >
 
                 <Button
@@ -179,6 +181,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:gravity="center_horizontal"
+                    android:textColor="@color/white" 
+                    android:background="@drawable/button_shape"
                     android:text="@string/quitWhole" />
             </RelativeLayout>
         </LinearLayout>

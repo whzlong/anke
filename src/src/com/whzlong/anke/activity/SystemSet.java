@@ -109,9 +109,9 @@ public class SystemSet extends BaseActivity implements OnClickListener,
 						public void onClick(DialogInterface dialog, int position) {
 							if (mSelectedTimeAreaIndex >= 0) {
 								Editor editor = preference.edit();
-								editor.putInt(
-										AppConstants.SELECTED_TIME_AREA,
-										AppConstants.TIME_AREA_CODE[mSelectedTimeAreaIndex]);
+								
+								editor.putInt(AppConstants.SELECTED_TIME_AREA, mSelectedTimeAreaIndex);
+								
 								editor.commit();
 
 								// 设置界面警告时间段的值
@@ -249,20 +249,13 @@ public class SystemSet extends BaseActivity implements OnClickListener,
 	 * @return
 	 */
 	private String getSelectedTimeAreaName() {
-		String selectedTimeAreaName = "";
-		String selectedTimeArea = preference.getString(AppConstants.SELECTED_TIME_AREA, "");
+		mSelectedTimeAreaIndex = preference.getInt(AppConstants.SELECTED_TIME_AREA, 0);
 		
-		int selectedTimeAreaCode = (!AppConstants.EMPTY.equals(selectedTimeArea)) ? Integer.valueOf(selectedTimeArea) : 1;
-
-		for (int i = 0; i < AppConstants.TIME_AREA_CODE.length; i++) {
-			if (AppConstants.TIME_AREA_CODE[i] == selectedTimeAreaCode) {
-				selectedTimeAreaName = AppConstants.TIME_AREA_NAME[i];
-				// 报警时间段对话框打开时，默认选中的数据
-				mSelectedTimeAreaIndex = i;
-			}
+		if(mSelectedTimeAreaIndex >= 0){
+			return AppConstants.TIME_AREA_NAME[mSelectedTimeAreaIndex];
+		}else{
+			return AppConstants.EMPTY;
 		}
-
-		return selectedTimeAreaName;
 
 	}
 

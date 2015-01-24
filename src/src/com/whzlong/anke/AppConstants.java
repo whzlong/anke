@@ -142,6 +142,6 @@ public class AppConstants {
 			"08:00 ~ 17:00", "17:00 ~ 24:00", "关闭" };
 	public static final int[] TIME_AREA_POINT = { 0, 8, 17, 24 };
 	// 报警时间段对应的Code，供查询使用
-	public static final int[] TIME_AREA_CODE = { 0, 1, 2, 3 };
+//	public static final int[] TIME_AREA_CODE = { 0, 1, 2, 3 };
 	
 }
