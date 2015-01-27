@@ -56,7 +56,7 @@ public class AppService extends Service {
 						R.layout.notification);
 
 				contentView.setImageViewResource(R.id.ntImage,
-						R.drawable.abc_ic_go);
+						R.drawable.notification);
 				notification.contentView = contentView;
 
 				Intent notificationIntent = new Intent(appContext,

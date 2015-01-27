@@ -117,7 +117,6 @@ public class SystemSet extends BaseActivity implements OnClickListener,
 								// 设置界面警告时间段的值
 								mWaringTimeAreaInfo.setText(AppConstants.TIME_AREA_NAME[mSelectedTimeAreaIndex]);
 								
-								//TODO:重新启动实时获取警告信息的服务
 								//退出服务
 								Intent intent = new Intent(appContext, AppService.class);
 								stopService(intent);
