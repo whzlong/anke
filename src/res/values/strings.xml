@@ -67,6 +67,6 @@
 	<string name="system_error">系统错误，请联系软件提供商。</string>
 	<string name="error_select_result_zero">您查询的数据不存在。</string>
 	<string name="error_network_connected">无法连接至服务器，请检查你的网络设置或稍后重试。</string>
-	<string name="notificationTitle">有警告信息的钢厂</string>
+	<string name="notificationTitle">点击查看相关警告信息</string>
 	
 </resources>

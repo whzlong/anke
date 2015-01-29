@@ -1,5 +1,6 @@
 package com.whzlong.anke;
 
+import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -56,7 +57,7 @@ public class AppService extends Service {
 						R.layout.notification);
 
 				contentView.setImageViewResource(R.id.ntImage,
-						R.drawable.notification);
+						R.drawable.ic_launcher);
 				notification.contentView = contentView;
 
 				Intent notificationIntent = new Intent(appContext,
@@ -144,7 +145,11 @@ public class AppService extends Service {
 				}
 				
 				if(AppConstants.TIME_AREA_THREE != mTimeArea){
-					if(mTimeArea >= timeFrom && mTimeArea < timeTo){
+					
+					Calendar c = Calendar.getInstance();
+					int current_hour = c.get(Calendar.HOUR_OF_DAY); 		
+					
+					if(current_hour >= timeFrom && current_hour < timeTo){
 						String ipPort = preference.getString(AppConstants.URI_IP_PORT,
 								"");
 						

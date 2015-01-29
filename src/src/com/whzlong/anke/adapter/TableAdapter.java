@@ -53,7 +53,8 @@ public class TableAdapter extends BaseAdapter {
 		public TableRowView(Context context, TableRow tableRow, int position) {
 			super(context);
 
-			int[] colors = { Color.WHITE, Color.rgb(219, 238, 244) };//RGB颜色 
+			//RGB颜色
+			int[] colors = { Color.WHITE, Color.rgb(219, 238, 244) };
 			
 			this.setOrientation(LinearLayout.HORIZONTAL);
 			

@@ -9,6 +9,7 @@
         android:id="@+id/ntImage"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
+        android:paddingLeft="4dip"
         android:layout_marginRight="10dp" />
 
     <TextView
@@ -16,6 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/notificationTitle"
+        android:textSize="20sp"
         android:textColor="#f5ebeb" />
 
 </LinearLayout>

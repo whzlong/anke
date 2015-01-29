@@ -41,7 +41,7 @@ public class AppConstants {
 	/**
 	 * 选择的轮询时间间隔
 	 */
-	public static final int SELECTED_POLLING_INTERVAL = 1;
+	public static final int SELECTED_POLLING_INTERVAL = 10;
 	
 	/**
 	 * 时间单位(分)
@@ -141,7 +141,5 @@ public class AppConstants {
 	public static final String[] TIME_AREA_NAME = { "00:00 ~ 08:00",
 			"08:00 ~ 17:00", "17:00 ~ 24:00", "关闭" };
 	public static final int[] TIME_AREA_POINT = { 0, 8, 17, 24 };
-	// 报警时间段对应的Code，供查询使用
-//	public static final int[] TIME_AREA_CODE = { 0, 1, 2, 3 };
 	
 }

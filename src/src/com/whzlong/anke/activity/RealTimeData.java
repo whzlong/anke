@@ -332,18 +332,24 @@ public class RealTimeData extends BaseActivity implements OnClickListener, OnTou
 	 *            数据
 	 */
 	private void setTableInfo(String[] titlesArray, String[][] dataArray) {
+		
 		lv = (ListView) this.findViewById(R.id.lstEnergySavingData);
 		ArrayList<TableRow> table = new ArrayList<TableRow>();
 		int columnLength = titlesArray.length;
 		TableCell[] titles = new TableCell[columnLength];
-
+		//表格列的基本宽度
 		int width = this.getWindowManager().getDefaultDisplay().getWidth()
 				/ titles.length;
-
+		//表格每列的自定义宽度
+		int[] column_width = {width + 100, width + 100, width + 100
+							, width + 100, width + 100, width + 100
+							, width + 100, width + 100, width + 100};
+		//表格行高
+		int row_height = 100;
 		// 定义标题
 		for (int i = 0; i < titles.length; i++) {
-			titles[i] = new TableCell(titlesArray[i], width + 25 * i,
-					LayoutParams.FILL_PARENT, TableCell.STRING);
+			titles[i] = new TableCell(titlesArray[i], column_width[i],
+					row_height, TableCell.STRING);
 		}
 		table.add(new TableRow(titles));
 
@@ -354,8 +360,8 @@ public class RealTimeData extends BaseActivity implements OnClickListener, OnTou
 			cells = new TableCell[columnLength];
 
 			for (int j = 0; j < columns.length; j++) {
-				cells[j] = new TableCell(dataArray[i][j], width + 25 * j,
-						LayoutParams.FILL_PARENT, TableCell.STRING);
+				cells[j] = new TableCell(dataArray[i][j], column_width[j],
+						row_height, TableCell.STRING);
 			}
 
 			table.add(new TableRow(cells));

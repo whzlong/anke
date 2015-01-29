@@ -520,11 +520,17 @@ public class WarningInfo extends BaseActivity implements OnClickListener,
 
 		int width = this.getWindowManager().getDefaultDisplay().getWidth()
 				/ titles.length;
-
+		
+		//表格每列的自定义宽度
+		int[] column_width = {width + 100, width, width + 40, width + 200};
+		
+		//表格行高
+		int row_height = 100;
+		
 		// 定义标题
 		for (int i = 0; i < titles.length; i++) {
-			titles[i] = new TableCell(titlesArray[i], width + 25 * i,
-					LayoutParams.FILL_PARENT, TableCell.STRING);
+			titles[i] = new TableCell(titlesArray[i], column_width[i],
+					row_height, TableCell.STRING);
 		}
 		table.add(new TableRow(titles));
 
@@ -535,8 +541,8 @@ public class WarningInfo extends BaseActivity implements OnClickListener,
 			cells = new TableCell[columnLength];
 
 			for (int j = 0; j < columns.length; j++) {
-				cells[j] = new TableCell(dataArray[i][j], width + 25 * j,
-						LayoutParams.FILL_PARENT, TableCell.STRING);
+				cells[j] = new TableCell(dataArray[i][j], column_width[j],
+						row_height, TableCell.STRING);
 			}
 
 			table.add(new TableRow(cells));
