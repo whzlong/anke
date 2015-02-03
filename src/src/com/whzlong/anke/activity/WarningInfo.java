@@ -522,7 +522,7 @@ public class WarningInfo extends BaseActivity implements OnClickListener,
 				/ titles.length;
 		
 		//表格每列的自定义宽度
-		int[] column_width = {width + 100, width, width + 40, width + 200};
+		int[] column_width = {width + 100, width, width + 100, width + 200};
 		
 		//表格行高
 		int row_height = 100;
