@@ -171,7 +171,8 @@ public class AppService extends Service {
 					}
 				}
 			}
-		}, 0, AppConstants.SELECTED_POLLING_INTERVAL * 60 * 1000);
+			
+		}, 60 * 1000, AppConstants.SELECTED_POLLING_INTERVAL * 60 * 1000);
 
 		return super.onStartCommand(intent, flags, startId);
 	}

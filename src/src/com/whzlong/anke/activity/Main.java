@@ -36,8 +36,8 @@ public class Main extends BaseActivity implements OnClickListener {
 		}
 		
 		//启动服务
-		Intent intent = new Intent(Main.this, AppService.class);
-		startService(intent);
+//		Intent intent = new Intent(Main.this, AppService.class);
+//		startService(intent);
 	}
 
 	@Override
