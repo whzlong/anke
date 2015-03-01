@@ -41,7 +41,7 @@ public class AppConstants {
 	/**
 	 * 选择的轮询时间间隔
 	 */
-	public static final int SELECTED_POLLING_INTERVAL = 30;
+	public static final int SELECTED_POLLING_INTERVAL = 3;
 	
 	/**
 	 * 时间单位(分)
