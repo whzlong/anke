@@ -142,4 +142,12 @@ public class AppConstants {
 			"08:00 ~ 17:00", "17:00 ~ 24:00", "关闭" };
 	public static final int[] TIME_AREA_POINT = { 0, 8, 17, 24 };
 	
+	//项目信息中被选中项目的代码
+	public static final String SELECTED_PROJECT_CODE = "selectedProjectCode";
+	//项目信息中被选中项目的名称
+	public static final String SELECTED_PROJECT_NAME = "selectedProjectName";
+	//钢厂信息中被选中钢厂的代码
+	public static final String SELECTED_FACTORY_CODE = "selectedFactoryCode";
+	//钢厂信息中被选中钢厂的名称
+	public static final String SELECTED_FACTORY_NAME = "selectedFactoryName";
 }

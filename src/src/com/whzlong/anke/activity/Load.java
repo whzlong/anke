@@ -56,6 +56,10 @@ public class Load extends BaseActivity {
 					Load.this.finish();
 					break;
 				case AppConstants.NG:
+					//客户端身份未在服务器上登录时，进行如下提示处理
+					Toast.makeText(Load.this,
+							appContext.getString(R.string.nw_error_1),
+							Toast.LENGTH_LONG).show();
 					// 认证未通过
 					EditText et = new EditText(Load.this);
 					et.setText(mImei);

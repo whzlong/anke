@@ -159,7 +159,7 @@ public class RealTimeData extends BaseActivity implements OnClickListener, OnTou
 				intent.setClass(RealTimeData.this,
 						FactoryInfo.class);
 				intent.putExtra("previousActivityFlag", AppConstants.REAL_TIME);
-				intent.putExtra("factoryCode", factoryCode);
+				intent.putExtra(AppConstants.SELECTED_FACTORY_CODE, factoryCode);
 				startActivity(intent);
 				RealTimeData.this.finish();
 	
@@ -213,8 +213,8 @@ public class RealTimeData extends BaseActivity implements OnClickListener, OnTou
 		mFactoryName.setOnClickListener(this);
 
 		Intent intent = this.getIntent();
-		factoryCode = intent.getStringExtra("factoryCode");
-		String factoryName = intent.getStringExtra("factoryName");
+		factoryCode = intent.getStringExtra(AppConstants.SELECTED_FACTORY_CODE);
+		String factoryName = intent.getStringExtra(AppConstants.SELECTED_FACTORY_NAME);
 		mFactoryName.setText(factoryName);
 
 		// 加载布局

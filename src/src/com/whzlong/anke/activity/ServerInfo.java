@@ -5,7 +5,6 @@ import com.whzlong.anke.AppContext;
 import com.whzlong.anke.R;
 import com.whzlong.anke.common.StringUtils;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;

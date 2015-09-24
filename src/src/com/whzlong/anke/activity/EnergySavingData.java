@@ -50,15 +50,22 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+/**
+ * 节能数据查询
+ */
 public class EnergySavingData extends BaseActivity implements OnClickListener,
 		OnTouchListener {
+	private EditText etProjectName;
 	private EditText etFactoryName;
 	private EditText etDatatimeFrom;
 	private EditText etDatatimeTo;
 	private Button btnBack;
 	private Button btnSelect;
 	private ListView lv;
-	private String factoryCode = "";
+	private String selectedFactoryCode = "";
+	private String selectedFactoryName = "";
+	private String selectedProjectCode = "";
+	private String selectedProjectName = "";
 	private RelativeLayout loadingLayout;
 	private RelativeLayout dataListLayout;
 	// 全局Context
@@ -143,6 +150,13 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 		etFactoryName.setFocusable(false);
 		etFactoryName.setFocusableInTouchMode(false);
 		etFactoryName.setOnClickListener(this);
+		// 项目信息
+		etProjectName = (EditText) findViewById(R.id.etProjectName);
+		etProjectName.setCursorVisible(false);
+		etProjectName.setFocusable(false);
+		etProjectName.setFocusableInTouchMode(false);
+		etProjectName.setOnClickListener(this);
+		
 		// 查询开始日期
 		etDatatimeFrom = (EditText) findViewById(R.id.etDatatimeFrom);
 		etDatatimeFrom.setCursorVisible(false);
@@ -158,9 +172,13 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 
 		// 如果从选择钢厂界面返回，需要设置选择的钢厂信息
 		Intent intent = this.getIntent();
-		factoryCode = intent.getStringExtra("factoryCode");
-		String factoryName = intent.getStringExtra("factoryName");
-		etFactoryName.setText(factoryName);
+		selectedFactoryCode = intent.getStringExtra(AppConstants.SELECTED_FACTORY_CODE);
+		etFactoryName.setText(intent.getStringExtra(AppConstants.SELECTED_FACTORY_NAME));
+		
+		//项目信息
+		selectedProjectCode = intent.getStringExtra(AppConstants.SELECTED_PROJECT_CODE);
+		etProjectName.setText(intent.getStringExtra(AppConstants.SELECTED_PROJECT_NAME));
+		
 		// 加载布局
 		loadingLayout = (RelativeLayout) findViewById(R.id.loadingLayout);
 		loadingLayout.setVisibility(View.GONE);
@@ -183,7 +201,7 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 	 * @param selectDateTo
 	 */
 	private boolean checkInput(String strDateFrom, String strDateTo) {
-		if (factoryCode == null || "".equals(factoryCode)) {
+		if (selectedFactoryCode == null || "".equals(selectedFactoryCode)) {
 			Toast.makeText(appContext,
 					appContext.getString(R.string.msg_error_factory),
 					Toast.LENGTH_LONG).show();
@@ -270,7 +288,23 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 			intent = new Intent();
 			intent.setClass(EnergySavingData.this, FactoryInfo.class);
 			intent.putExtra("previousActivityFlag", AppConstants.ENERGY_SAVING);
-			intent.putExtra("factoryCode", factoryCode);
+			intent.putExtra(AppConstants.SELECTED_FACTORY_CODE, selectedFactoryCode);
+			startActivity(intent);
+			EnergySavingData.this.finish();
+			break;
+		case R.id.etProjectName:
+			if(selectedFactoryCode == null || "".equals(selectedFactoryCode)){
+				Toast.makeText(
+						appContext,
+						appContext.getString(R.string.msg_error_must_input_factory),
+						Toast.LENGTH_LONG).show();
+				return;
+			}
+			intent = new Intent();
+			intent.setClass(EnergySavingData.this, Projects.class);
+			intent.putExtra("previousActivityFlag", AppConstants.ENERGY_SAVING);
+			intent.putExtra(AppConstants.SELECTED_FACTORY_CODE, selectedFactoryCode);
+			intent.putExtra(AppConstants.SELECTED_FACTORY_NAME, selectedFactoryName);
 			startActivity(intent);
 			EnergySavingData.this.finish();
 			break;
@@ -292,7 +326,7 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 				selectDateTo = selectDateTo.replace("-", "");
 
 				// 从服务器上获取数据
-				getListData(factoryCode, selectDateFrom, selectDateTo);
+				getListData(selectedFactoryCode, selectDateFrom, selectDateTo);
 			}
 
 			break;

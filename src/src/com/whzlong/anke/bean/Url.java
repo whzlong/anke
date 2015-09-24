@@ -4,12 +4,12 @@ import java.io.Serializable;
 
 public class Url implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	public final static String HTTP = "http://";
 	public final static String HTTPS = "https://";
 
 	public static final String PROTOCOL = "http://";
-	public static final String DEFAULT_URI_IP_PORT = "101.231.219.254" + ":"
+	public static final String DEFAULT_URI_IP_PORT = "116.228.199.86" + ":"
 			+ "8082";
 
 	// 身份验证
@@ -27,5 +27,7 @@ public class Url implements Serializable {
 	public static String URL_HISTORY_WARNING_INFO = "/RESTService.svc/Warn/[%1]/[%2]/[%3]";
 	// 获取轮查时间段内需要提醒的报警信息
 	public static String URL_HISTORY_WARNING_REMIND = "/RESTService.svc/NewWarn";
+	//项目信息
+	public static String URL_PROJECTS = "/RESTService.svc/Project/[%1]";
 
 }

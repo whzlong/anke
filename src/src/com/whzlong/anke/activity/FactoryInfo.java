@@ -49,8 +49,8 @@ public class FactoryInfo extends BaseActivity implements OnClickListener,
 	// 全局Context
 	private AppContext appContext;
 
-	private String[] columns = new String[] { "SteelWorksCode",
-			"SteelWorksName" };
+	private String[] columns = new String[] { "SteelCode",
+			"SteelName" };
 
 	// 定义一个Handler,更新一览数据
 	private Handler mHandler = new Handler() {
@@ -138,7 +138,7 @@ public class FactoryInfo extends BaseActivity implements OnClickListener,
 		btnBack.setOnClickListener(this);
 		btnBack.setOnTouchListener(this);
 
-		selectedFactoryCode = this.getIntent().getStringExtra("factoryCode");
+		selectedFactoryCode = this.getIntent().getStringExtra(AppConstants.SELECTED_FACTORY_CODE);
 
 		// 钢厂信息RadioGroup
 		rgFactoryInfo = (RadioGroup) findViewById(R.id.rgFactoryInfo);
@@ -174,8 +174,8 @@ public class FactoryInfo extends BaseActivity implements OnClickListener,
 								break;
 							}
 
-							intent.putExtra("factoryCode", factoryCode);
-							intent.putExtra("factoryName", checkedRb.getText());
+							intent.putExtra(AppConstants.SELECTED_FACTORY_CODE, factoryCode);
+							intent.putExtra(AppConstants.SELECTED_FACTORY_NAME, checkedRb.getText());
 							startActivity(intent);
 							FactoryInfo.this.finish();
 						}
@@ -211,8 +211,8 @@ public class FactoryInfo extends BaseActivity implements OnClickListener,
 				break;
 			}
 
-			intent.putExtra("factoryCode", selectedFactoryCode);
-			intent.putExtra("factoryName", selectedFactoryName);
+			intent.putExtra(AppConstants.SELECTED_FACTORY_CODE, selectedFactoryCode);
+			intent.putExtra(AppConstants.SELECTED_FACTORY_NAME, selectedFactoryName);
 			startActivity(intent);
 			FactoryInfo.this.finish();
 		}
@@ -247,8 +247,8 @@ public class FactoryInfo extends BaseActivity implements OnClickListener,
 				break;
 			}
 
-			intent.putExtra("factoryCode", selectedFactoryCode);
-			intent.putExtra("factoryName", selectedFactoryName);
+			intent.putExtra(AppConstants.SELECTED_FACTORY_CODE, selectedFactoryCode);
+			intent.putExtra(AppConstants.SELECTED_FACTORY_NAME, selectedFactoryName);
 			startActivity(intent);
 			FactoryInfo.this.finish();
 			break;

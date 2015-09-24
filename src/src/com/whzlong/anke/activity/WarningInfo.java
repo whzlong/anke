@@ -165,7 +165,7 @@ public class WarningInfo extends BaseActivity implements OnClickListener,
 			intent = new Intent();
 			intent.setClass(WarningInfo.this, FactoryInfo.class);
 			intent.putExtra("previousActivityFlag", AppConstants.WARNING_INFO);
-			intent.putExtra("factoryCode", factoryCode);
+			intent.putExtra(AppConstants.SELECTED_FACTORY_CODE, factoryCode);
 			startActivity(intent);
 			WarningInfo.this.finish();
 			break;
@@ -337,8 +337,8 @@ public class WarningInfo extends BaseActivity implements OnClickListener,
 		
 		//如果从选择钢厂界面返回，需要设置选择的钢厂信息
 		Intent intent = this.getIntent();
-		factoryCode = intent.getStringExtra("factoryCode");
-		String factoryName = intent.getStringExtra("factoryName");
+		factoryCode = intent.getStringExtra(AppConstants.SELECTED_FACTORY_CODE);
+		String factoryName = intent.getStringExtra(AppConstants.SELECTED_FACTORY_NAME);
 		etFactoryName.setText(factoryName);
 
 		// 查询处理

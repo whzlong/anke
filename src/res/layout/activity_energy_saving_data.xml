@@ -35,7 +35,7 @@
     <RelativeLayout
         android:id="@+id/selectConditionLayout"
         android:layout_width="fill_parent"
-        android:layout_height="90dp"
+        android:layout_height="130dp"
         android:paddingLeft="10sp"
         android:layout_below="@+id/navigationBarLayout" >
 
@@ -68,7 +68,31 @@
                     android:hint="@string/promptInfoFactory" >
                 </EditText>
             </TableRow>
+            
+            <TableRow
+                android:id="@+id/tableRow3"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" >
 
+                <TextView
+                    android:id="@+id/tvProject"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="12sp"
+                    android:text="@string/title_activity_projects"
+                    android:textSize="17sp" />
+
+                <EditText
+                    android:id="@+id/etProjectName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_span="3"
+                    android:layout_weight="1"
+                    android:ems="15"
+                    android:hint="@string/prompt_info_project" >
+                </EditText>
+            </TableRow>
+            
             <TableRow
                 android:id="@+id/tableRow2"
                 android:layout_width="fill_parent"
