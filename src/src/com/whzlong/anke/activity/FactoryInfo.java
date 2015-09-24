@@ -40,8 +40,10 @@ public class FactoryInfo extends BaseActivity implements OnClickListener,
 	private RelativeLayout dataListLayout;
 	protected Context context = null;
 	private String[] factoryCodeArr;
-	private String selectedFactoryCode;
+	private String selectedFactoryCode = "";
 	private String selectedFactoryName = "";
+	private String selectedProCode = "";
+	private String selectedProName = "";
 	private HashMap<String, String> factoryInfo;
 	private String[] factoryNameArr;
 	private RadioGroup rgFactoryInfo;
@@ -139,6 +141,9 @@ public class FactoryInfo extends BaseActivity implements OnClickListener,
 		btnBack.setOnTouchListener(this);
 
 		selectedFactoryCode = this.getIntent().getStringExtra(AppConstants.SELECTED_FACTORY_CODE);
+		
+		selectedProCode = this.getIntent().getStringExtra(AppConstants.SELECTED_PROJECT_CODE);
+		selectedProName = this.getIntent().getStringExtra(AppConstants.SELECTED_PROJECT_NAME);
 
 		// 钢厂信息RadioGroup
 		rgFactoryInfo = (RadioGroup) findViewById(R.id.rgFactoryInfo);
@@ -176,6 +181,8 @@ public class FactoryInfo extends BaseActivity implements OnClickListener,
 
 							intent.putExtra(AppConstants.SELECTED_FACTORY_CODE, factoryCode);
 							intent.putExtra(AppConstants.SELECTED_FACTORY_NAME, checkedRb.getText());
+							intent.putExtra(AppConstants.SELECTED_PROJECT_CODE, selectedProCode);
+							intent.putExtra(AppConstants.SELECTED_PROJECT_NAME, selectedProName);
 							startActivity(intent);
 							FactoryInfo.this.finish();
 						}
@@ -213,6 +220,8 @@ public class FactoryInfo extends BaseActivity implements OnClickListener,
 
 			intent.putExtra(AppConstants.SELECTED_FACTORY_CODE, selectedFactoryCode);
 			intent.putExtra(AppConstants.SELECTED_FACTORY_NAME, selectedFactoryName);
+			intent.putExtra(AppConstants.SELECTED_PROJECT_CODE, selectedProCode);
+			intent.putExtra(AppConstants.SELECTED_PROJECT_NAME, selectedProName);
 			startActivity(intent);
 			FactoryInfo.this.finish();
 		}
@@ -249,6 +258,8 @@ public class FactoryInfo extends BaseActivity implements OnClickListener,
 
 			intent.putExtra(AppConstants.SELECTED_FACTORY_CODE, selectedFactoryCode);
 			intent.putExtra(AppConstants.SELECTED_FACTORY_NAME, selectedFactoryName);
+			intent.putExtra(AppConstants.SELECTED_PROJECT_CODE, selectedProCode);
+			intent.putExtra(AppConstants.SELECTED_PROJECT_NAME, selectedProName);
 			startActivity(intent);
 			FactoryInfo.this.finish();
 			break;

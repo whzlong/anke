@@ -173,10 +173,12 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 		// 如果从选择钢厂界面返回，需要设置选择的钢厂信息
 		Intent intent = this.getIntent();
 		selectedFactoryCode = intent.getStringExtra(AppConstants.SELECTED_FACTORY_CODE);
+		selectedFactoryName = intent.getStringExtra(AppConstants.SELECTED_FACTORY_NAME);
 		etFactoryName.setText(intent.getStringExtra(AppConstants.SELECTED_FACTORY_NAME));
 		
 		//项目信息
 		selectedProjectCode = intent.getStringExtra(AppConstants.SELECTED_PROJECT_CODE);
+		selectedProjectName = intent.getStringExtra(AppConstants.SELECTED_PROJECT_NAME);
 		etProjectName.setText(intent.getStringExtra(AppConstants.SELECTED_PROJECT_NAME));
 		
 		// 加载布局
@@ -289,6 +291,8 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 			intent.setClass(EnergySavingData.this, FactoryInfo.class);
 			intent.putExtra("previousActivityFlag", AppConstants.ENERGY_SAVING);
 			intent.putExtra(AppConstants.SELECTED_FACTORY_CODE, selectedFactoryCode);
+			intent.putExtra(AppConstants.SELECTED_PROJECT_CODE, selectedProjectCode);
+			intent.putExtra(AppConstants.SELECTED_PROJECT_NAME, selectedProjectName);
 			startActivity(intent);
 			EnergySavingData.this.finish();
 			break;
@@ -303,6 +307,7 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 			intent = new Intent();
 			intent.setClass(EnergySavingData.this, Projects.class);
 			intent.putExtra("previousActivityFlag", AppConstants.ENERGY_SAVING);
+			intent.putExtra(AppConstants.SELECTED_PROJECT_CODE, selectedProjectCode);
 			intent.putExtra(AppConstants.SELECTED_FACTORY_CODE, selectedFactoryCode);
 			intent.putExtra(AppConstants.SELECTED_FACTORY_NAME, selectedFactoryName);
 			startActivity(intent);
