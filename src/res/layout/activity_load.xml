@@ -5,4 +5,23 @@
     android:background="@color/sky_blue"
     tools:context="${relativePackage}.${activityClass}" >
 
+	<TextView
+	    android:id="@+id/textView1"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentBottom="true"
+	    android:layout_centerHorizontal="true"
+	    android:layout_marginBottom="85dp"
+	    android:text="上海安可科技股份有限公司"
+	    android:textColor="@color/white" />
+
+	<ImageView
+	    android:id="@+id/ivLogo"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentTop="true"
+	    android:layout_centerHorizontal="true"
+	    android:layout_marginTop="124dp"
+	    android:src="@drawable/logo" />
+
 </RelativeLayout>
