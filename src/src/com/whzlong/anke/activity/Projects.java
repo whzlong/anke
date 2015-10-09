@@ -155,7 +155,7 @@ OnClickListener {
 					@Override
 					public void onCheckedChanged(RadioGroup group, int checkedId) {
 						// 不是第一次执行此事件时，运行下面的代码（设置默认值时会激发此事件）
-						if (countflg != 0 || selectedProCode == null) {
+						if (countflg != 0 || StringUtils.isEmpty(selectedProCode)) {
 							RadioButton checkedRb = (RadioButton) findViewById(checkedId);
 							String projectCode = projectsMap.get(checkedRb
 									.getText());

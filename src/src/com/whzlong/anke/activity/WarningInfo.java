@@ -58,14 +58,18 @@ public class WarningInfo extends BaseActivity implements OnClickListener,
 	private RelativeLayout loadingLayout;
 	private RelativeLayout dataListLayout;
 	private EditText etFactoryName;
+	private EditText etProjectName;
 	private EditText etDatatimeFrom;
 	private EditText etDatatimeTo;
-	private String factoryCode = "";
+	private String selectedFactoryCode = "";
+	private String selectedFactoryName = "";
+	private String selectedProjectCode = "";
+	private String selectedProjectName = "";
 	// 全局Context
 	private AppContext appContext;
-	private String[] titlesArray = new String[] { "炼钢厂", "烘烤位", "报警时间", "报警内容" };
-	private String[] columns = new String[] { "SteelWorksName", "HkwName",
-			"GetTime", "BJLX" };
+	private String[] titlesArray = new String[] { "项目名称", "烘烤位名称", "发生时间", "结束时间", "故障" };
+	private String[] columns = new String[] { "ProName", "HkwName",
+			"KSSJ", "JSSJ","BJLX" };
 
 	// 定义一个Handler,更新一览数据
 	private Handler mHandler = new Handler() {
@@ -79,6 +83,7 @@ public class WarningInfo extends BaseActivity implements OnClickListener,
 				String[] array2 = bundle.getStringArray(columns[1]);
 				String[] array3 = bundle.getStringArray(columns[2]);
 				String[] array4 = bundle.getStringArray(columns[3]);
+				String[] array5 = bundle.getStringArray(columns[4]);
 
 				int rowCnt = array1.length;
 				int colCnt = columns.length;
@@ -90,6 +95,7 @@ public class WarningInfo extends BaseActivity implements OnClickListener,
 					dataArray[i][1] = array2[i];
 					dataArray[i][2] = array3[i];
 					dataArray[i][3] = array4[i];
+					dataArray[i][4] = array5[i];
 				}
 
 				setTableInfo(titlesArray, dataArray);
@@ -165,7 +171,26 @@ public class WarningInfo extends BaseActivity implements OnClickListener,
 			intent = new Intent();
 			intent.setClass(WarningInfo.this, FactoryInfo.class);
 			intent.putExtra("previousActivityFlag", AppConstants.WARNING_INFO);
-			intent.putExtra(AppConstants.SELECTED_FACTORY_CODE, factoryCode);
+			intent.putExtra(AppConstants.SELECTED_FACTORY_CODE, selectedFactoryCode);
+			intent.putExtra(AppConstants.SELECTED_PROJECT_CODE, selectedProjectCode);
+			intent.putExtra(AppConstants.SELECTED_PROJECT_NAME, selectedProjectName);
+			startActivity(intent);
+			WarningInfo.this.finish();
+			break;
+		case R.id.etProjectName:
+			if(selectedFactoryCode == null || "".equals(selectedFactoryCode)){
+				Toast.makeText(
+						appContext,
+						appContext.getString(R.string.msg_error_must_input_factory),
+						Toast.LENGTH_LONG).show();
+				return;
+			}
+			intent = new Intent();
+			intent.setClass(WarningInfo.this, Projects.class);
+			intent.putExtra("previousActivityFlag", AppConstants.WARNING_INFO);
+			intent.putExtra(AppConstants.SELECTED_PROJECT_CODE, selectedProjectCode);
+			intent.putExtra(AppConstants.SELECTED_FACTORY_CODE, selectedFactoryCode);
+			intent.putExtra(AppConstants.SELECTED_FACTORY_NAME, selectedFactoryName);
 			startActivity(intent);
 			WarningInfo.this.finish();
 			break;
@@ -183,7 +208,7 @@ public class WarningInfo extends BaseActivity implements OnClickListener,
 				
 				String identityUrl = base_ip_port + Url.URL_HISTORY_WARNING_INFO;
 
-				identityUrl = StringUtils.setParams(identityUrl, factoryCode, strDatatimeFrom,
+				identityUrl = StringUtils.setParams(identityUrl, selectedProjectCode, strDatatimeFrom,
 						strDatatimeTo);
 
 				
@@ -322,12 +347,21 @@ public class WarningInfo extends BaseActivity implements OnClickListener,
 		etFactoryName.setFocusable(false);
 		etFactoryName.setFocusableInTouchMode(false);
 		etFactoryName.setOnClickListener(this);
+		
+		// 项目信息
+		etProjectName = (EditText) findViewById(R.id.etProjectName);
+		etProjectName.setCursorVisible(false);
+		etProjectName.setFocusable(false);
+		etProjectName.setFocusableInTouchMode(false);
+		etProjectName.setOnClickListener(this);
+		
 		//查询开始日期
 		etDatatimeFrom = (EditText) findViewById(R.id.etDatatimeFrom);
 		etDatatimeFrom.setCursorVisible(false);
 		etDatatimeFrom.setFocusable(false);
 		etDatatimeFrom.setFocusableInTouchMode(false);
 		etDatatimeFrom.setOnTouchListener(this);
+		
 		//查询结束日期
 		etDatatimeTo = (EditText) findViewById(R.id.etDatatimeTo);
 		etDatatimeTo.setCursorVisible(false);
@@ -337,10 +371,22 @@ public class WarningInfo extends BaseActivity implements OnClickListener,
 		
 		//如果从选择钢厂界面返回，需要设置选择的钢厂信息
 		Intent intent = this.getIntent();
-		factoryCode = intent.getStringExtra(AppConstants.SELECTED_FACTORY_CODE);
-		String factoryName = intent.getStringExtra(AppConstants.SELECTED_FACTORY_NAME);
-		etFactoryName.setText(factoryName);
+		selectedFactoryCode = intent.getStringExtra(AppConstants.SELECTED_FACTORY_CODE);
+		selectedFactoryName = intent.getStringExtra(AppConstants.SELECTED_FACTORY_NAME);
+		etFactoryName.setText(selectedFactoryName);
 
+		//项目信息
+		selectedProjectCode = intent.getStringExtra(AppConstants.SELECTED_PROJECT_CODE);
+		selectedProjectName = intent.getStringExtra(AppConstants.SELECTED_PROJECT_NAME);
+		etProjectName.setText(intent.getStringExtra(AppConstants.SELECTED_PROJECT_NAME));
+		
+		if(selectedFactoryCode != null && intent.getStringExtra(AppConstants.PREVIOUS_FACTORY_CODE) != null
+				&& !selectedFactoryCode.equals(intent.getStringExtra(AppConstants.PREVIOUS_FACTORY_CODE))){
+			selectedProjectCode = null;
+			selectedProjectName = null;
+			etProjectName.setText(null);
+		}
+		
 		// 查询处理
 		btnSelect = (Button) findViewById(R.id.btnSelect);
 		btnSelect.setOnClickListener(this);
@@ -374,9 +420,16 @@ public class WarningInfo extends BaseActivity implements OnClickListener,
 	 * @return
 	 */
 	private boolean checkInput(String strDateFrom, String strDateTo) {
-		if (factoryCode == null || "".equals(factoryCode)) {
+		if (StringUtils.isEmpty(selectedFactoryCode)) {
 			Toast.makeText(appContext,
 					appContext.getString(R.string.msg_error_factory),
+					Toast.LENGTH_LONG).show();
+			return false;
+		}
+		
+		if (StringUtils.isEmpty(selectedProjectCode)) {
+			Toast.makeText(appContext,
+					appContext.getString(R.string.msg_error_project),
 					Toast.LENGTH_LONG).show();
 			return false;
 		}
@@ -463,6 +516,7 @@ public class WarningInfo extends BaseActivity implements OnClickListener,
 								String[] array2 = new String[length];
 								String[] array3 = new String[length];
 								String[] array4 = new String[length];
+								String[] array5 = new String[length];
 
 								JSONObject jsonObj = null;
 								for (int i = 0; i < length; i++) {
@@ -472,12 +526,14 @@ public class WarningInfo extends BaseActivity implements OnClickListener,
 									array2[i] = jsonObj.getString(columns[1]);
 									array3[i] = jsonObj.getString(columns[2]);
 									array4[i] = jsonObj.getString(columns[3]);
+									array5[i] = jsonObj.getString(columns[4]);
 								}
 
 								bundle.putStringArray(columns[0], array1);
 								bundle.putStringArray(columns[1], array2);
 								bundle.putStringArray(columns[2], array3);
 								bundle.putStringArray(columns[3], array4);
+								bundle.putStringArray(columns[4], array5);
 
 								msg.setData(bundle);
 								msg.what = AppConstants.OK;
@@ -522,7 +578,7 @@ public class WarningInfo extends BaseActivity implements OnClickListener,
 				/ titles.length;
 		
 		//表格每列的自定义宽度
-		int[] column_width = {width + 100, width, width + 100, width + 200};
+		int[] column_width = {width + 150, width+300, width + 200, width + 200,width + 130};
 		
 		//表格行高
 		int row_height = 100;

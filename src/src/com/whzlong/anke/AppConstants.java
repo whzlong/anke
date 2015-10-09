@@ -150,4 +150,6 @@ public class AppConstants {
 	public static final String SELECTED_FACTORY_CODE = "selectedFactoryCode";
 	//钢厂信息中被选中钢厂的名称
 	public static final String SELECTED_FACTORY_NAME = "selectedFactoryName";
+	//之前被选中的钢厂代码
+	public static final String PREVIOUS_FACTORY_CODE = "previousFactoryCode";
 }

@@ -1147,7 +1147,7 @@ containing a value of this type.
         public static final int action_menu_divider=0x7f050016;
         public static final int action_menu_presenter=0x7f050017;
         public static final int action_mode_close_button=0x7f050024;
-        public static final int action_settings=0x7f050085;
+        public static final int action_settings=0x7f050086;
         public static final int activity_chooser_view_content=0x7f050025;
         public static final int always=0x7f05000b;
         public static final int beginning=0x7f050011;
@@ -1155,7 +1155,7 @@ containing a value of this type.
         public static final int btnBack=0x7f05003e;
         public static final int btnEnergySavingData=0x7f050059;
         public static final int btnQuit=0x7f050061;
-        public static final int btnQuitApp=0x7f05007d;
+        public static final int btnQuitApp=0x7f05007e;
         public static final int btnRealTimeData=0x7f05005b;
         public static final int btnSave=0x7f050064;
         public static final int btnSelect=0x7f05004d;
@@ -1164,7 +1164,7 @@ containing a value of this type.
         public static final int checkbox=0x7f05002e;
         public static final int collapseActionView=0x7f05000d;
         public static final int dataListLayout=0x7f050051;
-        public static final int date_picker=0x7f050080;
+        public static final int date_picker=0x7f050081;
         public static final int default_activity_button=0x7f050028;
         public static final int dialog=0x7f05000e;
         public static final int disableHome=0x7f050008;
@@ -1186,12 +1186,12 @@ containing a value of this type.
         public static final int ifRoom=0x7f05000a;
         public static final int image1=0x7f050027;
         public static final int image2=0x7f050029;
-        public static final int listCheckbox=0x7f05007f;
+        public static final int listCheckbox=0x7f050080;
         public static final int listMode=0x7f050001;
         public static final int list_item=0x7f05002a;
         public static final int loadingLayout=0x7f05004f;
         public static final int lstEnergySavingData=0x7f050053;
-        public static final int lstWarningInfo=0x7f05007e;
+        public static final int lstWarningInfo=0x7f05007f;
         public static final int lvDataList=0x7f050065;
         public static final int middle=0x7f050012;
         public static final int multiFactoryInfoLayout=0x7f050062;
@@ -1199,8 +1199,8 @@ containing a value of this type.
         public static final int never=0x7f050009;
         public static final int none=0x7f050010;
         public static final int normal=0x7f050000;
-        public static final int ntImage=0x7f050081;
-        public static final int ntMsgTitle=0x7f050082;
+        public static final int ntImage=0x7f050082;
+        public static final int ntMsgTitle=0x7f050083;
         public static final int pbDataLoad=0x7f050050;
         public static final int progress_circular=0x7f050018;
         public static final int progress_horizontal=0x7f050019;
@@ -1213,9 +1213,10 @@ containing a value of this type.
         public static final int relativeLayout6=0x7f050060;
         public static final int rgFactoryInfo=0x7f050056;
         public static final int rgProjects=0x7f050067;
-        public static final int rlBlank=0x7f05007b;
-        public static final int rlQuitApp=0x7f05007c;
-        public static final int rlServerInfo=0x7f050078;
+        public static final int rlBlank=0x7f05007c;
+        public static final int rlPollingInterval=0x7f050076;
+        public static final int rlQuitApp=0x7f05007d;
+        public static final int rlServerInfo=0x7f050079;
         public static final int rlWaringTimeArea=0x7f050073;
         public static final int rlWarningFactory=0x7f050071;
         public static final int scrollView1=0x7f050055;
@@ -1247,12 +1248,12 @@ containing a value of this type.
         public static final int top_action_bar=0x7f050020;
         public static final int tvFactory=0x7f050042;
         public static final int tvInterval=0x7f05004a;
-        public static final int tvPollingInterval=0x7f050076;
-        public static final int tvPollingIntervalInfo=0x7f050077;
+        public static final int tvPollingInterval=0x7f050077;
+        public static final int tvPollingIntervalInfo=0x7f050078;
         public static final int tvProject=0x7f050045;
         public static final int tvSelectDatetime=0x7f050048;
-        public static final int tvServer=0x7f050079;
-        public static final int tvServerInfo=0x7f05007a;
+        public static final int tvServer=0x7f05007a;
+        public static final int tvServerInfo=0x7f05007b;
         public static final int tvServerIp=0x7f05006b;
         public static final int tvServerPort=0x7f05006e;
         public static final int tvTitleActivityFactoryInfo=0x7f050054;
@@ -1266,8 +1267,8 @@ containing a value of this type.
         public static final int tvWarningFactory=0x7f050063;
         public static final int tvWarningFactoryInfo=0x7f050072;
         public static final int up=0x7f050021;
-        public static final int update_progress=0x7f050083;
-        public static final int update_progress_text=0x7f050084;
+        public static final int update_progress=0x7f050084;
+        public static final int update_progress_text=0x7f050085;
         public static final int useLogo=0x7f050003;
         public static final int withText=0x7f05000c;
     }
@@ -1385,8 +1386,8 @@ containing a value of this type.
         public static final int choose=0x7f0a000f;
         public static final int confirm=0x7f0a0031;
         public static final int energy_saving_data=0x7f0a0011;
-        public static final int error_network_connected=0x7f0a003c;
-        public static final int error_select_result_zero=0x7f0a003b;
+        public static final int error_network_connected=0x7f0a003d;
+        public static final int error_select_result_zero=0x7f0a003c;
         public static final int factory=0x7f0a0017;
         public static final int htServerIp=0x7f0a002e;
         public static final int htServerPort=0x7f0a002f;
@@ -1399,15 +1400,16 @@ containing a value of this type.
         public static final int msg_error_factory=0x7f0a0038;
         /**  节能数据查询界面 
          */
-        public static final int msg_error_must_input_factory=0x7f0a0041;
-        public static final int msg_info_date=0x7f0a0039;
-        public static final int notificationTitle=0x7f0a003d;
+        public static final int msg_error_must_input_factory=0x7f0a0042;
+        public static final int msg_error_project=0x7f0a0039;
+        public static final int msg_info_date=0x7f0a003a;
+        public static final int notificationTitle=0x7f0a003e;
         /**  网络连接错误提示 
          */
-        public static final int nw_error_1=0x7f0a003e;
+        public static final int nw_error_1=0x7f0a003f;
         public static final int pollingInterval=0x7f0a0020;
         public static final int promptInfoFactory=0x7f0a0028;
-        public static final int prompt_info_project=0x7f0a0040;
+        public static final int prompt_info_project=0x7f0a0041;
         public static final int quit=0x7f0a0015;
         public static final int quitWhole=0x7f0a0022;
         public static final int real_time_data=0x7f0a0012;
@@ -1418,7 +1420,7 @@ containing a value of this type.
         public static final int serverInfo=0x7f0a002b;
         public static final int serverIp=0x7f0a002c;
         public static final int serverPort=0x7f0a002d;
-        public static final int system_error=0x7f0a003a;
+        public static final int system_error=0x7f0a003b;
         public static final int system_set=0x7f0a0014;
         /**  节能数据 
          */
@@ -1431,7 +1433,7 @@ containing a value of this type.
         public static final int title_activity_multi_factory_info=0x7f0a0021;
         /**  项目界面 
          */
-        public static final int title_activity_projects=0x7f0a003f;
+        public static final int title_activity_projects=0x7f0a0040;
         public static final int title_activity_real_time_data=0x7f0a0024;
         /**  服务器信息 
          */

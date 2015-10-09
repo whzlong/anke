@@ -47,19 +47,24 @@ public class RealTimeData extends BaseActivity implements OnClickListener, OnTou
 	private ListView lv;
 
 	private EditText mFactoryName = null;
-
+	private EditText etProjectName = null;
 	private RelativeLayout loadingLayout;
 	private RelativeLayout dataListLayout;
+	private String selectedProjectCode = "";
+	private String selectedProjectName = "";
 
 	// 全局Context
 	private AppContext appContext;
 
-	private String factoryCode; // 炼钢厂代码
-	private String[] columns = new String[] { "HkwName", "GBH",
+	private String selectedFactoryCode = "";
+	private String selectedFactoryName = "";
+	
+	
+	private String[] columns = new String[] { "HKW", "GBH",
 			"HKLX", "HKWD", "BJWD",
-			"HKSJ", "MQLL", "KQLL", "BJLX" };
+			"HKSJ", "MQLL", "KQLL"};
 	String[] titlesArray = new String[] { "烘烤位", "钢包号", "烘烤类型", "烘烤温度", "标准温度",
-			"烘烤时间", "煤气流量", "空气流量", "当前报警" };
+			"烘烤时间", "煤气流量", "空气流量"};
 	
 	// 定义一个Handler,更新一览数据
 	private Handler mHandler = new Handler() {
@@ -77,7 +82,6 @@ public class RealTimeData extends BaseActivity implements OnClickListener, OnTou
 				String[] array6 = bundle.getStringArray(columns[5]);
 				String[] array7 = bundle.getStringArray(columns[6]);
 				String[] array8 = bundle.getStringArray(columns[7]);
-				String[] array9 = bundle.getStringArray(columns[8]);
 
 				int rowCnt = array1.length;
 				int colCnt = columns.length;
@@ -93,7 +97,6 @@ public class RealTimeData extends BaseActivity implements OnClickListener, OnTou
 					dataArray[i][5] = array6[i];
 					dataArray[i][6] = array7[i];
 					dataArray[i][7] = array8[i];
-					dataArray[i][8] = array9[i];
 				}
 
 				setTableInfo(titlesArray, dataArray);
@@ -159,24 +162,38 @@ public class RealTimeData extends BaseActivity implements OnClickListener, OnTou
 				intent.setClass(RealTimeData.this,
 						FactoryInfo.class);
 				intent.putExtra("previousActivityFlag", AppConstants.REAL_TIME);
-				intent.putExtra(AppConstants.SELECTED_FACTORY_CODE, factoryCode);
+				intent.putExtra(AppConstants.SELECTED_FACTORY_CODE, selectedFactoryCode);
+				intent.putExtra(AppConstants.SELECTED_PROJECT_CODE, selectedProjectCode);
+				intent.putExtra(AppConstants.SELECTED_PROJECT_NAME, selectedProjectName);
 				startActivity(intent);
 				RealTimeData.this.finish();
 	
 				break;
+			case R.id.etProjectName:
+				if(selectedFactoryCode == null || "".equals(selectedFactoryCode)){
+					Toast.makeText(
+							appContext,
+							appContext.getString(R.string.msg_error_must_input_factory),
+							Toast.LENGTH_LONG).show();
+					return;
+				}
+				intent = new Intent();
+				intent.setClass(RealTimeData.this, Projects.class);
+				intent.putExtra("previousActivityFlag", AppConstants.REAL_TIME);
+				intent.putExtra(AppConstants.SELECTED_PROJECT_CODE, selectedProjectCode);
+				intent.putExtra(AppConstants.SELECTED_FACTORY_CODE, selectedFactoryCode);
+				intent.putExtra(AppConstants.SELECTED_FACTORY_NAME, selectedFactoryName);
+				startActivity(intent);
+				RealTimeData.this.finish();
+				break;
 			case R.id.btnSelect: 
 				// 查询处理
-	
-				if(factoryCode == null || "".equals(factoryCode)){
-					Toast.makeText(appContext,
-							appContext.getString(R.string.msg_error_factory),
-							Toast.LENGTH_LONG).show();
-				}else{
+				if(!checkInput()){
 					loadingLayout.setVisibility(View.VISIBLE);
 					dataListLayout.setVisibility(View.GONE);
 					btnSelect.setClickable(false);
 					
-					getListData(factoryCode);
+					getListData(selectedProjectCode);
 				}
 				
 				break;
@@ -211,12 +228,32 @@ public class RealTimeData extends BaseActivity implements OnClickListener, OnTou
 		mFactoryName.setFocusable(false);
 		mFactoryName.setFocusableInTouchMode(false);
 		mFactoryName.setOnClickListener(this);
+		
+		// 项目信息
+		etProjectName = (EditText) findViewById(R.id.etProjectName);
+		etProjectName.setCursorVisible(false);
+		etProjectName.setFocusable(false);
+		etProjectName.setFocusableInTouchMode(false);
+		etProjectName.setOnClickListener(this);
 
+		//炼钢厂信息
 		Intent intent = this.getIntent();
-		factoryCode = intent.getStringExtra(AppConstants.SELECTED_FACTORY_CODE);
-		String factoryName = intent.getStringExtra(AppConstants.SELECTED_FACTORY_NAME);
-		mFactoryName.setText(factoryName);
-
+		selectedFactoryCode = intent.getStringExtra(AppConstants.SELECTED_FACTORY_CODE);
+		selectedFactoryName = intent.getStringExtra(AppConstants.SELECTED_FACTORY_NAME);
+		mFactoryName.setText(selectedFactoryName);
+		
+		//项目信息
+		selectedProjectCode = intent.getStringExtra(AppConstants.SELECTED_PROJECT_CODE);
+		selectedProjectName = intent.getStringExtra(AppConstants.SELECTED_PROJECT_NAME);
+		etProjectName.setText(intent.getStringExtra(AppConstants.SELECTED_PROJECT_NAME));
+		
+		if(selectedFactoryCode != null && intent.getStringExtra(AppConstants.PREVIOUS_FACTORY_CODE) != null
+				&& !selectedFactoryCode.equals(intent.getStringExtra(AppConstants.PREVIOUS_FACTORY_CODE))){
+			selectedProjectCode = null;
+			selectedProjectName = null;
+			etProjectName.setText(null);
+		}
+		
 		// 加载布局
 		loadingLayout = (RelativeLayout) findViewById(R.id.loadingLayout);
 		loadingLayout.setVisibility(View.GONE);
@@ -238,10 +275,10 @@ public class RealTimeData extends BaseActivity implements OnClickListener, OnTou
 	 *            钢厂代码
 	 * @return
 	 */
-	private void getListData(String factory) {
+	private void getListData(String projectCode) {
 		String identityUrl = base_ip_port + Url.URL_REAL_TIME_DATA;
 
-		identityUrl = StringUtils.setParams(identityUrl, factory);
+		identityUrl = StringUtils.setParams(identityUrl, projectCode);
 
 		// 远程获取身份验证结果
 		RequestQueue mQueue = Volley.newRequestQueue(this);
@@ -273,7 +310,6 @@ public class RealTimeData extends BaseActivity implements OnClickListener, OnTou
 								String[] array6 = new String[length];
 								String[] array7 = new String[length];
 								String[] array8 = new String[length];
-								String[] array9 = new String[length];
 
 								JSONObject jsonObj = null;
 								for (int i = 0; i < length; i++) {
@@ -287,7 +323,6 @@ public class RealTimeData extends BaseActivity implements OnClickListener, OnTou
 									array6[i] = jsonObj.getString(columns[5]);
 									array7[i] = jsonObj.getString(columns[6]);
 									array8[i] = jsonObj.getString(columns[7]);
-									array9[i] = jsonObj.getString(columns[8]);
 								}
 
 								bundle.putStringArray(columns[0], array1);
@@ -298,7 +333,6 @@ public class RealTimeData extends BaseActivity implements OnClickListener, OnTou
 								bundle.putStringArray(columns[5], array6);
 								bundle.putStringArray(columns[6], array7);
 								bundle.putStringArray(columns[7], array8);
-								bundle.putStringArray(columns[8], array9);
 
 								msg.setData(bundle);
 								msg.what = AppConstants.OK;
@@ -341,9 +375,9 @@ public class RealTimeData extends BaseActivity implements OnClickListener, OnTou
 		int width = this.getWindowManager().getDefaultDisplay().getWidth()
 				/ titles.length;
 		//表格每列的自定义宽度
-		int[] column_width = {width + 100, width + 100, width + 100
+		int[] column_width = {width + 300, width + 100, width + 100
 							, width + 100, width + 100, width + 100
-							, width + 100, width + 100, width + 100};
+							, width + 100, width + 100};
 		//表格行高
 		int row_height = 100;
 		// 定义标题
@@ -369,5 +403,30 @@ public class RealTimeData extends BaseActivity implements OnClickListener, OnTou
 
 		TableAdapter tableAdapter = new TableAdapter(this, table);
 		lv.setAdapter(tableAdapter);
+	}
+	
+	/**
+	 * 验证输入值
+	 * 
+	 * @return
+	 */
+	private boolean checkInput(){
+		if(StringUtils.isEmpty(selectedFactoryCode)){
+			Toast.makeText(appContext,
+					appContext.getString(R.string.msg_error_factory),
+					Toast.LENGTH_LONG).show();
+			
+			return false;
+		}
+		
+		if(StringUtils.isEmpty(selectedProjectCode)){
+			Toast.makeText(appContext,
+					appContext.getString(R.string.msg_error_factory),
+					Toast.LENGTH_LONG).show();
+			
+			return false;
+		}
+		
+		return true;
 	}
 }

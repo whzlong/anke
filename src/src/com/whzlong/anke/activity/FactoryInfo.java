@@ -42,6 +42,7 @@ public class FactoryInfo extends BaseActivity implements OnClickListener,
 	private String[] factoryCodeArr;
 	private String selectedFactoryCode = "";
 	private String selectedFactoryName = "";
+	private String previousFactoryCode;
 	private String selectedProCode = "";
 	private String selectedProName = "";
 	private HashMap<String, String> factoryInfo;
@@ -142,6 +143,8 @@ public class FactoryInfo extends BaseActivity implements OnClickListener,
 
 		selectedFactoryCode = this.getIntent().getStringExtra(AppConstants.SELECTED_FACTORY_CODE);
 		
+		previousFactoryCode = this.getIntent().getStringExtra(AppConstants.SELECTED_FACTORY_CODE);
+		
 		selectedProCode = this.getIntent().getStringExtra(AppConstants.SELECTED_PROJECT_CODE);
 		selectedProName = this.getIntent().getStringExtra(AppConstants.SELECTED_PROJECT_NAME);
 
@@ -183,6 +186,7 @@ public class FactoryInfo extends BaseActivity implements OnClickListener,
 							intent.putExtra(AppConstants.SELECTED_FACTORY_NAME, checkedRb.getText());
 							intent.putExtra(AppConstants.SELECTED_PROJECT_CODE, selectedProCode);
 							intent.putExtra(AppConstants.SELECTED_PROJECT_NAME, selectedProName);
+							intent.putExtra(AppConstants.PREVIOUS_FACTORY_CODE, previousFactoryCode);
 							startActivity(intent);
 							FactoryInfo.this.finish();
 						}
@@ -220,6 +224,7 @@ public class FactoryInfo extends BaseActivity implements OnClickListener,
 
 			intent.putExtra(AppConstants.SELECTED_FACTORY_CODE, selectedFactoryCode);
 			intent.putExtra(AppConstants.SELECTED_FACTORY_NAME, selectedFactoryName);
+			intent.putExtra(AppConstants.PREVIOUS_FACTORY_CODE, previousFactoryCode);
 			intent.putExtra(AppConstants.SELECTED_PROJECT_CODE, selectedProCode);
 			intent.putExtra(AppConstants.SELECTED_PROJECT_NAME, selectedProName);
 			startActivity(intent);
@@ -258,6 +263,7 @@ public class FactoryInfo extends BaseActivity implements OnClickListener,
 
 			intent.putExtra(AppConstants.SELECTED_FACTORY_CODE, selectedFactoryCode);
 			intent.putExtra(AppConstants.SELECTED_FACTORY_NAME, selectedFactoryName);
+			intent.putExtra(AppConstants.PREVIOUS_FACTORY_CODE, previousFactoryCode);
 			intent.putExtra(AppConstants.SELECTED_PROJECT_CODE, selectedProCode);
 			intent.putExtra(AppConstants.SELECTED_PROJECT_NAME, selectedProName);
 			startActivity(intent);

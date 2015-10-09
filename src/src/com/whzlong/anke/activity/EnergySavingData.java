@@ -70,10 +70,11 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 	private RelativeLayout dataListLayout;
 	// 全局Context
 	private AppContext appContext;
-	private String[] titlesArray = new String[] { "烘烤位", "每周最后一条数据", "小时能耗",
-			"作业率", "节能率" };
-	private String[] columns = new String[] { "OPCGroup", "Date", "SXSHL",
-			"SSYL", "SJNL" };
+	
+	private String[] titlesArray = new String[] { "烘烤位", "起始日", "起始累计流量",
+			"起始累计时间", "当前日", "当前累计流量", "当前累计时间", "累计使用流量", "累计使用时间", "平均小时能耗", "节能率", "使用率"};
+	private String[] columns = new String[] { "HKW", "DataS", "MQLJS",
+			"SJLJS", "DataE", "MQLJS", "SJLJS", "MQLJC", "SJLJC", "PJXSHL", "JNL", "SYL" };
 
 	// 定义一个Handler,更新一览数据
 	private Handler mHandler = new Handler() {
@@ -88,6 +89,13 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 				String[] array3 = bundle.getStringArray(columns[2]);
 				String[] array4 = bundle.getStringArray(columns[3]);
 				String[] array5 = bundle.getStringArray(columns[4]);
+				String[] array6 = bundle.getStringArray(columns[5]);
+				String[] array7 = bundle.getStringArray(columns[6]);
+				String[] array8 = bundle.getStringArray(columns[7]);
+				String[] array9 = bundle.getStringArray(columns[8]);
+				String[] array10 = bundle.getStringArray(columns[9]);
+				String[] array11 = bundle.getStringArray(columns[10]);
+				String[] array12 = bundle.getStringArray(columns[11]);
 
 				int rowCnt = array1.length;
 				int colCnt = columns.length;
@@ -100,6 +108,13 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 					dataArray[i][2] = array3[i];
 					dataArray[i][3] = array4[i];
 					dataArray[i][4] = array5[i];
+					dataArray[i][5] = array6[i];
+					dataArray[i][6] = array7[i];
+					dataArray[i][7] = array8[i];
+					dataArray[i][8] = array9[i];
+					dataArray[i][9] = array10[i];
+					dataArray[i][10] = array11[i];
+					dataArray[i][11] = array12[i];
 				}
 
 				setTableInfo(titlesArray, dataArray);
@@ -181,6 +196,13 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 		selectedProjectName = intent.getStringExtra(AppConstants.SELECTED_PROJECT_NAME);
 		etProjectName.setText(intent.getStringExtra(AppConstants.SELECTED_PROJECT_NAME));
 		
+		if(selectedFactoryCode != null && intent.getStringExtra(AppConstants.PREVIOUS_FACTORY_CODE) != null
+				&& !selectedFactoryCode.equals(intent.getStringExtra(AppConstants.PREVIOUS_FACTORY_CODE))){
+			selectedProjectCode = null;
+			selectedProjectName = null;
+			etProjectName.setText(null);
+		}
+		
 		// 加载布局
 		loadingLayout = (RelativeLayout) findViewById(R.id.loadingLayout);
 		loadingLayout.setVisibility(View.GONE);
@@ -203,13 +225,20 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 	 * @param selectDateTo
 	 */
 	private boolean checkInput(String strDateFrom, String strDateTo) {
-		if (selectedFactoryCode == null || "".equals(selectedFactoryCode)) {
+		if (StringUtils.isEmpty(selectedFactoryCode)) {
 			Toast.makeText(appContext,
 					appContext.getString(R.string.msg_error_factory),
 					Toast.LENGTH_LONG).show();
 			return false;
 		}
 
+		if (StringUtils.isEmpty(selectedProjectCode)) {
+			Toast.makeText(appContext,
+					appContext.getString(R.string.msg_error_project),
+					Toast.LENGTH_LONG).show();
+			return false;
+		}
+		
 		if ("".equals(strDateFrom) || "".equals(strDateTo)) {
 			Toast.makeText(appContext,
 					appContext.getString(R.string.input_prompt_select_date),
@@ -331,7 +360,7 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 				selectDateTo = selectDateTo.replace("-", "");
 
 				// 从服务器上获取数据
-				getListData(selectedFactoryCode, selectDateFrom, selectDateTo);
+				getListData(selectedProjectCode, selectDateFrom, selectDateTo);
 			}
 
 			break;
@@ -465,11 +494,11 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 	 *            查询结束时间
 	 * @return
 	 */
-	private void getListData(String factoryCode, String dateTimeFrom,
+	private void getListData(String projectCode, String dateTimeFrom,
 			String dateTimeTo) {
 		String identityUrl = base_ip_port + Url.URL_ENERGY_SAVING_DATA;
 
-		identityUrl = StringUtils.setParams(identityUrl, factoryCode,
+		identityUrl = StringUtils.setParams(identityUrl, projectCode,
 				dateTimeFrom, dateTimeTo);
 
 		// 远程获取身份验证结果
@@ -499,7 +528,14 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 								String[] array3 = new String[length];
 								String[] array4 = new String[length];
 								String[] array5 = new String[length];
-
+								String[] array6 = new String[length];
+								String[] array7 = new String[length];
+								String[] array8 = new String[length];
+								String[] array9 = new String[length];
+								String[] array10 = new String[length];
+								String[] array11 = new String[length];
+								String[] array12 = new String[length];
+								
 								JSONObject jsonObj = null;
 								for (int i = 0; i < length; i++) {
 									jsonObj = returnData.getJSONObject(i);
@@ -509,6 +545,13 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 									array3[i] = jsonObj.getString(columns[2]);
 									array4[i] = jsonObj.getString(columns[3]);
 									array5[i] = jsonObj.getString(columns[4]);
+									array6[i] = jsonObj.getString(columns[5]);
+									array7[i] = jsonObj.getString(columns[6]);
+									array8[i] = jsonObj.getString(columns[7]);
+									array9[i] = jsonObj.getString(columns[8]);
+									array10[i] = jsonObj.getString(columns[9]);
+									array11[i] = jsonObj.getString(columns[10]);
+									array12[i] = jsonObj.getString(columns[11]);
 								}
 
 								bundle.putStringArray(columns[0], array1);
@@ -516,6 +559,13 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 								bundle.putStringArray(columns[2], array3);
 								bundle.putStringArray(columns[3], array4);
 								bundle.putStringArray(columns[4], array5);
+								bundle.putStringArray(columns[5], array6);
+								bundle.putStringArray(columns[6], array7);
+								bundle.putStringArray(columns[7], array8);
+								bundle.putStringArray(columns[8], array9);
+								bundle.putStringArray(columns[9], array10);
+								bundle.putStringArray(columns[10], array11);
+								bundle.putStringArray(columns[11], array12);
 
 								msg.setData(bundle);
 								msg.what = AppConstants.OK;
@@ -558,7 +608,8 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 		int width = this.getWindowManager().getDefaultDisplay().getWidth()
 				/ titles.length;
 		//表格每列的自定义宽度
-		int[] column_width = {width, width + 240, width + 40, width + 40, width + 40};
+		int[] column_width = {width + 300, width + 240, width + 240, width + 240, width + 240
+				, width + 240, width + 240, width + 240, width + 240, width + 240, width + 180, width + 180};
 		
 		//表格行高
 		int row_height = 100;
