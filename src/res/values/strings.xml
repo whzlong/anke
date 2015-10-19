@@ -75,5 +75,8 @@
     
     <!-- 节能数据查询界面 -->
     <string name="msg_error_must_input_factory">请先选择钢厂信息。</string>
+    
+    <string name="company_name">上海安可科技股份有限公司</string>
+    
 
 </resources>

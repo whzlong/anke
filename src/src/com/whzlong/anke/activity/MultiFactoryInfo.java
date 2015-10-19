@@ -51,8 +51,8 @@ public class MultiFactoryInfo extends BaseActivity implements OnClickListener,
 	// 全局Context
 	private AppContext appContext;
 	private SharedPreferences preference;
-	private String[] columns = new String[] { "SteelWorksCode",
-			"SteelWorksName" };
+	private String[] columns = new String[] { "SteelCode",
+			"SteelName" };
 
 	// 定义一个Handler,更新一览数据
 	private Handler mHandler = new Handler() {
@@ -258,9 +258,8 @@ public class MultiFactoryInfo extends BaseActivity implements OnClickListener,
 		lvCheckbox.setAdapter(cblistAdapter);
 		lvCheckbox.setItemsCanFocus(false);
 		lvCheckbox.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-
-		lvCheckbox
-				.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		
+		lvCheckbox.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
 						ViewHolder vHollder = (ViewHolder) view.getTag();

@@ -2,11 +2,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context="${relativePackage}.${activityClass}" >
 	<RelativeLayout
         android:id="@+id/relativeLayout5"
         android:layout_width="fill_parent"
-        android:layout_height="100dp" >
+        android:layout_height="130dp" >
+
+		<ImageView
+		    android:id="@+id/imageView1"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_centerHorizontal="true"
+		    android:layout_centerVertical="true"
+		    android:src="@drawable/logo" />
+
     </RelativeLayout>
     
     <RelativeLayout
@@ -96,6 +106,23 @@
             android:background="@drawable/button_shape" 
             android:textColor="@color/white"
             />
+    </RelativeLayout>
+    
+        <RelativeLayout
+        android:id="@+id/relativeLayout7"
+        android:layout_width="fill_parent"
+        android:layout_height="80dp"
+        android:layout_below="@+id/relativeLayout6" >
+
+        <TextView
+	    android:id="@+id/textView1"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentBottom="true"
+	    android:layout_centerHorizontal="true"
+	    android:layout_marginBottom="30dp"
+	    android:text="@string/company_name"
+	    android:textColor="@color/blue" />
     </RelativeLayout>
 
 </RelativeLayout>

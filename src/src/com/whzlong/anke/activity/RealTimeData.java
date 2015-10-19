@@ -188,7 +188,7 @@ public class RealTimeData extends BaseActivity implements OnClickListener, OnTou
 				break;
 			case R.id.btnSelect: 
 				// 查询处理
-				if(!checkInput()){
+				if(checkInput()){
 					loadingLayout.setVisibility(View.VISIBLE);
 					dataListLayout.setVisibility(View.GONE);
 					btnSelect.setClickable(false);
@@ -411,7 +411,7 @@ public class RealTimeData extends BaseActivity implements OnClickListener, OnTou
 	 * @return
 	 */
 	private boolean checkInput(){
-		if(StringUtils.isEmpty(selectedFactoryCode)){
+		if(selectedFactoryCode == null || "".equals(selectedFactoryCode)){
 			Toast.makeText(appContext,
 					appContext.getString(R.string.msg_error_factory),
 					Toast.LENGTH_LONG).show();
@@ -419,7 +419,7 @@ public class RealTimeData extends BaseActivity implements OnClickListener, OnTou
 			return false;
 		}
 		
-		if(StringUtils.isEmpty(selectedProjectCode)){
+		if(selectedProjectCode == null || "".equals(selectedProjectCode)){
 			Toast.makeText(appContext,
 					appContext.getString(R.string.msg_error_factory),
 					Toast.LENGTH_LONG).show();

@@ -18,7 +18,7 @@ public class CheckboxListAdapter extends BaseAdapter {
 	private ViewHolder viewHolder = null;
 	private List<Map<String, String>> mData;
 	public static Map<Integer, Boolean> isSelected;
-	private static final String CHECKBOX_TEXT_KEY = "SteelWorksName";
+	private static final String CHECKBOX_TEXT_KEY = "SteelName";
 	
 	public CheckboxListAdapter(Context context, List<Map<String, String>> content, List<String> lsCheckedData){
 		inflater = LayoutInflater.from(context);
