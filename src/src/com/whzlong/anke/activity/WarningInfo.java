@@ -26,6 +26,7 @@ import com.whzlong.anke.common.StringUtils;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -70,6 +71,10 @@ public class WarningInfo extends BaseActivity implements OnClickListener,
 	private String[] titlesArray = new String[] { "项目名称", "烘烤位名称", "发生时间", "结束时间", "故障" };
 	private String[] columns = new String[] { "ProName", "HkwName",
 			"KSSJ", "JSSJ","BJLX" };
+	/**
+	 * 是否从通知栏跳转过来
+	 */
+	private String mPreviousPage;
 
 	// 定义一个Handler,更新一览数据
 	private Handler mHandler = new Handler() {
@@ -103,10 +108,14 @@ public class WarningInfo extends BaseActivity implements OnClickListener,
 				break;
 
 			case AppConstants.NG:
-				Toast.makeText(
-						appContext,
-						appContext.getString(R.string.error_select_result_zero),
-						Toast.LENGTH_LONG).show();
+				//点击查询按钮后才显示此提示信息
+				if(!AppConstants.ONE.equals(mPreviousPage)){
+					Toast.makeText(
+							appContext,
+							appContext.getString(R.string.error_select_result_zero),
+							Toast.LENGTH_LONG).show();
+				}
+				
 				break;
 			case AppConstants.ERROR1:
 				Toast.makeText(appContext,
@@ -136,6 +145,9 @@ public class WarningInfo extends BaseActivity implements OnClickListener,
 
 		// 初始化各种视图组件
 		initViews();
+		
+		NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+	    notificationManager.cancel(R.string.app_name);
 	}
 
 	@Override
@@ -397,10 +409,10 @@ public class WarningInfo extends BaseActivity implements OnClickListener,
 		btnBack.setOnTouchListener(this);
 		
 		//当从通知界面跳转过来时，显示当前警告数据
-		String previousPage = intent.getStringExtra(AppConstants.NOTIFICATION);
+		mPreviousPage = intent.getStringExtra(AppConstants.NOTIFICATION);
 		
 		//从通知栏跳转过来后，显示最新的警告信息
-		if(AppConstants.ONE.equals(previousPage)){
+		if(AppConstants.ONE.equals(mPreviousPage)){
 			loadingLayout.setVisibility(View.VISIBLE);
 			dataListLayout.setVisibility(View.GONE);
 			btnSelect.setClickable(false);

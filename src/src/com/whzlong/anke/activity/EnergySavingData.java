@@ -74,7 +74,7 @@ public class EnergySavingData extends BaseActivity implements OnClickListener,
 	private String[] titlesArray = new String[] { "烘烤位", "起始日", "起始累计流量",
 			"起始累计时间", "当前日", "当前累计流量", "当前累计时间", "累计使用流量", "累计使用时间", "平均小时能耗", "节能率", "使用率"};
 	private String[] columns = new String[] { "HKW", "DataS", "MQLJS",
-			"SJLJS", "DataE", "MQLJS", "SJLJS", "MQLJC", "SJLJC", "PJXSHL", "JNL", "SYL" };
+			"SJLJS", "DataE", "MQLJE", "SJLJE", "MQLJC", "SJLJC", "PJXSHL", "JNL", "SYL" };
 
 	// 定义一个Handler,更新一览数据
 	private Handler mHandler = new Handler() {

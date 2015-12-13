@@ -27,6 +27,7 @@ public class Url implements Serializable {
 	public static String URL_HISTORY_WARNING_INFO = "/RESTService.svc/Warn/[%1]/[%2]/[%3]";
 	// 获取轮查时间段内需要提醒的报警信息
 	public static String URL_HISTORY_WARNING_REMIND = "/RESTService.svc/NewWarn";
+	//public static String URL_HISTORY_WARNING_REMIND = "/RESTService.svc/NewWarnNoData";
 	//项目信息
 	public static String URL_PROJECTS = "/RESTService.svc/Project/[%1]";
 

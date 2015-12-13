@@ -59,14 +59,15 @@ public class AppService extends Service {
 				contentView.setImageViewResource(R.id.ntImage,
 						R.drawable.ic_launcher);
 				notification.contentView = contentView;
+				notification.flags = Notification.FLAG_AUTO_CANCEL;
 
 				Intent notificationIntent = new Intent(appContext,
 						WarningInfo.class);
 				notificationIntent.putExtra(AppConstants.NOTIFICATION, "1");
 
 				PendingIntent contentIntent = PendingIntent.getActivity(
-						appContext, 0, notificationIntent, 0);
-
+						appContext, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+				
 				notification.contentIntent = contentIntent;
 				notification.defaults = notification.DEFAULT_SOUND
 						| notification.DEFAULT_VIBRATE;
